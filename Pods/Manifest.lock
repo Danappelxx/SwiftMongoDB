@@ -1,0 +1,10 @@
+PODS:
+  - mongo-c-driver (0.8.1)
+
+DEPENDENCIES:
+  - mongo-c-driver (~> 0.8.1)
+
+SPEC CHECKSUMS:
+  mongo-c-driver: 56558b8009f8d27549b23b62ce64fe33b9818703
+
+COCOAPODS: 0.38.2

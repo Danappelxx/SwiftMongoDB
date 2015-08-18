@@ -5,7 +5,7 @@
       location = "group:swiftMongoDBExample/swiftMongoDBExample.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/dan/Developer/etc/swiftMongoDB/swiftMongoDB.xcodeproj">
+      location = "group:swiftMongoDB.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

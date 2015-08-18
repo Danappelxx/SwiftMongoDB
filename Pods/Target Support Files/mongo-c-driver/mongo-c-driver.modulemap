@@ -1,0 +1,6 @@
+framework module mongo_c_driver {
+  umbrella header "mongo-c-driver-umbrella.h"
+
+  export *
+  module * { export * }
+}
