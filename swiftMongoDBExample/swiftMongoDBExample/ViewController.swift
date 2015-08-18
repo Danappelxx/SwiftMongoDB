@@ -21,10 +21,11 @@ class ViewController: NSViewController {
         let subjects = MongoCollection(name: "subjects")
         mongodb.registerCollection(subjects)
 
-        let subject = MongoDocument(data: ["name" : "Dan", "age": 15])
-        subjects.insert(subject)
+//        let subject = MongoDocument(data: ["name" : "Dan", "age": 15, "friends": ["billy", "bob", "joe"], "location": ["lat":13, "long":15]])
+//        subjects.insert(subject)
 
-        subject.printSelf()
+//        subject.printSelf()
+
 
         let results = subjects.find(["age": 15])
 

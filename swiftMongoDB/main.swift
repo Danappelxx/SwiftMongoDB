@@ -338,7 +338,7 @@ private class MongoBSON {
     var data: DocumentData
 
     init(data: DocumentData, includeObjectId: Bool = true) {
-
+        
         self.data = data
 
         // init bson
@@ -405,6 +405,7 @@ private class MongoBSON {
         bson_destroy(self.BSONValue)
     }
 
+    // it appears as though using ints as keys might break shit
     func processPair(key key: String, value: AnyObject) {
         
         switch value {
@@ -417,13 +418,31 @@ private class MongoBSON {
             bson_append_int(self.BSONValue, key, Int32(value))
             print("appended int")
             break
-            //        case let value as Array:
+        case let value as Array<AnyObject>:
+            bson_append_start_array(self.BSONValue, key)
+
+            // recursively creates array by calling processPair on each element in the array
+            for (index, val) in value.enumerate() {
+                self.processPair(key: index.description, value: val)
+            }
+
+            bson_append_finish_array(self.BSONValue)
+            break
+        case let value as [String:AnyObject]:
+            bson_append_start_object(self.BSONValue, key)
+
+            for (objectKey, objectVal) in value {
+                self.processPair(key: objectKey, value: objectVal)
+            }
             
+            bson_append_finish_object(self.BSONValue)
+            break
+
         default:
             break
         }
     }
-    
+
     func copyTo(BSON: UnsafeMutablePointer<bson>) {
         bson_copy(BSON, self.BSONValue)
     }
