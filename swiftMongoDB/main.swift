@@ -353,30 +353,13 @@ private class MongoBSON {
 
         // go through each key:value pair and append it to the bson object
         for (key, value) in data {
-            
-            switch value {
-                
-            case let value as String:
-                bson_append_string(self.BSONValue, key, value)
-                print("appended string")
-                break
-            case let value as Int:
-                bson_append_int(self.BSONValue, key, Int32(value))
-                print("appended int")
-                break
-                //        case let value as Array:
-                
-            default:
-                break
-            }
-            
-//            self.processPair(key: key, value: value)
+            self.processPair(key: key, value: value)
         }
 
         // error handling
         let bsonError = UInt32(self.BSONValue.memory.err)
         switch bsonError {
-            
+
         case BSON_VALID.rawValue:
             print("bson is valid")
             break
@@ -395,7 +378,7 @@ private class MongoBSON {
         default:
             print("unknown bson error with code: \(self.BSONValue.memory.err)")
         }
-        
+
         // complete bson
         bson_finish(self.BSONValue)
         print("completed bson")
@@ -405,20 +388,26 @@ private class MongoBSON {
         bson_destroy(self.BSONValue)
     }
 
-    // it appears as though using ints as keys might break shit
+    // need to implement proper error handling - for example
+    // if you have a dict where you use integers as keys
+    // bson processing will fail but it will not be reported
+
     func processPair(key key: String, value: AnyObject) {
-        
+
         switch value {
-            
+
         case let value as String:
             bson_append_string(self.BSONValue, key, value)
             print("appended string")
             break
+
         case let value as Int:
             bson_append_int(self.BSONValue, key, Int32(value))
             print("appended int")
             break
+
         case let value as Array<AnyObject>:
+            print("started appending array")
             bson_append_start_array(self.BSONValue, key)
 
             // recursively creates array by calling processPair on each element in the array
@@ -427,18 +416,23 @@ private class MongoBSON {
             }
 
             bson_append_finish_array(self.BSONValue)
+            print("finished appending array")
             break
+
         case let value as [String:AnyObject]:
+            print("started appending object")
             bson_append_start_object(self.BSONValue, key)
 
-            for (objectKey, objectVal) in value {
-                self.processPair(key: objectKey, value: objectVal)
+            for (key, val) in value {
+                self.processPair(key: key, value: val)
             }
-            
+
             bson_append_finish_object(self.BSONValue)
+            print("finished appending object")
             break
 
         default:
+            print("could not resolve type of value: \(value) with key: \(key)")
             break
         }
     }
@@ -447,33 +441,3 @@ private class MongoBSON {
         bson_copy(BSON, self.BSONValue)
     }
 }
-
-
-//            {
-//                name: "Kyle",
-//
-//                colors: [ "red", "blue", "green" ],
-//
-//                address: {
-//                    city: "New York",
-//                    zip: "10011-4567"
-//                }
-//            }
-//            bson b[1];
-//
-//            bson_init( b );
-//            bson_append_string( b, "name", "Kyle" );
-//
-//            bson_append_start_array( b, "colors" );
-//            bson_append_string( b, "0", "red" );
-//            bson_append_string( b, "1", "blue" );
-//            bson_append_string( b, "2", "green" );
-//            bson_append_finish_array( b );
-//
-//            bson_append_start_object( b, "address" );
-//            bson_append_string( b, "city", "New York" );
-//            bson_append_string( b, "zip", "10011-4567" );
-//            bson_append_finish_object( b );
-//
-//            if( bson_finish( b ) != BSON_OK )
-//            printf(" Error. ");
