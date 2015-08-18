@@ -10,6 +10,9 @@
 		375F5F0F1B7E65DF007EA172 /* swiftMongoDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 375F5F0E1B7E65DF007EA172 /* swiftMongoDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		375F5F161B7E65E0007EA172 /* swiftMongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375F5F0B1B7E65DF007EA172 /* swiftMongoDB.framework */; };
 		375F5F1B1B7E65E0007EA172 /* swiftMongoDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F5F1A1B7E65E0007EA172 /* swiftMongoDBTests.swift */; };
+		375F5F261B7E6603007EA172 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F5F251B7E6603007EA172 /* main.swift */; };
+		37EB7F911B7E86BA008EBB72 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB7F901B7E86B9008EBB72 /* helpers.swift */; };
+		870979EBEA7FC3880F919647 /* Pods_swiftMongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3A23E280A007CEEAA718C6C /* Pods_swiftMongoDB.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,9 +29,14 @@
 		375F5F0B1B7E65DF007EA172 /* swiftMongoDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = swiftMongoDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		375F5F0E1B7E65DF007EA172 /* swiftMongoDB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swiftMongoDB.h; sourceTree = "<group>"; };
 		375F5F101B7E65DF007EA172 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		375F5F151B7E65E0007EA172 /* swiftMongoDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftMongoDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		375F5F151B7E65E0007EA172 /* swiftMongoDB.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftMongoDB.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		375F5F1A1B7E65E0007EA172 /* swiftMongoDBTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftMongoDBTests.swift; sourceTree = "<group>"; };
 		375F5F1C1B7E65E0007EA172 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		375F5F251B7E6603007EA172 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		37EB7F901B7E86B9008EBB72 /* helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = helpers.swift; sourceTree = "<group>"; };
+		472D985BC5755E15CC3B92D7 /* Pods-swiftMongoDB.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swiftMongoDB.debug.xcconfig"; path = "Pods/Target Support Files/Pods-swiftMongoDB/Pods-swiftMongoDB.debug.xcconfig"; sourceTree = "<group>"; };
+		A3A23E280A007CEEAA718C6C /* Pods_swiftMongoDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_swiftMongoDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5E61AAA71102A415A3914C6 /* Pods-swiftMongoDB.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swiftMongoDB.release.xcconfig"; path = "Pods/Target Support Files/Pods-swiftMongoDB/Pods-swiftMongoDB.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				870979EBEA7FC3880F919647 /* Pods_swiftMongoDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +65,8 @@
 				375F5F0D1B7E65DF007EA172 /* swiftMongoDB */,
 				375F5F191B7E65E0007EA172 /* swiftMongoDBTests */,
 				375F5F0C1B7E65DF007EA172 /* Products */,
+				B6F80CAA84788DDD7278F678 /* Pods */,
+				DDB0E9D70B09F5A491EC0433 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,7 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				375F5F0B1B7E65DF007EA172 /* swiftMongoDB.framework */,
-				375F5F151B7E65E0007EA172 /* swiftMongoDBTests.xctest */,
+				375F5F151B7E65E0007EA172 /* swiftMongoDB.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,7 +83,9 @@
 			isa = PBXGroup;
 			children = (
 				375F5F0E1B7E65DF007EA172 /* swiftMongoDB.h */,
+				375F5F251B7E6603007EA172 /* main.swift */,
 				375F5F101B7E65DF007EA172 /* Info.plist */,
+				37EB7F901B7E86B9008EBB72 /* helpers.swift */,
 			);
 			path = swiftMongoDB;
 			sourceTree = "<group>";
@@ -84,6 +97,23 @@
 				375F5F1C1B7E65E0007EA172 /* Info.plist */,
 			);
 			path = swiftMongoDBTests;
+			sourceTree = "<group>";
+		};
+		B6F80CAA84788DDD7278F678 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				472D985BC5755E15CC3B92D7 /* Pods-swiftMongoDB.debug.xcconfig */,
+				A5E61AAA71102A415A3914C6 /* Pods-swiftMongoDB.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DDB0E9D70B09F5A491EC0433 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A3A23E280A007CEEAA718C6C /* Pods_swiftMongoDB.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,10 +134,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 375F5F1F1B7E65E0007EA172 /* Build configuration list for PBXNativeTarget "swiftMongoDB" */;
 			buildPhases = (
+				BDAC5BAA16578D25D8016271 /* Check Pods Manifest.lock */,
 				375F5F061B7E65DF007EA172 /* Sources */,
 				375F5F071B7E65DF007EA172 /* Frameworks */,
 				375F5F081B7E65DF007EA172 /* Headers */,
 				375F5F091B7E65DF007EA172 /* Resources */,
+				B152569093D4CC1B8F865C4C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -133,7 +165,7 @@
 			);
 			name = swiftMongoDBTests;
 			productName = swiftMongoDBTests;
-			productReference = 375F5F151B7E65E0007EA172 /* swiftMongoDBTests.xctest */;
+			productReference = 375F5F151B7E65E0007EA172 /* swiftMongoDB.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -142,6 +174,7 @@
 		375F5F021B7E65DF007EA172 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Dan Appel";
 				TargetAttributes = {
@@ -188,11 +221,46 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B152569093D4CC1B8F865C4C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-swiftMongoDB/Pods-swiftMongoDB-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BDAC5BAA16578D25D8016271 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		375F5F061B7E65DF007EA172 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				375F5F261B7E6603007EA172 /* main.swift in Sources */,
+				37EB7F911B7E86BA008EBB72 /* helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,7 +369,9 @@
 		};
 		375F5F201B7E65E0007EA172 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 472D985BC5755E15CC3B92D7 /* Pods-swiftMongoDB.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -312,14 +382,17 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.swiftMongoDB;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = swiftMongoDB;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		375F5F211B7E65E0007EA172 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5E61AAA71102A415A3914C6 /* Pods-swiftMongoDB.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -330,7 +403,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.swiftMongoDB;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = swiftMongoDB;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -342,7 +415,7 @@
 				INFOPLIST_FILE = swiftMongoDBTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.swiftMongoDBTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = swiftMongoDB;
 			};
 			name = Debug;
 		};
@@ -353,7 +426,7 @@
 				INFOPLIST_FILE = swiftMongoDBTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.swiftMongoDBTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = swiftMongoDB;
 			};
 			name = Release;
 		};
@@ -376,6 +449,7 @@
 				375F5F211B7E65E0007EA172 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		375F5F221B7E65E0007EA172 /* Build configuration list for PBXNativeTarget "swiftMongoDBTests" */ = {
 			isa = XCConfigurationList;
@@ -384,6 +458,7 @@
 				375F5F241B7E65E0007EA172 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

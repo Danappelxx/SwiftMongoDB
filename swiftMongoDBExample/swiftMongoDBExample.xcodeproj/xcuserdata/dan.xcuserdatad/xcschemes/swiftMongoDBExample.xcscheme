@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "375F5F0A1B7E65DF007EA172"
-               BuildableName = "swiftMongoDB.framework"
-               BlueprintName = "swiftMongoDB"
-               ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+               BlueprintIdentifier = "373E29E31B7E68B800167998"
+               BuildableName = "swiftMongoDBExample.app"
+               BlueprintName = "swiftMongoDBExample"
+               ReferencedContainer = "container:swiftMongoDBExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,20 +32,30 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "375F5F141B7E65E0007EA172"
-               BuildableName = "swiftMongoDB.xctest"
-               BlueprintName = "swiftMongoDBTests"
-               ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+               BlueprintIdentifier = "373E29F41B7E68B800167998"
+               BuildableName = "swiftMongoDBExampleTests.xctest"
+               BlueprintName = "swiftMongoDBExampleTests"
+               ReferencedContainer = "container:swiftMongoDBExample.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "373E29FF1B7E68B800167998"
+               BuildableName = "swiftMongoDBExampleUITests.xctest"
+               BlueprintName = "swiftMongoDBExampleUITests"
+               ReferencedContainer = "container:swiftMongoDBExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "375F5F0A1B7E65DF007EA172"
-            BuildableName = "swiftMongoDB.framework"
-            BlueprintName = "swiftMongoDB"
-            ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+            BlueprintIdentifier = "373E29E31B7E68B800167998"
+            BuildableName = "swiftMongoDBExample.app"
+            BlueprintName = "swiftMongoDBExample"
+            ReferencedContainer = "container:swiftMongoDBExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -61,15 +71,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "375F5F0A1B7E65DF007EA172"
-            BuildableName = "swiftMongoDB.framework"
-            BlueprintName = "swiftMongoDB"
-            ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+            BlueprintIdentifier = "373E29E31B7E68B800167998"
+            BuildableName = "swiftMongoDBExample.app"
+            BlueprintName = "swiftMongoDBExample"
+            ReferencedContainer = "container:swiftMongoDBExample.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -79,15 +90,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "375F5F0A1B7E65DF007EA172"
-            BuildableName = "swiftMongoDB.framework"
-            BlueprintName = "swiftMongoDB"
-            ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+            BlueprintIdentifier = "373E29E31B7E68B800167998"
+            BuildableName = "swiftMongoDBExample.app"
+            BlueprintName = "swiftMongoDBExample"
+            ReferencedContainer = "container:swiftMongoDBExample.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
