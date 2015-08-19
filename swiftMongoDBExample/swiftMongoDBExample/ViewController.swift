@@ -21,10 +21,13 @@ class ViewController: NSViewController {
         let subjects = MongoCollection(name: "subjects")
         mongodb.registerCollection(subjects)
 
-        let subject = MongoDocument(data: ["name" : "Dan", "age": 15, "friends": ["billy", "bob", "joe"], "location": ["lat":13, "long":15]])
-        subjects.insert(subject)
+        let subject1 = MongoDocument(data: ["name" : "Dan", "age": 15, "friends": ["Billy", "Bob", "Joe"], "location": ["city":"San Francisco"]])
+        let subject2 = MongoDocument(data: ["name" : "Billy", "age": 16, "friends": ["Dan", "Bob", "Joe"], "location": ["city":"New York"]])
 
-        subject.printSelf()
+        subjects.insert(subject1)
+        subjects.insert(subject2)
+
+        subjects.remove(["age": 16])
 
 
         let results = subjects.find(["age": 15])
@@ -33,12 +36,9 @@ class ViewController: NSViewController {
 
             print("result count: \(results.count)")
 
-            for result in results {
-                result.printSelf()
-            }
-
-        } else {
-            print("Something went wrong")
+//            for result in results {
+//                result.printSelf()
+//            }
         }
     }
 }

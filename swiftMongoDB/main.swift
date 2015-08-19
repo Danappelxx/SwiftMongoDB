@@ -180,14 +180,18 @@ public class MongoCollection {
         mongo_write_concern_dealloc(mwc)
     }
 
-    public func remove(query: DocumentData) {
+    public func remove(queryData: DocumentData) {
 
         if self.connection == nil {
             return
         }
         
-//        let mwc = mongo_write_concern_alloc()
-//        mongo_remove(self.connection, self.fullName, cond: UnsafePointer<bson>, mwc)
+        let query = bson_alloc()
+        let mongoBSON = MongoBSON(data: queryData, includeObjectId: false)
+        mongoBSON.copyTo(query)
+        
+        let mwc = mongo_write_concern_alloc()
+        mongo_remove(self.connection, self.identifier, query, mwc)
 
     }
     
@@ -215,13 +219,24 @@ public class MongoCollection {
         return results
     }
     
-    public func first() -> MongoDocument? {
+    public func first(queryData: DocumentData?) -> MongoDocument? {
 
         if self.connection == nil {
             return nil
         }
 
-        let cursor = MongoCursor(connection: self.connection, collection: self)
+        let cursor = self.cursor()
+        
+        // refer to find() for an explanation of this snippet
+        if let queryData = queryData {
+            
+            let mongoBSON = MongoBSON(data: queryData, includeObjectId: false)
+            
+            let query = bson_alloc()
+            mongoBSON.copyTo(query)
+            
+            cursor.query = query
+        }
 
         if cursor.nextIsOk {
             return cursor.current
@@ -260,13 +275,8 @@ public class MongoCollection {
         while cursor.nextIsOk {
             results.append(cursor.current)
         }
-        
 
-        if results.count > 0 {
-            return results
-        }
-
-        return nil
+        return results
     }
 }
 
