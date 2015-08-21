@@ -184,9 +184,7 @@ Most of the features will be shown in the example project. As of now, the featur
 Ideally I would like to mirror all of the features that the Mongo Shell offers, and eventually more.
 
 Currently in sight:
-* Remove
-* Update
-* MongoDB selectors
+* MongoDB selectors (should work already but not very clean)
 * Create a document from a SwiftyJSON object
 * Give documents super powers - for example, have something like document.addKeyValuePair(key: "hello", value: "world") along with a document.saveTo(collection)
 
