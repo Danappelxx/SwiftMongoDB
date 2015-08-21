@@ -20,7 +20,7 @@ public class MongoDB {
     /**
     Initiates a mongodb connection to the given host and ports.
     */
-    public init(host: UnsafePointer<Int8>, port: Int, database: String) {
+    public init(host: String, port: Int, database: String) {
         
         mongo_init(self.connection)
         
