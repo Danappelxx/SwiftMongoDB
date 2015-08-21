@@ -77,10 +77,10 @@ public class MongoCollection {
         
     }
     
-    public func findAll() -> [MongoDocument]? {
+    public func findAll() -> MongoResult<[MongoDocument]> {
         
         if self.connection == nil {
-            return nil
+            return MongoResult.Failure(MongoError().error)
         }
         
         let cursor = MongoCursor(connection: self.connection, collection: self)
@@ -90,13 +90,13 @@ public class MongoCollection {
             results.append(cursor.current)
         }
         
-        return results
+        return MongoResult.Success(results)
     }
     
-    public func first(queryData: DocumentData?) -> MongoDocument? {
+    public func first(queryData: DocumentData?) -> MongoResult<MongoDocument> {
         
         if self.connection == nil {
-            return nil
+            return MongoResult.Failure(MongoError().error)
         }
         
         let cursor = self.cursor()
@@ -113,16 +113,16 @@ public class MongoCollection {
         }
         
         if cursor.nextIsOk {
-            return cursor.current
+            return MongoResult.Success(cursor.current)
         }
         
-        return nil
+        return MongoResult.Failure(MongoError().error)
     }
     
-    public func find(queryData: DocumentData? = nil) -> [MongoDocument]? {
+    public func find(queryData: DocumentData? = nil) -> MongoResult<[MongoDocument]> {
         
         if self.connection == nil {
-            return nil
+            return MongoResult.Failure(MongoError().error)
         }
         
         
@@ -150,7 +150,7 @@ public class MongoCollection {
             results.append(cursor.current)
         }
         
-        return results
+        return MongoResult.Success(results)
     }
 }
 

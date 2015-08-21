@@ -32,13 +32,22 @@ class ViewController: NSViewController {
 
         let results = subjects.find(["age": 15])
 
-        if let results = results {
+        switch results {
 
-            print("result count: \(results.count)")
+        case .Success(let testSubjects):
+            print(testSubjects)
 
+        case .Failure(let err):
+            print(err)
+
+        }
+//        if let results = results {
+//
+//            print("result count: \(results.count)")
+//
 //            for result in results {
 //                result.printSelf()
 //            }
-        }
+//        }
     }
 }
