@@ -24,11 +24,12 @@ class ViewController: NSViewController {
         let subject1 = MongoDocument(data: ["name" : "Dan", "age": 15, "friends": ["Billy", "Bob", "Joe"], "location": ["city":"San Francisco"]])
         let subject2 = MongoDocument(data: ["name" : "Billy", "age": 16, "friends": ["Dan", "Bob", "Joe"], "location": ["city":"New York"]])
 
-        subjects.insert(subject1)
-        subjects.insert(subject2)
+        subjects.insert(subject1) // insert dan
+        subjects.insert(subject2) // insert billy
 
-        subjects.remove(["age": 16])
+        subjects.remove(["age": 16]) // remove billy
 
+        subjects.update(query: ["name":"Dan"], data: subject2, type: .Basic) // basic = single override
 
         let results = subjects.find(["age": 15])
 

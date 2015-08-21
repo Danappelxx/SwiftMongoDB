@@ -40,8 +40,7 @@ public class MongoCollection {
     //        return MongoQuery(connection: self.connection, collection: self)
     //        return MongoQuery(data:
     //    }
-    
-    
+
     public func insert(data: MongoDocument) {
         
         if self.connection == nil {
@@ -68,31 +67,74 @@ public class MongoCollection {
         mongo_remove(self.connection, self.identifier, query, mwc)
         
     }
+
     
-    public func update(query: DocumentData, document: MongoDocument) {
-        
-        if self.connection == nil {
-            return
-        }
-        
+    public enum UpdateType {
+        case Basic
+        case Upsert
+        case Multi
     }
     
-    public func findAll() -> MongoResult<[MongoDocument]> {
-        
+    /**
+    Updates the documents matched by the with the given modifications.
+    
+    - parameter query:The query in the form of DocumentData ( [String : AnyObject] )
+    - parameter modifications:The modifications applied to the matched object(s). Also in the form of DocumentData.
+    - parameter type:The type of update to be performed. Valid options are .Basic, .Upsert, .Multi
+    */
+    public func update(query query: DocumentData, data: DocumentData, type: UpdateType) -> MongoResult<MongoDocument> {
+
         if self.connection == nil {
             return MongoResult.Failure(MongoError().error)
         }
+
+        let queryBSON = MongoBSON(data: query, includeObjectId: false)
+        let dataBSON = MongoBSON(data: data, includeObjectId: false)
+
+        let queryBSONRaw = bson_alloc()
+        let dataBSONRaw = bson_alloc()
+        queryBSON.copyTo(queryBSONRaw)
+        dataBSON.copyTo(dataBSONRaw)
+
+
+        let updateType: Int32
+        switch type {
+        case .Basic:
+            updateType = Int32(MONGO_UPDATE_BASIC.rawValue)
+        case .Upsert:
+            updateType = Int32(MONGO_UPDATE_UPSERT.rawValue)
+        case .Multi:
+            updateType = Int32(MONGO_UPDATE_MULTI.rawValue)
+        }
+
+
+        let mwc = mongo_write_concern_alloc()
+        mongo_update(self.connection, self.identifier, queryBSONRaw, dataBSONRaw, updateType, mwc)
         
+        return MongoResult.Success(MongoDocument(data: data))
+
+    }
+
+    public func update(query query: DocumentData, data: MongoDocument, type: UpdateType) {
+        self.update(query: query, data: data.data!, type: type)
+    }
+
+    public func findAll() -> MongoResult<[MongoDocument]> {
+
+        if self.connection == nil {
+            return MongoResult.Failure(MongoError().error)
+        }
+
         let cursor = MongoCursor(connection: self.connection, collection: self)
-        
+
         var results: [MongoDocument] = []
         while cursor.nextIsOk {
             results.append(cursor.current)
         }
-        
+
         return MongoResult.Success(results)
     }
-    
+
     public func first(queryData: DocumentData?) -> MongoResult<MongoDocument> {
         
         if self.connection == nil {

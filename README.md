@@ -187,6 +187,10 @@ Currently in sight:
 * Update
 * MongoDB selectors
 * Create a document from a SwiftyJSON object
+* Give documents super powers - for example, have something like document.addKeyValuePair(key: "hello", value: "world") along with a document.saveTo(collection)
+
+Known Issues:
+* Inserting a document twice won't work because of object id conflicts (it gets generated only once)
 
 # Contributing
 Any and all help is very welcome! Feel free to fork and submit a pull request - I will almost certainly merge it.
