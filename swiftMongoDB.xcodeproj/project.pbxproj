@@ -10,7 +10,6 @@
 		375F5F0F1B7E65DF007EA172 /* swiftMongoDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 375F5F0E1B7E65DF007EA172 /* swiftMongoDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		375F5F161B7E65E0007EA172 /* swiftMongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375F5F0B1B7E65DF007EA172 /* swiftMongoDB.framework */; };
 		375F5F1B1B7E65E0007EA172 /* swiftMongoDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F5F1A1B7E65E0007EA172 /* swiftMongoDBTests.swift */; };
-		375F5F261B7E6603007EA172 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F5F251B7E6603007EA172 /* main.swift */; };
 		37EB7F911B7E86BA008EBB72 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB7F901B7E86B9008EBB72 /* helpers.swift */; };
 		37FD38951B86BD3700ADB9BA /* MongoDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FD38941B86BD3700ADB9BA /* MongoDB.swift */; };
 		37FD38971B86BD4000ADB9BA /* MongoCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FD38961B86BD4000ADB9BA /* MongoCollection.swift */; };
@@ -38,7 +37,6 @@
 		375F5F151B7E65E0007EA172 /* swiftMongoDB.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftMongoDB.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		375F5F1A1B7E65E0007EA172 /* swiftMongoDBTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftMongoDBTests.swift; sourceTree = "<group>"; };
 		375F5F1C1B7E65E0007EA172 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		375F5F251B7E6603007EA172 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		37EB7F901B7E86B9008EBB72 /* helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = helpers.swift; sourceTree = "<group>"; };
 		37FD38941B86BD3700ADB9BA /* MongoDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MongoDB.swift; sourceTree = "<group>"; };
 		37FD38961B86BD4000ADB9BA /* MongoCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MongoCollection.swift; sourceTree = "<group>"; };
@@ -95,7 +93,6 @@
 			isa = PBXGroup;
 			children = (
 				375F5F0E1B7E65DF007EA172 /* swiftMongoDB.h */,
-				375F5F251B7E6603007EA172 /* main.swift */,
 				37FD38941B86BD3700ADB9BA /* MongoDB.swift */,
 				37FD38961B86BD4000ADB9BA /* MongoCollection.swift */,
 				37FD389A1B86BD5400ADB9BA /* MongoDocument.swift */,
@@ -278,7 +275,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				37FD38971B86BD4000ADB9BA /* MongoCollection.swift in Sources */,
-				375F5F261B7E6603007EA172 /* main.swift in Sources */,
 				37EB7F911B7E86BA008EBB72 /* helpers.swift in Sources */,
 				37FD389F1B86BD6400ADB9BA /* MongoResult.swift in Sources */,
 				37FD389B1B86BD5400ADB9BA /* MongoDocument.swift in Sources */,
