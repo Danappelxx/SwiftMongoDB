@@ -181,15 +181,12 @@ Most of the features will be shown in the example project. As of now, the featur
 * Updating documents in collections
 
 # Roadmap
-Ideally I would like to mirror all of the features that the Mongo Shell offers, and eventually more.
 
-Currently in sight:
-* MongoDB selectors (should work already but not very clean)
-* Create a document from a SwiftyJSON object
-* Give documents super powers - for example, have something like document.addKeyValuePair(key: "hello", value: "world") along with a document.saveTo(collection)
+[Here's the Trello board for this project](https://trello.com/b/FT2OCCjQ/swiftmongodb).
 
-Known Issues:
-* Inserting a document twice won't work because of object id conflicts (it gets generated only once)
+Ideally I would like to mirror all of the features that the Mongo Shell offers, and eventually add my own touch to it.
 
 # Contributing
 Any and all help is very welcome! Feel free to fork and submit a pull request - I will almost certainly merge it.
+
+You should start by looking at the [trello board](https://trello.com/b/FT2OCCjQ/swiftmongodb) and see if there's anything you want to implement there. You can also create feature requests.
