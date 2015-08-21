@@ -31,7 +31,7 @@ import swiftMongoDB
 let mongodb = MongoDB(database: "test")
 ```
 
-By default it connects to localhost:27017 (which is what running `mongod` with no parameters does). If you want to connect to a different location, you can do something like this:
+By default it connects to `localhost:27017` (which is what running `mongod` with no parameters defaults to). If you want to connect to a different location, you can do something like this:
 
 
 ```swift
@@ -59,7 +59,8 @@ For example, say you wanted to create a human named Dan. This is how it would lo
 		"Joe"
 	],
 	"location": {
-		"city": "San Francisco"
+		"city": "San Francisco",
+		"state" "California"
 	}
 }
 ```
@@ -76,7 +77,8 @@ let data = [
 		"Joe"
 	],
 	"location": [
-		"city": "San Francisco"
+		"city": "San Francisco",
+		"state": "California"
 	]
 ]
 
@@ -112,7 +114,7 @@ public enum MongoResult<T> {
 }
 ```
 
-This means that the result is sort of like a promise - it can either return sucessfully or throw an error. The way to handle these results is as such:
+This means that the result is sort of like a promise - it can either be successful or throw an error. The way to handle these results is with a simple switch statement like this:
 
 ```swift
 switch result {
