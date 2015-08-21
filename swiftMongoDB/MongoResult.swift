@@ -18,10 +18,10 @@ public enum MongoResult<T> {
 var result = functionThatReturnsMongoResult()
 
 switch result {
-case Success(let result):
+case .Success(let result):
     doSomethingWithResult(result)
-case Failure(let err):
-    println(err)
+case .Failure(let err):
+    print(err)
 }
 
 */
