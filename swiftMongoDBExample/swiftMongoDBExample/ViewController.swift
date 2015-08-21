@@ -37,18 +37,13 @@ class ViewController: NSViewController {
 
         case .Success(let testSubjects):
             print(testSubjects)
+//            for testSubject in testSubjects {
+//                testSubject.printSelf()
+//            }
 
         case .Failure(let err):
             print(err)
 
         }
-//        if let results = results {
-//
-//            print("result count: \(results.count)")
-//
-//            for result in results {
-//                result.printSelf()
-//            }
-//        }
     }
 }
