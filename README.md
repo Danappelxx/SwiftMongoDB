@@ -178,6 +178,7 @@ Most of the features will be shown in the example project. As of now, the featur
 * Inserting documents into collections
 * Querying for documents (find) in collections
 * Removing documents from collections (with query)
+* Updating documents in collections
 
 # Roadmap
 Ideally I would like to mirror all of the features that the Mongo Shell offers, and eventually more.
