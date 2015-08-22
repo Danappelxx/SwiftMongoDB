@@ -15,16 +15,19 @@ internal class MongoBSON {
     let BSONValue = bson_alloc()
     var data: DocumentData
     
-    init(data: DocumentData, includeObjectId: Bool = true) {
-        
+    init(data: DocumentData, withObjectId objectId: String? = nil) {
+
         self.data = data
         
         // init bson
         bson_init(self.BSONValue)
         
         // add object id if necessary
-        if includeObjectId {
-            bson_append_new_oid(self.BSONValue, "_id")
+        if let objectId = objectId {
+            let oid = UnsafeMutablePointer<bson_oid_t>.alloc(1)
+            bson_oid_from_string(oid, objectId)
+            
+//            bson_append_new_oid(self.BSONValue, "_id")
             print("appended object id")
         }
         
@@ -61,19 +64,19 @@ internal class MongoBSON {
         bson_finish(self.BSONValue)
         print("completed bson")
     }
-    
+
     deinit {
         bson_destroy(self.BSONValue)
     }
-    
+
     // need to implement proper error handling - for example
     // if you have a dict where you use integers as keys
     // bson processing will fail but it will not be reported
-    
+
     func processPair(key key: String, value: AnyObject) {
-        
+
         switch value {
-            
+
         case let value as String:
             bson_append_string(self.BSONValue, key, value)
             print("appended string")
@@ -117,5 +120,21 @@ internal class MongoBSON {
     
     func copyTo(BSON: UnsafeMutablePointer<bson>) {
         bson_copy(BSON, self.BSONValue)
+    }
+    
+    class func generateObjectId() -> String {
+        
+        var oid = bson_oid_t()
+        
+        bson_oid_gen(&oid)
+        
+        let oidStr = UnsafeMutablePointer<Int8>.alloc(1)
+        
+        bson_oid_to_string(&oid, oidStr)
+        
+        //        self.objectId = String(oidStr)
+        
+        return String(oidStr)
+        
     }
 }
