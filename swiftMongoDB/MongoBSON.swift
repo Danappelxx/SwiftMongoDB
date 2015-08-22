@@ -27,6 +27,8 @@ internal class MongoBSON {
             let oid = UnsafeMutablePointer<bson_oid_t>.alloc(1)
             bson_oid_from_string(oid, objectId)
             
+            bson_append_oid(self.BSONValue, "_id", oid)
+            
 //            bson_append_new_oid(self.BSONValue, "_id")
             print("appended object id")
         }
@@ -75,9 +77,18 @@ internal class MongoBSON {
 
     func processPair(key key: String, value: AnyObject) {
 
+        if key == "_id" {
+            
+            let oidPtr = UnsafeMutablePointer<bson_oid_t>.alloc(1)
+            bson_oid_from_string(oidPtr, (value as! String))
+            
+            bson_append_oid(self.BSONValue, key, oidPtr)
+        }
+        
         switch value {
 
         case let value as String:
+            
             bson_append_string(self.BSONValue, key, value)
             print("appended string")
             break
@@ -121,20 +132,31 @@ internal class MongoBSON {
     func copyTo(BSON: UnsafeMutablePointer<bson>) {
         bson_copy(BSON, self.BSONValue)
     }
+
+    static func generateObjectId() -> String {
+        
+        let oid = UnsafeMutablePointer<bson_oid_t>.alloc(1)
+
+        bson_oid_gen(oid)
+
+
+        let oidStrRAW = UnsafeMutablePointer<Int8>.alloc(1)
+
+        bson_oid_to_string(oid, oidStrRAW)
+        
+        let oidStr = NSString(UTF8String: oidStrRAW)
+        
+        oid.dealloc(1)
+        oidStrRAW.dealloc(1)
+        
+        oid.destroy()
+        oidStrRAW.destroy()
+        
+        return String(oidStr!)
+    }
     
-    class func generateObjectId() -> String {
+    static func getObjectIdFromBSON(BSON: bson) -> String {
         
-        var oid = bson_oid_t()
-        
-        bson_oid_gen(&oid)
-        
-        let oidStr = UnsafeMutablePointer<Int8>.alloc(1)
-        
-        bson_oid_to_string(&oid, oidStr)
-        
-        //        self.objectId = String(oidStr)
-        
-        return String(oidStr)
-        
+        return ""
     }
 }

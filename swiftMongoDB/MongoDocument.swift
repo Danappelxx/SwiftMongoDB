@@ -19,7 +19,10 @@ public class MongoDocument {
     
     public init(data: DocumentData) {
         
-        let mongoBSON = MongoBSON(data: data)
+        let objectId = MongoBSON.generateObjectId()
+        self.id = objectId
+
+        let mongoBSON = MongoBSON(data: data, withObjectId: objectId)
         mongoBSON.copyTo(self.BSONValue)
         //        bson_copy(self.BSONValue, mongoBSON.BSONValue)
         //        self.bsonValue = mongobson.BSONValue
@@ -28,16 +31,21 @@ public class MongoDocument {
     
     internal init(BSON: UnsafeMutablePointer<bson>) {
         bson_copy(self.BSONValue, BSON)
+        
+        self.id = nil
     }
     
     public func printSelf() {
         bson_print(self.BSONValue)
     }
-    
+
     deinit {
         bson_destroy(self.BSONValue)
     }
-    
+
+    //MARK: - Properties
+    public let id: String?
+
     //    public var stringValue: String {
     //        bson_print(<#T##b: UnsafePointer<bson>##UnsafePointer<bson>#>)
     //    }

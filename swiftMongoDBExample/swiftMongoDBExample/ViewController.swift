@@ -27,7 +27,7 @@ class ViewController: NSViewController {
         subjects.insert(subject1) // insert dan
         subjects.insert(subject2) // insert billy
 
-        subjects.remove(["age": 16]) // remove billy
+        subjects.remove(["_id": subject1.id!]) // remove dan
 
         subjects.update(query: ["name":"Dan"], data: subject2, type: .Basic) // basic = single override
 

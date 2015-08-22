@@ -60,7 +60,7 @@ public class MongoCollection {
         }
         
         let query = bson_alloc()
-        let mongoBSON = MongoBSON(data: queryData, includeObjectId: false)
+        let mongoBSON = MongoBSON(data: queryData)
         mongoBSON.copyTo(query)
         
         let mwc = mongo_write_concern_alloc()
@@ -88,8 +88,8 @@ public class MongoCollection {
             return MongoResult.Failure(MongoError().error)
         }
 
-        let queryBSON = MongoBSON(data: query, includeObjectId: false)
-        let dataBSON = MongoBSON(data: data, includeObjectId: false)
+        let queryBSON = MongoBSON(data: query)
+        let dataBSON = MongoBSON(data: data)
 
         let queryBSONRaw = bson_alloc()
         let dataBSONRaw = bson_alloc()
@@ -97,19 +97,19 @@ public class MongoCollection {
         dataBSON.copyTo(dataBSONRaw)
 
 
-        let updateType: Int32
+        let updateType: UInt32
         switch type {
         case .Basic:
-            updateType = Int32(MONGO_UPDATE_BASIC.rawValue)
+            updateType = MONGO_UPDATE_BASIC.rawValue
         case .Upsert:
-            updateType = Int32(MONGO_UPDATE_UPSERT.rawValue)
+            updateType = MONGO_UPDATE_UPSERT.rawValue
         case .Multi:
-            updateType = Int32(MONGO_UPDATE_MULTI.rawValue)
+            updateType = MONGO_UPDATE_MULTI.rawValue
         }
 
 
         let mwc = mongo_write_concern_alloc()
-        mongo_update(self.connection, self.identifier, queryBSONRaw, dataBSONRaw, updateType, mwc)
+        mongo_update(self.connection, self.identifier, queryBSONRaw, dataBSONRaw, Int32(updateType), mwc)
         
         return MongoResult.Success(MongoDocument(data: data))
 
@@ -146,7 +146,7 @@ public class MongoCollection {
         // refer to find() for an explanation of this snippet
         if let queryData = queryData {
             
-            let mongoBSON = MongoBSON(data: queryData, includeObjectId: false)
+            let mongoBSON = MongoBSON(data: queryData)
             
             let query = bson_alloc()
             mongoBSON.copyTo(query)
@@ -174,7 +174,7 @@ public class MongoCollection {
         if let queryData = queryData {
             
             // parse the query data into bson
-            let mongoBSON = MongoBSON(data: queryData, includeObjectId: false)
+            let mongoBSON = MongoBSON(data: queryData)
             
             let query = bson_alloc()
             mongoBSON.copyTo(query)
