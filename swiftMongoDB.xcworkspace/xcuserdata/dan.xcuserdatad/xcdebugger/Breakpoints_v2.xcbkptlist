@@ -10,29 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "swiftMongoDB/MongoBSON.swift"
-            timestampString = "461908665.328971"
+            timestampString = "461912443.738793"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "MongoBSON"
             landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "swiftMongoDBExample/swiftMongoDBExample/ViewController.swift"
-            timestampString = "461902726.164475"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

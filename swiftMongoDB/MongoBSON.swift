@@ -83,6 +83,8 @@ internal class MongoBSON {
             bson_oid_from_string(oidPtr, (value as! String))
             
             bson_append_oid(self.BSONValue, key, oidPtr)
+            
+            return
         }
         
         switch value {
@@ -140,18 +142,19 @@ internal class MongoBSON {
         bson_oid_gen(oid)
 
 
-        let oidStrRAW = UnsafeMutablePointer<Int8>.alloc(1)
+        let oidStrRAW = UnsafeMutablePointer<Int8>.alloc(100)
+        
+//        return ""
 
         bson_oid_to_string(oid, oidStrRAW)
-        
+
         let oidStr = NSString(UTF8String: oidStrRAW)
-        
+
         oid.dealloc(1)
-        oidStrRAW.dealloc(1)
+        oidStrRAW.dealloc(100)
         
-        oid.destroy()
-        oidStrRAW.destroy()
-        
+        print(oidStr)
+
         return String(oidStr!)
     }
     

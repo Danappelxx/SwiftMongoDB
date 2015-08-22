@@ -15,7 +15,11 @@ class ViewController: NSViewController {
         super.viewDidLoad()
 
         let mongodb = MongoDB(database: "test")
-        print(mongodb.connectionStatus)
+
+        if mongodb.connectionStatus != .Success {
+            print("connection was not successful")
+            return
+        }
 
 
         let subjects = MongoCollection(name: "subjects")
@@ -29,7 +33,7 @@ class ViewController: NSViewController {
 
         subjects.remove(["_id": subject1.id!]) // remove dan
 
-        subjects.update(query: ["name":"Dan"], data: subject2, type: .Basic) // basic = single override
+        subjects.update(query: ["name":"Dan"], data: subject2, type: .Basic) // basic = single override (non-additive)
 
         let results = subjects.find(["age": 15])
 
@@ -37,9 +41,9 @@ class ViewController: NSViewController {
 
         case .Success(let testSubjects):
             print(testSubjects)
-//            for testSubject in testSubjects {
-//                testSubject.printSelf()
-//            }
+            for testSubject in testSubjects {
+                testSubject.printSelf()
+            }
 
         case .Failure(let err):
             print(err)
