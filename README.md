@@ -3,23 +3,101 @@ A Swifter to work with MongoDB in Swift
 
 # Setup
 
-Clone the repository, cd into the directory, and run
+If you're using cocoapods, add the following line to your Podfile. You can then proceed to either the Quickstart or Tutorial.
+```ruby
+pod 'SwiftMongoDB'
+```
+
+Otherwise, clone the repository, cd into the directory, and run
 
 ```bash
 pod install
 ```
 
-Afterwards, assuming that you have MongoDB setup, open up terminal and run:
+then, assuming that you have MongoDB setup, open up terminal and run:
 
 ```bash
 mongod
 ```
 
-You can then open up Xcode (this project is written with Xcode 7 Beta 5 - I cannot guarantee it will work on other versions) and run the example project.
-
-If you don't want to use the example project (or don't feel like opening up that file), see the following section.
+You can either open the example project (same thing as the quickstart), or go through the slightly more in-depth version in the Tutorial.
 
 # Quickstart
+
+Make sure you have MongoDB (`mongod` in bash) running and have the library imported.
+
+You can now paste the following code into any function and it will work. The code executes synchronously.
+
+```swift
+let mongodb = MongoDB(database: "test")
+
+if mongodb.connectionStatus != .Success {
+    print("connection was not successful")
+    return
+}
+
+
+let subjects = MongoCollection(name: "subjects")
+mongodb.registerCollection(subjects)
+
+let subject1 = MongoDocument(data:
+	[
+		"name" : "Dan",
+		"age": 15,
+		"friends": [
+			"Billy",
+			"Bob",
+			"Joe"
+		],
+		"location": [
+			"city":"San Francisco"]
+	]
+)
+
+let subject2 = MongoDocument(data:
+	[
+		"name" : "Billy",
+		"age" : 16,
+		"friends" : [
+			"Dan",
+			"Bob",
+			"Joe"
+		],
+		"location": [
+			"city" : "New York"
+		]
+	]
+)
+
+subjects.insert(subject1) // insert dan
+subjects.insert(subject2) // insert billy
+
+subjects.remove(["_id": subject1.id!]) // remove dan
+
+subjects.update(query: ["name":"Billy"], data: subject1, type: .Basic) // replace billy with dan
+
+let results = subjects.find(["age": 15]) // find all people aged 15 (dan)
+
+// results is of type MongoResult, which means it is either
+// .Success(result) or .Error(error)
+// below is an example of how to work with it
+
+switch results {
+
+case .Success(let testSubjects):
+    print(testSubjects)
+    for testSubject in testSubjects {
+        testSubject.printSelf()
+    }
+
+case .Failure(let err):
+    print(err)
+
+}
+
+```
+
+# Tutorial
 
 This example assumes that you have setup the project and have MongoDB running.
 
