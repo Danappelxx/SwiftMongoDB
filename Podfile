@@ -9,6 +9,7 @@ target 'swiftMongoDB' do
 end
 
 target 'swiftMongoDBTests' do
-
+    pod 'Quick', '~> 0.5.0'
+    pod 'Nimble', '2.0.0-rc.2'
 end
 
