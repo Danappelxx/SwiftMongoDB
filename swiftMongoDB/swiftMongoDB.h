@@ -6,7 +6,8 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+//#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for swiftMongoDB.
 FOUNDATION_EXPORT double swiftMongoDBVersionNumber;

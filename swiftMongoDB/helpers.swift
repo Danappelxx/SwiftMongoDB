@@ -10,12 +10,14 @@ import Foundation
 
 class Helpers {
     static func getIPAddress() -> String {
-            
+        
+        #if os(OSX)
             var addresses = NSHost.currentHost().addresses
             if addresses.count > 1 {
                 return addresses[1]
             }
-            
-            return "127.0.0.1"
+        #endif
+    
+        return "127.0.0.1"
     }
 }
