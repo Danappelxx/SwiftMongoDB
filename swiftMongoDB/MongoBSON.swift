@@ -158,7 +158,7 @@ internal class MongoBSON {
         return String(oidStr!)
     }
     
-    static func getObjectIdFromBSON(BSON: bson) -> String {
+    static func getObjectIdFromBSON(BSON: UnsafeMutablePointer<bson>) -> String {
         
         return ""
     }

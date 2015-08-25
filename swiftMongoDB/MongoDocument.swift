@@ -31,8 +31,8 @@ public class MongoDocument {
     
     internal init(BSON: UnsafeMutablePointer<bson>) {
         bson_copy(self.BSONValue, BSON)
-        
-        self.id = nil
+
+        self.id = MongoBSON.getObjectIdFromBSON(BSON)
     }
     
     public func printSelf() {
@@ -44,7 +44,7 @@ public class MongoDocument {
     }
 
     //MARK: - Properties
-    public let id: String?
+    public let id: String
 
     //    public var stringValue: String {
     //        bson_print(<#T##b: UnsafePointer<bson>##UnsafePointer<bson>#>)

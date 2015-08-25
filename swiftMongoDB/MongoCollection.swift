@@ -28,6 +28,15 @@ public class MongoCollection {
     //        return MongoCursor(connection: self.connection, collection: self)
     //    }
     
+    public var isRegistered: Bool {
+
+        if self.connection != nil && self.databaseName != nil {
+            return true
+        }
+        
+        return false
+    }
+    
     public func cursor() -> MongoCursor {
         return MongoCursor(connection: self.connection, collection: self)
     }
@@ -41,31 +50,50 @@ public class MongoCollection {
     //        return MongoQuery(data:
     //    }
 
-    public func insert(data: MongoDocument) {
-        
+    
+    /**
+    Inserts a document into the collection. The collection needs to be registered.
+    
+    - parameter document: The document (of type MongoDocument) that is to be inserted into the collection.
+    
+    - returns: A MongoResult.Failure when an error is encountered, otherwise returns MongoResult.Success with the inserted document.
+    */
+    public func insert(document: MongoDocument) -> MongoResult<MongoDocument> {
+
         if self.connection == nil {
             print("didn't register collection")
-            return
+            return MongoResult.Failure(MongoError.errorFromCommonError(commonError.CollectionNotRegistered))
         }
-        
+
         let mwc = mongo_write_concern_alloc()
-        mongo_insert(self.connection, self.identifier, data.BSONValue, mongo_write_concern_alloc())
+        mongo_insert(self.connection, self.identifier, document.BSONValue, mongo_write_concern_alloc())
         mongo_write_concern_dealloc(mwc)
+
+
+        return MongoResult.Success(document)
     }
     
-    public func remove(queryData: DocumentData) {
-        
+    /**
+    Removes a document from the collection.
+
+    - parameter query: The query which will be used to find the documents to remove.
+
+    - returns: A MongoResult.Failure when an error is encountered, otherwise returns MongoResult.Success with the query document data.
+    */
+    public func remove(query: DocumentData) -> MongoResult<DocumentData> {
+
         if self.connection == nil {
-            return
+            return MongoResult.Failure(MongoError.errorFromCommonError(commonError.CollectionNotRegistered))
         }
         
-        let query = bson_alloc()
-        let mongoBSON = MongoBSON(data: queryData)
-        mongoBSON.copyTo(query)
+        let queryBSON = bson_alloc()
+        let mongoBSON = MongoBSON(data: query)
+        mongoBSON.copyTo(queryBSON)
         
         let mwc = mongo_write_concern_alloc()
-        mongo_remove(self.connection, self.identifier, query, mwc)
+        mongo_remove(self.connection, self.identifier, queryBSON, mwc)
         
+        return MongoResult.Success(query)
     }
 
     
@@ -82,14 +110,14 @@ public class MongoCollection {
     - parameter modifications:The modifications applied to the matched object(s). Also in the form of DocumentData.
     - parameter type:The type of update to be performed. Valid options are .Basic, .Upsert, .Multi
     */
-    public func update(query query: DocumentData, data: DocumentData, type: UpdateType) -> MongoResult<MongoDocument> {
+    public func update(query query: DocumentData, document: DocumentData, type: UpdateType) -> MongoResult<MongoDocument> {
 
         if self.connection == nil {
-            return MongoResult.Failure(MongoError().error)
+            return MongoResult.Failure(MongoError.errorFromCommonError(commonError.CollectionNotRegistered))
         }
 
         let queryBSON = MongoBSON(data: query)
-        let dataBSON = MongoBSON(data: data)
+        let dataBSON = MongoBSON(data: document)
 
         let queryBSONRaw = bson_alloc()
         let dataBSONRaw = bson_alloc()
@@ -111,12 +139,12 @@ public class MongoCollection {
         let mwc = mongo_write_concern_alloc()
         mongo_update(self.connection, self.identifier, queryBSONRaw, dataBSONRaw, Int32(updateType), mwc)
         
-        return MongoResult.Success(MongoDocument(data: data))
+        return MongoResult.Success(MongoDocument(data: document))
 
     }
 
-    public func update(query query: DocumentData, data: MongoDocument, type: UpdateType) {
-        self.update(query: query, data: data.data!, type: type)
+    public func update(query query: DocumentData, document: MongoDocument, type: UpdateType) {
+        self.update(query: query, document: document.data!, type: type)
     }
 
     public func findAll() -> MongoResult<[MongoDocument]> {

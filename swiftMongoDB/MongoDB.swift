@@ -81,6 +81,10 @@ public class MongoDB {
         }
     }
     
+    public var connectionWasSuccessful: Bool {
+        return self.connectionStatus == ConnectionStatus.Success
+    }
+    
     public func registerCollection(collection: MongoCollection) {
         
         collection.connection = self.connection
