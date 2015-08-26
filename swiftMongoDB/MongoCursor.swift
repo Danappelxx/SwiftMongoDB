@@ -15,7 +15,7 @@ public class MongoCursor {
     internal var cursor = mongo_cursor_alloc()
     
     public init(mongodb: MongoDB, collection: MongoCollection) {
-        mongo_cursor_init(self.cursor, mongodb.connection, collection.identifier)
+        mongo_cursor_init(self.cursor, mongodb.connection!, collection.identifier)
     }
     
     internal init(connection: UnsafeMutablePointer<mongo>, collection: MongoCollection) {

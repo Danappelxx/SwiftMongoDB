@@ -12,8 +12,8 @@ import mongo_c_driver
 // MARK: - MongoDB
 public class MongoDB {
     
-    internal var connection = mongo_alloc()
-    
+    internal var connection: UnsafeMutablePointer<mongo>? = mongo_alloc()
+
     public var databaseName: String
     internal var collections = Set<MongoCollection>()
     
@@ -22,14 +22,17 @@ public class MongoDB {
     */
     public init(host: String, port: Int, database: String) {
         
-        mongo_init(self.connection)
+        mongo_init(self.connection!)
         
-        let status = mongo_client(self.connection, host, Int32(port))
+        let status = mongo_client(self.connection!, host, Int32(port))
         
         if status != MONGO_OK {
-            print("shitshitshit")
+            print("connection failed")
+            mongo_destroy(self.connection!)
+            self.connection = nil
+            self.connectionFailed = true
         }
-        
+
         self.databaseName = database
     }
     
@@ -46,7 +49,9 @@ public class MongoDB {
     Deallocates the mongo connection
     */
     deinit {
-        mongo_destroy(self.connection)
+        if connection != nil {
+            mongo_destroy(self.connection!)
+        }
     }
     
     public enum ConnectionStatus: String {
@@ -57,11 +62,18 @@ public class MongoDB {
         
         case Unexpected = "Unexpected error"
     }
+
     
+    private var connectionFailed = false
+
     /// Returns the status of the mongodb connection
     public var connectionStatus: ConnectionStatus {
+
+        if self.connectionFailed {
+            return ConnectionStatus.Fail
+        }
         
-        switch connection.memory.err.rawValue {
+        switch connection!.memory.err.rawValue {
             
         case MONGO_CONN_SUCCESS.rawValue:
             return ConnectionStatus.Success
@@ -86,10 +98,10 @@ public class MongoDB {
     }
     
     public func registerCollection(collection: MongoCollection) {
-        
+
         collection.connection = self.connection
         collection.databaseName = self.databaseName
-        
+
         self.collections.insert(collection)
     }
 }
