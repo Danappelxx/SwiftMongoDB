@@ -78,7 +78,7 @@ subjects.insert(subject2) // insert billy
 
 subjects.remove(["_id": subject1.id!]) // remove dan
 
-subjects.update(query: ["name":"Billy"], data: subject1, type: .Basic) // replace billy with dan
+subjects.update(query: ["name":"Billy"], document: subject1, type: .Basic) // replace billy with dan
 
 let results = subjects.find(["age": 15]) // find all people aged 15 (dan)
 
@@ -91,7 +91,7 @@ switch results {
 case .Success(let testSubjects):
     print(testSubjects)
     for testSubject in testSubjects {
-        testSubject.printSelf()
+    	print(testSubject.data)
     }
 
 case .Failure(let err):
@@ -100,6 +100,8 @@ case .Failure(let err):
 }
 
 ```
+
+For some more examples, I would take a look at the test suite (most of the main operations are tested).
 
 # Tutorial
 
@@ -249,7 +251,7 @@ or only remove those whose name is Dan, for example, with:
 subjects.remove(["name" : "Dan"])
 ```
 
-That's about it for now! More operations will be supported in the future.
+More operations are supported, but I think at this point you get the gist of it. Take a look at the block of code above for some more examples, and then take a look at the test suite if you want even more information.
 
 
 # Features
@@ -272,3 +274,5 @@ Ideally I would like to mirror all of the features that the Mongo Shell offers, 
 Any and all help is very welcome! Feel free to fork and submit a pull request - I will almost certainly merge it.
 
 You should start by looking at the [trello board](https://trello.com/b/FT2OCCjQ/swiftmongodb) and see if there's anything you want to implement there. You can also create feature requests.
+
+There's also a test suite included in the xcode project - so far the coverage isn't too good but it will get better, I promise.
