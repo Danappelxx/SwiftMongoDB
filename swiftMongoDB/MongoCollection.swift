@@ -50,7 +50,7 @@ public class MongoCollection {
     //        return MongoQuery(data:
     //    }
 
-    
+
     /**
     Inserts a document into the collection. The collection needs to be registered.
     
@@ -62,7 +62,7 @@ public class MongoCollection {
 
         if self.connection == nil {
             print("didn't register collection")
-            return MongoResult.Failure(MongoError.errorFromCommonError(commonError.CollectionNotRegistered))
+            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
         }
 
         let mwc = mongo_write_concern_alloc()
@@ -72,7 +72,8 @@ public class MongoCollection {
 
         return MongoResult.Success(document)
     }
-    
+
+
     /**
     Removes a document from the collection.
 
@@ -83,7 +84,7 @@ public class MongoCollection {
     public func remove(query: DocumentData) -> MongoResult<DocumentData> {
 
         if self.connection == nil {
-            return MongoResult.Failure(MongoError.errorFromCommonError(commonError.CollectionNotRegistered))
+            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
         }
         
         let queryBSON = bson_alloc()
@@ -106,14 +107,14 @@ public class MongoCollection {
     /**
     Updates the documents matched by the with the given modifications.
     
-    - parameter query:The query in the form of DocumentData ( [String : AnyObject] )
+    - parameter query:The query in the form of DocumentData ( [String : Any] )
     - parameter modifications:The modifications applied to the matched object(s). Also in the form of DocumentData.
     - parameter type:The type of update to be performed. Valid options are .Basic, .Upsert, .Multi
     */
     public func update(query query: DocumentData, document: DocumentData, type: UpdateType) -> MongoResult<MongoDocument> {
 
         if self.connection == nil {
-            return MongoResult.Failure(MongoError.errorFromCommonError(commonError.CollectionNotRegistered))
+            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
         }
 
         let queryBSON = MongoBSON(data: query)
@@ -144,13 +145,22 @@ public class MongoCollection {
     }
 
     public func update(query query: DocumentData, document: MongoDocument, type: UpdateType) {
-        self.update(query: query, document: document.data!, type: type)
+        self.update(query: query, document: document.data, type: type)
     }
 
+    public func update(id id: String, document: MongoDocument, type: UpdateType) {
+        self.update(query: ["_id" : id], document: document.data, type: type)
+    }
+
+    public func update(id id: String, document: DocumentData, type: UpdateType) {
+        self.update(query: ["_id" : id], document: document, type: type)
+    }
+
+    
     public func findAll() -> MongoResult<[MongoDocument]> {
 
         if self.connection == nil {
-            return MongoResult.Failure(MongoError().error)
+            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
         }
 
         let cursor = MongoCursor(connection: self.connection, collection: self)
@@ -163,10 +173,10 @@ public class MongoCollection {
         return MongoResult.Success(results)
     }
 
-    public func first(queryData: DocumentData?) -> MongoResult<MongoDocument> {
+    public func first(queryData: DocumentData? = nil) -> MongoResult<MongoDocument> {
         
         if self.connection == nil {
-            return MongoResult.Failure(MongoError().error)
+            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
         }
         
         let cursor = self.cursor()
@@ -186,7 +196,11 @@ public class MongoCollection {
             return MongoResult.Success(cursor.current)
         }
         
-        return MongoResult.Failure(MongoError().error)
+        return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.DidNotFind))
+    }
+
+    public func first(id id: String) -> MongoResult<MongoDocument> {
+        return self.first(["_id" : id])
     }
     
     public func find(queryData: DocumentData? = nil) -> MongoResult<[MongoDocument]> {
@@ -211,16 +225,25 @@ public class MongoCollection {
             // cursor.query has a didSet where it gets bound to the actual cursor properly
             cursor.query = query
         }
-        
-        
+
+
         var results: [MongoDocument] = []
         
         // loops through all the query results, appends them to array
-        while cursor.nextIsOk {
+        while cursor.nextIsOk {//mongo_cursor_next(cursor.cursor) == MONGO_OK {//cursor.nextIsOk && counter < max {
+
             results.append(cursor.current)
+            
+            // need this otherwise is goes into an infinite loop (needs debugging to figure out why)
+            mongo_cursor_next(cursor.cursor)
         }
         
         return MongoResult.Success(results)
+    }
+    
+    public func find(id id: String) -> MongoResult<[MongoDocument]> {
+        
+        return self.find(["_id" : id])
     }
 }
 

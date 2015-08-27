@@ -92,16 +92,25 @@ internal class MongoBSON {
         case let value as String:
             
             bson_append_string(self.BSONValue, key, value)
-            print("appended string")
+//            print("appended string")
             break
+            
+//        case let value as Bool:
+//
+//            if value {
+//                bson_append_bool(self.BSONValue, key, 1)
+//            } else {
+//                bson_append_bool(self.BSONValue, key, 0)
+//            }
+            
             
         case let value as Int:
             bson_append_int(self.BSONValue, key, Int32(value))
-            print("appended int")
+//            print("appended int")
             break
             
         case let value as Array<AnyObject>:
-            print("started appending array")
+//            print("started appending array")
             bson_append_start_array(self.BSONValue, key)
             
             // recursively creates array by calling processPair on each element in the array
@@ -110,11 +119,11 @@ internal class MongoBSON {
             }
             
             bson_append_finish_array(self.BSONValue)
-            print("finished appending array")
+//            print("finished appending array")
             break
             
         case let value as [String:AnyObject]:
-            print("started appending object")
+//            print("started appending object")
             bson_append_start_object(self.BSONValue, key)
             
             for (key, val) in value {
@@ -122,7 +131,7 @@ internal class MongoBSON {
             }
             
             bson_append_finish_object(self.BSONValue)
-            print("finished appending object")
+//            print("finished appending object")
             break
             
         default:
@@ -136,30 +145,240 @@ internal class MongoBSON {
     }
 
     static func generateObjectId() -> String {
-        
+
         let oid = UnsafeMutablePointer<bson_oid_t>.alloc(1)
 
         bson_oid_gen(oid)
 
+        let oidStr = self.getStringFromOid(oid)
+
+        oid.dealloc(1)
+
+        return oidStr
+    }
+    
+    private static func getStringFromOid(oid: UnsafeMutablePointer<bson_oid_t>) -> String {
 
         let oidStrRAW = UnsafeMutablePointer<Int8>.alloc(100)
-        
-//        return ""
 
         bson_oid_to_string(oid, oidStrRAW)
 
         let oidStr = NSString(UTF8String: oidStrRAW)
 
-        oid.dealloc(1)
         oidStrRAW.dealloc(100)
-        
-        print(oidStr)
 
         return String(oidStr!)
     }
     
-    static func getObjectIdFromBSON(BSON: UnsafeMutablePointer<bson>) -> String {
-        
-        return ""
+    static func getObjectIdFromBSON(BSON: UnsafeMutablePointer<bson>) -> String? {
+
+        let iterator = bson_iterator_alloc()
+
+        bson_iterator_init(iterator, BSON)
+
+        let type = bson_find(iterator, BSON, "_id")
+
+        if type != BSON_OID {
+            return nil
+        }
+
+
+        let oidRAW = bson_iterator_oid(iterator)
+
+        return self.getStringFromOid(oidRAW)
+    }
+
+    static func getDataFromBSON(BSON: UnsafeMutablePointer<bson>, ignoreObjectId: Bool = false) -> DocumentData {
+
+        let iterator = bson_iterator_alloc()
+
+        bson_iterator_init(iterator, BSON)
+
+
+        var parsedData = DocumentData()
+
+        while bson_iterator_next(iterator) != BSON_EOO {
+
+            self.parseBSONTypeIntoKeyValuePair(iterator: iterator, dict: &parsedData, ignoreObjectId: ignoreObjectId)
+        }
+
+        bson_iterator_dealloc(iterator)
+
+        return parsedData
+    }
+
+    static func parseBSONTypeIntoKeyValuePair(iterator iterator: UnsafeMutablePointer<bson_iterator>, isArray: Bool = false, inout dict: DocumentData, ignoreObjectId: Bool = false) {
+
+        let type = bson_iterator_type(iterator)
+        let key = String(NSString(UTF8String: bson_iterator_key(iterator))!)
+
+        switch type.rawValue {
+
+        case BSON_STRING.rawValue:
+
+            let val = bson_iterator_string(iterator)
+
+            let strVal = String ( NSString(UTF8String: val)! )
+            dict[key] = strVal
+            print("found string: \(strVal) with key: \(key)")
+
+            return
+
+        case BSON_DOUBLE.rawValue:
+
+            let val = bson_iterator_double(iterator)
+
+
+            dict[key] = val
+            print("found double: \(val)")
+            
+            return
+
+        case BSON_OID.rawValue:
+
+            let val = bson_iterator_oid(iterator)
+
+            let oid = self.getStringFromOid(val)
+            
+            
+            if !ignoreObjectId {
+                dict[key] = oid
+            }
+
+            print("found oid: \(oid)")
+            
+            return
+
+        case BSON_BOOL.rawValue:
+            
+            let val = bson_iterator_bool(iterator)
+
+            print("found bool: \(val)")
+            
+            if val == 0 {
+                dict[key] = false
+            } else if val == 1 {
+                dict[key] = true
+            } else {
+                print("cannot parse bool")
+            }
+
+            return
+
+//        case BSON_DATE.rawValue:
+//            
+//            return
+        case BSON_INT.rawValue:
+            
+            let val = bson_iterator_int(iterator)
+            
+            let intVal = Int(val)
+            
+            dict[key] = intVal
+
+            print("found int: \(intVal)")
+
+            return
+
+        case BSON_LONG.rawValue:
+
+            let val = bson_iterator_long(iterator)
+            
+            // this might not be smart
+            let intVal = Int(val)
+            
+            dict[key] = intVal
+            
+            print("found long: \(intVal)")
+            
+            return
+
+//        case BSON_TIMESTAMP.rawValue:
+//            
+//            return
+        case BSON_ARRAY.rawValue:
+            let subIterator = bson_iterator_alloc()
+
+            bson_iterator_subiterator(iterator, subIterator)
+            
+            
+            var arrDict = DocumentData()
+            while bson_iterator_next(subIterator) != BSON_EOO {
+                self.parseBSONTypeIntoKeyValuePair(iterator: subIterator, dict: &arrDict)
+            }
+            
+            let arr = arrDict.map { return $1 }
+            
+            dict[key] = arr
+            
+            print(arr)
+            
+            bson_iterator_dealloc(subIterator)
+            
+            return
+
+        case BSON_OBJECT.rawValue:
+//            let subIterator = bson_iterator_alloc()
+            
+            
+            let subobject = bson_alloc()
+            
+            bson_iterator_subobject_init(iterator, subobject, 1)
+
+            dict[key] = self.getDataFromBSON(subobject)
+            
+            bson_destroy(subobject)
+
+            return
+
+        case BSON_UNDEFINED.rawValue:
+
+            dict[key] = nil
+
+            print("found undefined")
+
+            return
+        case BSON_NULL.rawValue:
+            dict[key] = nil
+            
+            print("found null")
+            return
+
+        case BSON_EOO.rawValue:
+            print("shouldn't be here.")
+            return
+
+//        case BSON_MAXKEY.rawValue:
+//        case BSON_MINKEY.rawValue:
+//        case BSON_BINDATA.rawValue:
+
+        default:
+            print("invalid type")
+        }
+
+        // for reference:
+        //        public var BSON_EOO: bson_type { get }
+        //        public var BSON_DOUBLE: bson_type { get }
+        //        public var BSON_STRING: bson_type { get }
+        //        public var BSON_OBJECT: bson_type { get }
+        //        public var BSON_ARRAY: bson_type { get }
+        //        public var BSON_BINDATA: bson_type { get }
+        //        public var BSON_UNDEFINED: bson_type { get }
+        //        public var BSON_OID: bson_type { get }
+        //        public var BSON_BOOL: bson_type { get }
+        //        public var BSON_DATE: bson_type { get }
+        //        public var BSON_NULL: bson_type { get }
+        //        public var BSON_REGEX: bson_type { get }
+        //        /**< Deprecated. */
+        //        public var BSON_DBREF: bson_type { get }
+        //        public var BSON_CODE: bson_type { get }
+        //        public var BSON_SYMBOL: bson_type { get }
+        //        public var BSON_CODEWSCOPE: bson_type { get }
+        //        public var BSON_INT: bson_type { get }
+        //        public var BSON_TIMESTAMP: bson_type { get }
+        //        public var BSON_LONG: bson_type { get }
+        //        public var BSON_MAXKEY: bson_type { get }
+        //        public var BSON_MINKEY: bson_type { get }
+
     }
 }

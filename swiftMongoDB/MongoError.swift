@@ -8,15 +8,18 @@
 
 import Foundation
 
-enum commonError: String {
+enum CommonError: String {
     case ConnectionNotEstablished = "A connection to MongoDB was not established."
     case CollectionNotRegistered = "The collection was never registered."
+    
+    case DidNotFind = "No matching documents were found."
     
     case UnknownErrorOccured = "An unknown error occurred."
 }
 
-enum commonCodes: Int {
+enum CommonCodes: Int {
     case BadRequest = 400
+    case NotFound = 404
     case GatewayNotFound = 502
 }
 
@@ -30,7 +33,7 @@ class MongoError {
     }
 
     convenience init() {
-        self.init(code: commonCodes.BadRequest.rawValue, userInfo: nil)
+        self.init(code: CommonCodes.BadRequest.rawValue, userInfo: nil)
     }
     
     convenience init(code: Int) {
@@ -38,24 +41,32 @@ class MongoError {
     }
 
     convenience init(info: [NSObject:AnyObject]) {
-        self.init(code: commonCodes.BadRequest.rawValue, userInfo: info)
+        self.init(code: CommonCodes.BadRequest.rawValue, userInfo: info)
     }
 
     convenience init(code: Int, message: String) {
         self.init(code: code, userInfo: [NSLocalizedDescriptionKey: message])
     }
     
-    static func errorFromCommonError(errorType: commonError) -> NSError {
+    static func error(code code: CommonCodes, description: CommonError) -> NSError {
+        return NSError(domain: self.domain, code: code.rawValue, userInfo: [NSLocalizedDescriptionKey: description.rawValue])
+
+    }
+    
+    static func errorFromCommonError(errorType: CommonError) -> NSError {
 
         switch errorType {
         case .ConnectionNotEstablished:
-            return NSError(domain: self.domain, code: commonCodes.GatewayNotFound.rawValue, userInfo: [NSLocalizedDescriptionKey: errorType.rawValue])
-
+            return self.error(code: .GatewayNotFound, description: errorType)
+            
         case .CollectionNotRegistered:
-            return NSError(domain: self.domain, code: commonCodes.GatewayNotFound.rawValue, userInfo: [NSLocalizedDescriptionKey: errorType.rawValue])
+            return self.error(code: .GatewayNotFound, description: errorType)
 
+        case .DidNotFind:
+            return self.error(code: .NotFound, description: errorType)
+            
         default:
-            return NSError(domain: self.domain, code: commonCodes.BadRequest.rawValue, userInfo: [NSLocalizedDescriptionKey: commonError.UnknownErrorOccured.rawValue])
+            return self.error(code: .BadRequest, description: CommonError.UnknownErrorOccured)
         }
     }
 //    convenience init(error: commonError) {

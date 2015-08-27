@@ -31,7 +31,7 @@ class ViewController: NSViewController {
         subjects.insert(subject1) // insert dan
         subjects.insert(subject2) // insert billy
 
-        subjects.remove(["_id": subject1.id]) // remove dan
+        subjects.remove(["_id": subject1.id!]) // remove dan
 
         subjects.update(query: ["name":"Dan"], document: subject2, type: .Basic) // basic = single override (non-additive)
 

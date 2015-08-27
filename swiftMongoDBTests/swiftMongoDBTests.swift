@@ -44,9 +44,9 @@ class SwiftMongoDBSpec: QuickSpec {
     override func spec() {
         
         describe("Basic MongoDB operators") { () -> Void in
-            
+
             // This suite assumes that the mongodb process is running
-            
+
             let testDatabase = MongoDB(database: "database")
             let testCollection = MongoCollection(name: "collection")
             let testDocument = MongoDocument(data:
@@ -59,7 +59,7 @@ class SwiftMongoDBSpec: QuickSpec {
                     ]
                 ]
             )
-            let blankDocumentData = Dictionary<String, AnyObject>()
+            let blankDocumentData = DocumentData()
 
             afterEach {
                 testCollection.remove(blankDocumentData)
@@ -93,11 +93,16 @@ class SwiftMongoDBSpec: QuickSpec {
                 
                 testCollection.insert(testDocument)
 
+                // this line is really really strange - I'm not sure whats going on
                 let resultCount2 = testCollection.find().successValue?.count
                 
                 if resultCount2 == nil {
                     fail()
                     return
+                }
+                
+                if resultCount2 == 1000 {
+                    fail()
                 }
 
                 expect( (resultCount2! - resultCount1!) == 1).to(beTrue())
@@ -106,7 +111,7 @@ class SwiftMongoDBSpec: QuickSpec {
             // needs to query for specific id, then insert document with said id, then query again
             it("queries for documents successfully") {
 
-                let resultCount1 = testCollection.find(["_id" : testDocument.id]).successValue?.count
+                let resultCount1 = testCollection.find(["_id" : testDocument.id!]).successValue?.count
 
                 if resultCount1 == nil {
                     fail()
@@ -115,33 +120,81 @@ class SwiftMongoDBSpec: QuickSpec {
 
                 testCollection.insert(testDocument)
 
-                let resultCount2 = testCollection.find(["_id" : testDocument.id]).successValue?.count
+                let resultCount2 = testCollection.find(["_id" : testDocument.id!]).successValue?.count
 
                 if resultCount2 == nil {
                     fail()
                     return
+                }
+
+                if resultCount2 == 1000 {
+                    fail()
                 }
                 
                 expect( (resultCount2! - resultCount1!) == 1).to(beTrue())
             }
 
             it("updates documents successfully") {
-                expect(testCollection.update(query: blankDocumentData, document: ["updated" : true], type: .Basic).isSuccessful).to(beTrue())
+
+                testCollection.insert(testDocument)
+
+                let result1 = testCollection.first(id: testDocument.id!).successValue
+
+                if result1 == nil {
+                    fail()
+                    return
+                }
+
+                testCollection.update(id: testDocument.id!, document: ["blank" : "document"], type: MongoCollection.UpdateType.Basic)
+
+                let result2 = testCollection.first(["blank" : "document"]).successValue
+
+                if result2 == nil {
+                    fail()
+                    return
+                }
+
+                result1?.printSelf()
+                result2?.printSelf()
+
+//                expect(result1! == result2!).toNot(beTrue())
             }
 
             it("removes documents successfully") {
 
                 testCollection.insert(testDocument)
 
-                testCollection.remove(["_id" : testDocument.id])
+                testCollection.remove(["_id" : testDocument.id!])
 
-                let documents = testCollection.find(["_id" : testDocument.id]).successValue
+                let documents = testCollection.find(["_id" : testDocument.id!]).successValue
                 
                 if documents == nil {
                     fail()
                 } else {
                     expect(documents!).to(beEmpty())
                 }
+            }
+        }
+        
+        describe("All things BSON") { () -> Void in
+
+
+            let testDocument = MongoDocument(data:
+                [
+                    "string" : "string",
+                    "bool" : true,
+                    "numbers" : [1,2,3],
+                    "dictionary" : [
+                        "key" : "value"
+                    ]
+                ]
+            )
+
+            it("decodes BSON correctly") {
+
+                let decodedData = MongoBSON.getDataFromBSON(testDocument.BSONValue, ignoreObjectId: true)
+
+                expect(testDocument.data == decodedData).to(beTrue())
             }
         }
     }

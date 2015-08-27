@@ -27,13 +27,8 @@ public class MongoCursor {
     }
     
     
-    
-    private var next: Int32 {
-        return mongo_cursor_next(self.cursor)
-    }
-    
     internal var nextIsOk: Bool {
-        return self.next == MONGO_OK
+        return (mongo_cursor_next(self.cursor) == MONGO_OK)
     }
     
     internal var currentBSON: UnsafePointer<bson> {

@@ -17,13 +17,20 @@ public class MongoDB {
     public var databaseName: String
     internal var collections = Set<MongoCollection>()
     
+
     /**
-    Initiates a mongodb connection to the given host and ports.
+    Initiates a MonogDB connection with the given parameters.
+    
+    - parameter host:        The host, ex: 127.0.0.1
+    - parameter port:        The port, ex: 27017
+    - parameter database:    The database, ex: 'test'
+    - parameter userAndPass: The username and password for the user in the format (username, password) - optional.
     */
-    public init(host: String, port: Int, database: String) {
+    public init(host: String, port: Int, database: String, usernameAndPassword userAndPass:(String,String)? = nil) {
         
         mongo_init(self.connection!)
-        
+
+
         let status = mongo_client(self.connection!, host, Int32(port))
         
         if status != MONGO_OK {
@@ -34,14 +41,21 @@ public class MongoDB {
         }
 
         self.databaseName = database
+
+
+        // implement this later
+//        if let userAndPass = userAndPass {
+//            
+//            mongo_cmd_authenticate(self.connection!, self.databaseName, userAndPass.0, userAndPass.1)
+//        }
     }
     
     /**
     Initates the mongodb connection to the default host and port (usually localhost:27017)
     */
-    public convenience init(database: String) {
+    public convenience init(database: String, usernameAndPassword userAndPass:(String,String)? = nil) {
         
-        self.init(host: Helpers.getIPAddress(), port: 27017, database: database)
+        self.init(host: Helpers.getIPAddress(), port: 27017, database: database, usernameAndPassword: userAndPass)
         
     }
     
