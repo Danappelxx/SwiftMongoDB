@@ -1,5 +1,5 @@
 # SwiftMongoDB
-A Swifter to work with MongoDB in Swift.
+A Swifter to work with MongoDB in Swift. Wraps around the [MongoDB C Driver v0.8](http://api.mongodb.org/c/0.8/) (using a legacy version because it has only one dependency).
 
 [![Version](https://img.shields.io/cocoapods/v/SwiftMongoDB.svg?style=flat)](https://cocoapods.org/pods/SwiftMongoDB)
 [![License](https://img.shields.io/cocoapods/l/SwiftMongoDB.svg?style=flat)](https://cocoapods.org/pods/SwiftMongoDB)
