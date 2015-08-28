@@ -1,6 +1,0 @@
-framework module Pods_swiftMongoDBTests {
-  umbrella header "Pods-swiftMongoDBTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

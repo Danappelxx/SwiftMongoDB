@@ -1,6 +1,0 @@
-framework module Pods_swiftMongoDB {
-  umbrella header "Pods-swiftMongoDB-umbrella.h"
-
-  export *
-  module * { export * }
-}
