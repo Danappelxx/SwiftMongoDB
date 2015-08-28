@@ -38,6 +38,7 @@
 import Quick
 import Nimble
 @testable import swiftMongoDB
+import mongo_c_driver
 
 class SwiftMongoDBSpec: QuickSpec {
     
@@ -157,7 +158,7 @@ class SwiftMongoDBSpec: QuickSpec {
                 result1?.printSelf()
                 result2?.printSelf()
 
-//                expect(result1! == result2!).toNot(beTrue())
+                expect(result1! == result2!).toNot(beTrue())
             }
 
             it("removes documents successfully") {
@@ -189,12 +190,27 @@ class SwiftMongoDBSpec: QuickSpec {
                     ]
                 ]
             )
+            
+            // assumes that decoding works
+            it("encodes BSON correctly") {
+
+                let encodedData = MongoBSON(data: testDocument.data)
+
+                let encodedDataRAW = bson_alloc()
+
+                encodedData.copyTo(encodedDataRAW)
+
+                let decodedData = MongoBSON.getDataFromBSON(encodedDataRAW)
+
+                expect(decodedData == testDocument.data).to(beTrue())
+
+            }
 
             it("decodes BSON correctly") {
 
                 let decodedData = MongoBSON.getDataFromBSON(testDocument.BSONValue, ignoreObjectId: true)
 
-                expect(testDocument.data == decodedData).to(beTrue())
+                expect(decodedData == testDocument.data).to(beTrue())
             }
         }
     }

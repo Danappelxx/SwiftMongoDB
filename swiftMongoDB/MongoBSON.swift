@@ -36,7 +36,7 @@ internal class MongoBSON {
         
         // go through each key:value pair and append it to the bson object
         for (key, value) in data {
-            self.processPair(key: key, value: value)
+            self.processPair(key: key, value: value, BSON: self.BSONValue)
         }
         
         // error handling
@@ -75,14 +75,14 @@ internal class MongoBSON {
     // if you have a dict where you use integers as keys
     // bson processing will fail but it will not be reported
 
-    func processPair(key key: String, value: AnyObject) {
+    func processPair(key key: String, value: AnyObject, BSON: UnsafeMutablePointer<bson>) {
 
         if key == "_id" {
             
             let oidPtr = UnsafeMutablePointer<bson_oid_t>.alloc(1)
             bson_oid_from_string(oidPtr, (value as! String))
             
-            bson_append_oid(self.BSONValue, key, oidPtr)
+            bson_append_oid(BSON, key, oidPtr)
             
             return
         }
@@ -91,46 +91,42 @@ internal class MongoBSON {
 
         case let value as String:
             
-            bson_append_string(self.BSONValue, key, value)
+            bson_append_string(BSON, key, value)
 //            print("appended string")
             break
             
-//        case let value as Bool:
-//
-//            if value {
-//                bson_append_bool(self.BSONValue, key, 1)
-//            } else {
-//                bson_append_bool(self.BSONValue, key, 0)
-//            }
+        // covers both booleans and integers
+        case let value as NSNumber:
             
-            
-        case let value as Int:
-            bson_append_int(self.BSONValue, key, Int32(value))
-//            print("appended int")
+            if value.isBool {
+                bson_append_bool(BSON, key, value.intValue)
+            } else {
+                bson_append_int(BSON, key, value.intValue)
+            }
             break
             
         case let value as Array<AnyObject>:
 //            print("started appending array")
-            bson_append_start_array(self.BSONValue, key)
+            bson_append_start_array(BSON, key)
             
             // recursively creates array by calling processPair on each element in the array
             for (index, val) in value.enumerate() {
-                self.processPair(key: index.description, value: val)
+                self.processPair(key: index.description, value: val, BSON: BSON)
             }
             
-            bson_append_finish_array(self.BSONValue)
+            bson_append_finish_array(BSON)
 //            print("finished appending array")
             break
             
         case let value as [String:AnyObject]:
 //            print("started appending object")
-            bson_append_start_object(self.BSONValue, key)
+            bson_append_start_object(BSON, key)
             
             for (key, val) in value {
-                self.processPair(key: key, value: val)
+                self.processPair(key: key, value: val, BSON: BSON)
             }
             
-            bson_append_finish_object(self.BSONValue)
+            bson_append_finish_object(BSON)
 //            print("finished appending object")
             break
             
@@ -199,7 +195,7 @@ internal class MongoBSON {
 
         while bson_iterator_next(iterator) != BSON_EOO {
 
-            self.parseBSONTypeIntoKeyValuePair(iterator: iterator, dict: &parsedData, ignoreObjectId: ignoreObjectId)
+            self.bsonIntoDictWithIterator(iterator: iterator, dict: &parsedData, ignoreObjectId: ignoreObjectId)
         }
 
         bson_iterator_dealloc(iterator)
@@ -207,7 +203,7 @@ internal class MongoBSON {
         return parsedData
     }
 
-    static func parseBSONTypeIntoKeyValuePair(iterator iterator: UnsafeMutablePointer<bson_iterator>, isArray: Bool = false, inout dict: DocumentData, ignoreObjectId: Bool = false) {
+    static func bsonIntoDictWithIterator(iterator iterator: UnsafeMutablePointer<bson_iterator>, inout dict: DocumentData, ignoreObjectId: Bool = false) {
 
         let type = bson_iterator_type(iterator)
         let key = String(NSString(UTF8String: bson_iterator_key(iterator))!)
@@ -253,15 +249,11 @@ internal class MongoBSON {
             
             let val = bson_iterator_bool(iterator)
 
-            print("found bool: \(val)")
+            let boolVal = val == 1
             
-            if val == 0 {
-                dict[key] = false
-            } else if val == 1 {
-                dict[key] = true
-            } else {
-                print("cannot parse bool")
-            }
+            print("found bool: \(boolVal)")
+            
+            dict[key] = boolVal
 
             return
 
@@ -304,7 +296,7 @@ internal class MongoBSON {
             
             var arrDict = DocumentData()
             while bson_iterator_next(subIterator) != BSON_EOO {
-                self.parseBSONTypeIntoKeyValuePair(iterator: subIterator, dict: &arrDict)
+                self.bsonIntoDictWithIterator(iterator: subIterator, dict: &arrDict)
             }
             
             let arr = arrDict.map { return $1 }
@@ -380,5 +372,95 @@ internal class MongoBSON {
         //        public var BSON_MAXKEY: bson_type { get }
         //        public var BSON_MINKEY: bson_type { get }
 
+    }
+}
+
+
+
+// Stolen from SwiftyJSON
+// https://github.com/SwiftyJSON/SwiftyJSON/blob/master/Source/SwiftyJSON.swift#L1118
+
+private let trueNumber = NSNumber(bool: true)
+private let falseNumber = NSNumber(bool: false)
+private let trueObjCType = String.fromCString(trueNumber.objCType)
+private let falseObjCType = String.fromCString(falseNumber.objCType)
+
+// MARK: - NSNumber: Comparable
+
+extension NSNumber: Swift.Comparable {
+
+    /// Returns whether the number is of boolean type
+    var isBool:Bool {
+        get {
+            let objCType = String.fromCString(self.objCType)
+            if (self.compare(trueNumber) == NSComparisonResult.OrderedSame &&  objCType == trueObjCType) ||  (self.compare(falseNumber) == NSComparisonResult.OrderedSame && objCType == falseObjCType){
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+}
+
+public func ==(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) == NSComparisonResult.OrderedSame
+    }
+}
+
+public func !=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    return !(lhs == rhs)
+}
+
+public func <(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) == NSComparisonResult.OrderedAscending
+    }
+}
+
+public func >(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) == NSComparisonResult.OrderedDescending
+    }
+}
+
+public func <=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) != NSComparisonResult.OrderedDescending
+    }
+}
+
+public func >=(lhs: NSNumber, rhs: NSNumber) -> Bool {
+    
+    switch (lhs.isBool, rhs.isBool) {
+    case (false, true):
+        return false
+    case (true, false):
+        return false
+    default:
+        return lhs.compare(rhs) != NSComparisonResult.OrderedAscending
     }
 }

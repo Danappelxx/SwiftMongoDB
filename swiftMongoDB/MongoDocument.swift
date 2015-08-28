@@ -68,7 +68,7 @@ public class MongoDocument {
         self.id = MongoBSON.getObjectIdFromBSON(BSON)
         self.data = MongoBSON.getDataFromBSON(BSON)
         
-        bson_destroy(BSON)
+//        bson_destroy(BSON)
     }
     
     public func printSelf() {
