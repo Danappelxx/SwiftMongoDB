@@ -276,3 +276,22 @@ Any and all help is very welcome! Feel free to fork and submit a pull request - 
 You should start by looking at the [trello board](https://trello.com/b/FT2OCCjQ/swiftmongodb) and see if there's anything you want to implement there. You can also create feature requests.
 
 There's also a test suite included in the xcode project - so far the coverage isn't too good but it will get better, I promise.
+
+# Changelog
+
+## 0.0.*
+
+### 0.0.7
+Fix BSON encoder and decoder to support boolean values, bugfixes.
+
+### 0.0.6
+Implement BSON -> Swift, bugfixes.
+
+### 0.0.5
+Make SwiftMongoDB multiplatform.
+
+### 0.0.4 - 0.0.2
+Getting Cocoapods to work, bugfixes.
+
+### 0.0.1
+Core features finished (ish).
