@@ -279,7 +279,10 @@ There's also a test suite included in the xcode project - so far the coverage is
 
 # Changelog
 
-## 0.0.*
+## 0.0
+
+### 0.0.8
+Implement (untested) login, fix major issue with querying where objects would either get ignored or query would loop indefinitely.
 
 ### 0.0.7
 Fix BSON encoder and decoder to support boolean values, bugfixes.
