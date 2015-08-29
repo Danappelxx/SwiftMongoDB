@@ -68,15 +68,6 @@ public class MongoCollection {
     internal func cursor() -> MongoCursor {
         return MongoCursor(connection: self.connection, collection: self)
     }
-    
-    //    public func query(query: DocumentData) -> MongoQuery {
-    //
-    //        return MongoQuery(query: query, connection: self.connection, collection: self)
-    //    }
-    //    public var query: MongoQuery {
-    //        return MongoQuery(connection: self.connection, collection: self)
-    //        return MongoQuery(data:
-    //    }
 
 
     /**
@@ -84,13 +75,14 @@ public class MongoCollection {
     
     - parameter document: The document (of type MongoDocument) that is to be inserted into the collection.
     
-    - returns: A MongoResult.Failure when an error is encountered, otherwise returns MongoResult.Success with the inserted document.
+    - returns: The inserted document.
     */
-    public func insert(document: MongoDocument) -> MongoResult<MongoDocument> {
+    public func insert(document: MongoDocument) throws -> MongoDocument {
 
         if self.connection == nil {
             print("didn't register collection")
-            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
+            
+            throw MongoError.CollectionNotRegistered
         }
 
         let mwc = mongo_write_concern_alloc()
@@ -98,7 +90,7 @@ public class MongoCollection {
         mongo_write_concern_dealloc(mwc)
 
 
-        return MongoResult.Success(document)
+        return document
     }
 
 
@@ -107,14 +99,14 @@ public class MongoCollection {
 
     - parameter query: The query which will be used to find the documents to remove.
 
-    - returns: A MongoResult.Failure when an error is encountered, otherwise returns MongoResult.Success with the query document data.
+    - returns: The query document data.
     */
-    public func remove(query: DocumentData) -> MongoResult<DocumentData> {
+    public func remove(query: DocumentData) throws -> DocumentData {
 
         if self.connection == nil {
-            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
+            throw MongoError.CollectionNotRegistered
         }
-        
+
         let queryBSON = bson_alloc()
         let mongoBSON = MongoBSON(data: query)
         mongoBSON.copyTo(queryBSON)
@@ -122,7 +114,7 @@ public class MongoCollection {
         let mwc = mongo_write_concern_alloc()
         mongo_remove(self.connection, self.identifier, queryBSON, mwc)
         
-        return MongoResult.Success(query)
+        return query
     }
 
     
@@ -146,12 +138,12 @@ public class MongoCollection {
     - parameter modifications:  The modifications applied to the matched object(s). Also in the form of DocumentData.
     - parameter type:           The type of update to be performed. Valid options are .Basic, .Upsert, .Multi
 
-    - returns: Returns a MongoResult instance which, if the operation was successful, contains a MongoDocument instance created from the given document data.
+    - returns: A MongoDocument instance created from the given document data.
     */
-    public func update(query query: DocumentData, document: DocumentData, type: UpdateType) -> MongoResult<MongoDocument> {
+    public func update(query query: DocumentData, document: DocumentData, type: UpdateType) throws -> MongoDocument {
 
         if self.connection == nil {
-            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
+            throw MongoError.CollectionNotRegistered
         }
 
         let queryBSON = MongoBSON(data: query)
@@ -177,20 +169,38 @@ public class MongoCollection {
         let mwc = mongo_write_concern_alloc()
         mongo_update(self.connection, self.identifier, queryBSONRaw, dataBSONRaw, Int32(updateType), mwc)
         
-        return MongoResult.Success(MongoDocument(data: document))
+        return MongoDocument(data: document)
 
     }
 
-    public func update(query query: DocumentData, document: MongoDocument, type: UpdateType) -> MongoResult<MongoDocument> {
-        return self.update(query: query, document: document.data, type: type)
+    public func update(query query: DocumentData, document: MongoDocument, type: UpdateType) throws -> MongoDocument {
+        
+        do {
+            let result = try self.update(query: query, document: document.data, type: type)
+            return result
+        } catch {
+            throw error
+        }
     }
 
-    public func update(id id: String, document: MongoDocument, type: UpdateType) -> MongoResult<MongoDocument> {
-        return self.update(query: ["_id" : id], document: document.data, type: type)
+    public func update(id id: String, document: MongoDocument, type: UpdateType) throws -> MongoDocument {
+        
+        do {
+            let result = try self.update(query: ["_id" : id], document: document.data, type: type)
+            return result
+        } catch {
+            throw error
+        }
     }
 
-    public func update(id id: String, document: DocumentData, type: UpdateType) -> MongoResult<MongoDocument> {
-        return self.update(query: ["_id" : id], document: document, type: type)
+    public func update(id id: String, document: DocumentData, type: UpdateType) throws -> MongoDocument {
+        
+        do {
+            let result = try self.update(query: ["_id" : id], document: document, type: type)
+            return result
+        } catch {
+            throw error
+        }
     }
 
     /**
@@ -198,12 +208,13 @@ public class MongoCollection {
     
     - parameter queryData: A [String:AnyObject] query (can be nil) by which the document will be matched.
     
-    - returns: Returns an instance of MongoResult which, if successful, contains the matched document. Returns an error if no document is matched.
+    - returns: The matched document.
     */
-    public func findOne(queryData: DocumentData? = nil) -> MongoResult<MongoDocument> {
+    public func findOne(queryData: DocumentData? = nil) throws -> MongoDocument {
         
         if self.connection == nil {
-            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
+            
+            throw MongoError.CollectionNotRegistered
         }
 
         let cursor = self.cursor()
@@ -220,10 +231,11 @@ public class MongoCollection {
         }
         
         if cursor.nextIsOk {
-            return MongoResult.Success(cursor.current)
+            
+            return cursor.current
         }
-        
-        return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.DidNotFind))
+  
+        throw MongoError.NoDocumentsMatched
     }
 
     /**
@@ -231,16 +243,23 @@ public class MongoCollection {
     
     - parameter id: The object id by which documents will be queried.
     
-    - returns: Returns a MongoResult instance which, if successful, contains a single matched MongoDocument. Returns an error if a document wasn't matched.
+    - returns: A single matched document.
     */
-    public func findOne(id id: String) -> MongoResult<MongoDocument> {
-        return self.findOne(["_id" : id])
+    public func findOne(id id: String) throws -> MongoDocument {
+
+        do {
+            let result = try self.findOne(["_id" : id])
+            return result
+        } catch {
+            throw error
+        }
     }
     
-    public func find(queryData: DocumentData? = nil) -> MongoResult<[MongoDocument]> {
+    public func find(queryData: DocumentData? = nil) throws -> [MongoDocument] {
         
         if self.connection == nil {
-            return MongoResult.Failure(MongoError().error)
+            
+            throw MongoError.CollectionNotRegistered
         }
         
         
@@ -284,7 +303,7 @@ public class MongoCollection {
 //            mongo_cursor_next(cursor.cursor)
         }
         
-        return MongoResult.Success(results)
+        return results
     }
     
     /**
@@ -292,11 +311,17 @@ public class MongoCollection {
     
     - parameter id: the object ID string by which documents will be matched.
     
-    - returns: Returns a MongoResult instance which contains, if successful, an array of matched documents.
+    - returns: An array of matched documents.
     */
-    public func find(id id: String) -> MongoResult<[MongoDocument]> {
+    public func find(id id: String) throws -> [MongoDocument] {
         
-        return self.find(["_id" : id])
+        
+        do {
+            let result = try self.find(["_id" : id])
+            return result
+        } catch {
+            throw error
+        }
     }
 }
 

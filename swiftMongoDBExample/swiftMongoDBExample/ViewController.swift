@@ -46,26 +46,24 @@ class ViewController: NSViewController {
         let subject2 = subject.Document()
 
 
-        subjects.insert(subject1) // insert dan
-        subjects.insert(subject2) // insert billy
+        do {
 
-        subjects.remove(["_id": subject1.id!]) // remove dan
+            try subjects.insert(subject1) // insert dan
+            try subjects.insert(subject2) // insert billy
 
-        subjects.update(query: ["name":"Dan"], document: subject2, type: .Basic) // basic = single override (non-additive)
+            try subjects.remove(["_id": subject1.id!]) // remove dan
 
-        let results = subjects.find(["age": 15])
+            try subjects.update(query: ["name":"Dan"], document: subject2, type: .Basic) // basic = single override (non-additive)
 
-        switch results {
-
-        case .Success(let testSubjects):
-            print(testSubjects)
-            for testSubject in testSubjects {
-                testSubject.printSelf()
+            let results = try subjects.find(["age": 15])
+            
+            for testSubject in results {
+                
+                print(testSubject.data)
             }
-
-        case .Failure(let err):
-            print(err)
-
+            
+        } catch {
+            
         }
     }
 }
