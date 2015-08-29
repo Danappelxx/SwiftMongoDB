@@ -166,8 +166,26 @@ public class MongoCollection {
         let cursor = MongoCursor(connection: self.connection, collection: self)
 
         var results: [MongoDocument] = []
-        while cursor.nextIsOk {
-            results.append(cursor.current)
+        
+        var lastID: String = ""
+
+        while cursor.nextIsOk {//mongo_cursor_next(cursor.cursor) == MONGO_OK {//cursor.nextIsOk && counter < max {
+            
+            let cur = cursor.current
+            
+            if let curID = cur.id {
+                
+                if curID == lastID {
+                    break
+                }
+                
+                lastID = curID
+            }
+            
+            results.append(cur)
+            
+            //            // need this otherwise is goes into an infinite loop (needs debugging to figure out why)
+            //            mongo_cursor_next(cursor.cursor)
         }
 
         return MongoResult.Success(results)
@@ -229,13 +247,25 @@ public class MongoCollection {
 
         var results: [MongoDocument] = []
         
+        var lastID: String = ""
         // loops through all the query results, appends them to array
         while cursor.nextIsOk {//mongo_cursor_next(cursor.cursor) == MONGO_OK {//cursor.nextIsOk && counter < max {
 
-            results.append(cursor.current)
+            let cur = cursor.current
+
+            if let curID = cur.id {
+
+                if curID == lastID {
+                    break
+                }
+                
+                lastID = curID
+            }
+
+            results.append(cur)
             
-            // need this otherwise is goes into an infinite loop (needs debugging to figure out why)
-            mongo_cursor_next(cursor.cursor)
+//            // need this otherwise is goes into an infinite loop (needs debugging to figure out why)
+//            mongo_cursor_next(cursor.cursor)
         }
         
         return MongoResult.Success(results)
