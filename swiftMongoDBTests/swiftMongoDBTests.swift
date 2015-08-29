@@ -44,23 +44,24 @@ class SwiftMongoDBSpec: QuickSpec {
     
     override func spec() {
         
-        describe("Basic MongoDB operators") { () -> Void in
-
-            // This suite assumes that the mongodb process is running
-
-            let testDatabase = MongoDB(database: "database")
-            let testCollection = MongoCollection(name: "collection")
-            let testDocument = MongoDocument(data:
-                [
-                    "string" : "string",
-                    "bool" : true,
-                    "numbers" : [1,2,3],
-                    "dictionary" : [
-                        "key" : "value"
-                    ]
+        // This suite assumes that the mongodb process is running
+        
+        let testDatabase = MongoDB(database: "database")
+        let testCollection = MongoCollection(name: "collection")
+        let testDocument = MongoDocument(data:
+            [
+                "string" : "string",
+                "bool" : true,
+                "numbers" : [1,2,3],
+                "dictionary" : [
+                    "key" : "value"
                 ]
-            )
-            let blankDocumentData = DocumentData()
+            ]
+        )
+        let blankDocumentData = DocumentData()
+
+        
+        describe("Basic MongoDB operators") { () -> Void in
 
             afterEach {
                 testCollection.remove(blankDocumentData)
@@ -132,6 +133,7 @@ class SwiftMongoDBSpec: QuickSpec {
                     fail()
                 }
                 
+                // this could fail if the database wasn't cleaned before running this test
                 expect( (resultCount2! - resultCount1!) == 1).to(beTrue())
             }
 
@@ -178,18 +180,6 @@ class SwiftMongoDBSpec: QuickSpec {
         }
         
         describe("All things BSON") { () -> Void in
-
-
-            let testDocument = MongoDocument(data:
-                [
-                    "string" : "string",
-                    "bool" : true,
-                    "numbers" : [1,2,3],
-                    "dictionary" : [
-                        "key" : "value"
-                    ]
-                ]
-            )
             
             // assumes that decoding works
             it("encodes BSON correctly") {
@@ -211,6 +201,16 @@ class SwiftMongoDBSpec: QuickSpec {
                 let decodedData = MongoBSON.getDataFromBSON(testDocument.BSONValue, ignoreObjectId: true)
 
                 expect(decodedData == testDocument.data).to(beTrue())
+            }
+        }
+    
+        describe("Mongo commands") { () -> Void in
+            
+            it("creates a user successfully") {
+                
+                let createUserResult = testDatabase.createUser(user: "Test", password: "12345")
+                
+                expect(createUserResult).to(beTrue())
             }
         }
     }
