@@ -12,12 +12,20 @@ import mongo_c_driver
 // MARK: - MongoDocument
 public typealias DocumentData = [String : AnyObject]
 
-
 public class MongoDocument {
     
+    /// The raw BSON value of the document.
     internal let BSONValue = bson_alloc()
+    
+    /// The DocumentData form of the BSON value of the document.
     public var data: DocumentData
     
+    
+    /**
+    Initializes a MongoDocument containing the given data.
+    
+    - parameter data: A parameter of type DocumentData which is the data that the document will contain.
+    */
     public init(data: DocumentData) {
         
         let objectId = MongoBSON.generateObjectId()
@@ -30,33 +38,47 @@ public class MongoDocument {
         self.data = mongoBSON.data
     }
     
+    /**
+    Initializes a MongoDocument containg the given BSON data. Automatically transcribed to DocumentData upon initialization.
+    
+    - parameter BSON: The raw BSON value of the document.
+    */
     internal init(BSON: UnsafeMutablePointer<bson>) {
         bson_copy(self.BSONValue, BSON)
 
         self.id = MongoBSON.getObjectIdFromBSON(BSON)
         self.data = MongoBSON.getDataFromBSON(BSON)
         
-//        bson_destroy(BSON)
+        bson_destroy(BSON)
     }
+
+    /**
+    Initializes a MongoDocument containing the properties of the MongoObject. Properties starting with an underscore (_) will be ignored.
     
+    - parameter schema: An object which conforms to protocol MongoObject.
+    
+    - returns: Returns an initialized MongoDocument.
+    */
     convenience init(withSchemaObject schema: MongoObject) {
         self.init(data: schema.properties())
     }
-    
-    public func printSelf() {
+
+    /**
+    Prints the BSON value of self.
+    */
+    internal func printSelf() {
         bson_print(self.BSONValue)
     }
 
+    /**
+    Destroys the raw BSON value upon deinitialization.
+    */
     deinit {
         bson_destroy(self.BSONValue)
     }
 
-    //MARK: - Properties
+    /// The object id of the document.
     public let id: String?
-
-    //    public var stringValue: String {
-    //        bson_print(<#T##b: UnsafePointer<bson>##UnsafePointer<bson>#>)
-    //    }
 }
 
 public func == (lhs: MongoDocument, rhs: MongoDocument) -> Bool {

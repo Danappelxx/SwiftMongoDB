@@ -10,7 +10,7 @@ import Foundation
 
 
 /**
-*  A protocol that allows your objects
+*  A protocol that allows documents to be described in an Object Orientated way.
 */
 public protocol MongoObject {
 
@@ -37,12 +37,15 @@ public extension MongoObject {
         for child in Mirror(reflecting: self).children {
             
             if let label = child.label {
-                if let value = child.value as? AnyObject {
-                    children[label] = value
+
+                if label.characters[label.startIndex] != "_" {
+                
+                    if let value = child.value as? AnyObject {
+                        children[label] = value
+                    }
                 }
             }
         }
-        
         return children
     }
 }

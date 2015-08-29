@@ -12,22 +12,50 @@ import mongo_c_driver
 // MARK: - MongoCollection
 public class MongoCollection {
     
+    /// The raw MongoDB connection
     internal var connection: UnsafeMutablePointer<mongo>!
+
+    /// The name of the database to which this collection belongs.
+    internal var databaseName: String!
+
     
+    /// The database identifier in the format Database.Collection
     internal var identifier: String {
         return "\(self.databaseName).\(self.name)"
     }
-    internal var databaseName: String!
+
+    /// The name of the collection.
     public var name: String
     
+    /**
+    Initializes the collection, but initialization is not complete until the collection is registered with a MongoDB instance.
+
+    - parameter name: The name of the collection
+    
+    - returns: An unregistered MongoCollection instance.
+    */
     public init(name: String) {
         self.name = name
     }
+
+    /**
+    Initializes a registered collection with a MongoDB connection and a collection name.
     
-    //    public var cursor: MongoCursor {
-    //        return MongoCursor(connection: self.connection, collection: self)
-    //    }
+    - parameter name:  The name of the collection - the "Collection" in "Database.Collection"
+    - parameter mongo: A connected instance of MongoDB.
+
+    - returns: A registered MongoCollection instance.
+    */
+    public init(name: String, mongo: MongoDB) {
+
+        self.name = name
+        self.connection = mongo.connection!
+        self.databaseName = mongo.db
+
+        mongo.collections.insert(self)
+    }
     
+    /// A boolean value which returns true if the collection is registered to a MongoDB instance.
     public var isRegistered: Bool {
 
         if self.connection != nil && self.databaseName != nil {
@@ -37,7 +65,7 @@ public class MongoCollection {
         return false
     }
     
-    public func cursor() -> MongoCursor {
+    internal func cursor() -> MongoCursor {
         return MongoCursor(connection: self.connection, collection: self)
     }
     
@@ -98,6 +126,13 @@ public class MongoCollection {
     }
 
     
+    /**
+    An enum describing the types of Mongo update functions that can be performed.
+    
+    - Basic:  Single replacement (finds one, replaces it with document).
+    - Upsert: Single replacement, insert if no documents match.
+    - Multi:  Multiple replacement (finds all, replaces them with document).
+    */
     public enum UpdateType {
         case Basic
         case Upsert
@@ -107,9 +142,11 @@ public class MongoCollection {
     /**
     Updates the documents matched by the with the given modifications.
     
-    - parameter query:The query in the form of DocumentData ( [String : Any] )
-    - parameter modifications:The modifications applied to the matched object(s). Also in the form of DocumentData.
-    - parameter type:The type of update to be performed. Valid options are .Basic, .Upsert, .Multi
+    - parameter query:          The query in the form of DocumentData ( [String : Any] )
+    - parameter modifications:  The modifications applied to the matched object(s). Also in the form of DocumentData.
+    - parameter type:           The type of update to be performed. Valid options are .Basic, .Upsert, .Multi
+
+    - returns: Returns a MongoResult instance which, if the operation was successful, contains a MongoDocument instance created from the given document data.
     */
     public func update(query query: DocumentData, document: DocumentData, type: UpdateType) -> MongoResult<MongoDocument> {
 
@@ -144,61 +181,33 @@ public class MongoCollection {
 
     }
 
-    public func update(query query: DocumentData, document: MongoDocument, type: UpdateType) {
-        self.update(query: query, document: document.data, type: type)
+    public func update(query query: DocumentData, document: MongoDocument, type: UpdateType) -> MongoResult<MongoDocument> {
+        return self.update(query: query, document: document.data, type: type)
     }
 
-    public func update(id id: String, document: MongoDocument, type: UpdateType) {
-        self.update(query: ["_id" : id], document: document.data, type: type)
+    public func update(id id: String, document: MongoDocument, type: UpdateType) -> MongoResult<MongoDocument> {
+        return self.update(query: ["_id" : id], document: document.data, type: type)
     }
 
-    public func update(id id: String, document: DocumentData, type: UpdateType) {
-        self.update(query: ["_id" : id], document: document, type: type)
+    public func update(id id: String, document: DocumentData, type: UpdateType) -> MongoResult<MongoDocument> {
+        return self.update(query: ["_id" : id], document: document, type: type)
     }
 
+    /**
+    Queries for a single document matching the given query.
     
-    public func findAll() -> MongoResult<[MongoDocument]> {
-
-        if self.connection == nil {
-            return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
-        }
-
-        let cursor = MongoCursor(connection: self.connection, collection: self)
-
-        var results: [MongoDocument] = []
-        
-        var lastID: String = ""
-
-        while cursor.nextIsOk {//mongo_cursor_next(cursor.cursor) == MONGO_OK {//cursor.nextIsOk && counter < max {
-            
-            let cur = cursor.current
-            
-            if let curID = cur.id {
-                
-                if curID == lastID {
-                    break
-                }
-                
-                lastID = curID
-            }
-            
-            results.append(cur)
-            
-            //            // need this otherwise is goes into an infinite loop (needs debugging to figure out why)
-            //            mongo_cursor_next(cursor.cursor)
-        }
-
-        return MongoResult.Success(results)
-    }
-
-    public func first(queryData: DocumentData? = nil) -> MongoResult<MongoDocument> {
+    - parameter queryData: A [String:AnyObject] query (can be nil) by which the document will be matched.
+    
+    - returns: Returns an instance of MongoResult which, if successful, contains the matched document. Returns an error if no document is matched.
+    */
+    public func findOne(queryData: DocumentData? = nil) -> MongoResult<MongoDocument> {
         
         if self.connection == nil {
             return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.CollectionNotRegistered))
         }
-        
+
         let cursor = self.cursor()
-        
+
         // refer to find() for an explanation of this snippet
         if let queryData = queryData {
             
@@ -217,8 +226,15 @@ public class MongoCollection {
         return MongoResult.Failure(MongoError.errorFromCommonError(CommonError.DidNotFind))
     }
 
-    public func first(id id: String) -> MongoResult<MongoDocument> {
-        return self.first(["_id" : id])
+    /**
+    Queries for documents with the matching object id.
+    
+    - parameter id: The object id by which documents will be queried.
+    
+    - returns: Returns a MongoResult instance which, if successful, contains a single matched MongoDocument. Returns an error if a document wasn't matched.
+    */
+    public func findOne(id id: String) -> MongoResult<MongoDocument> {
+        return self.findOne(["_id" : id])
     }
     
     public func find(queryData: DocumentData? = nil) -> MongoResult<[MongoDocument]> {
@@ -271,6 +287,13 @@ public class MongoCollection {
         return MongoResult.Success(results)
     }
     
+    /**
+    Queries for documents matching the given object id. It will return an array although it is theoretically impossible for the array length to be more than one.
+    
+    - parameter id: the object ID string by which documents will be matched.
+    
+    - returns: Returns a MongoResult instance which contains, if successful, an array of matched documents.
+    */
     public func find(id id: String) -> MongoResult<[MongoDocument]> {
         
         return self.find(["_id" : id])

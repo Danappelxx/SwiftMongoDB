@@ -11,21 +11,21 @@ import mongo_c_driver
 
 // MARK: - MongoDB
 public class MongoDB {
-    
+
+    /// The raw MongoDB connection.
     internal var connection: UnsafeMutablePointer<mongo>? = mongo_alloc()
 
-    internal var databaseName: String
-    
-    public var db: String { // read only
+    /// The raw database name.
+    internal let databaseName: String
+
+    /// The name of the database that was connected to (read-only).
+    public var db: String {
         get {
             return self.databaseName
         }
     }
-    
-    public func changeDB(databaseName: String) {
-        self.databaseName = databaseName
-    }
 
+    /// A set of all the registered collections.
     internal var collections = Set<MongoCollection>()
     
 
@@ -59,8 +59,17 @@ public class MongoDB {
         }
     }
     
-    public func login(username username: String, password: String) {
-        mongo_cmd_authenticate(self.connection!, self.db, username, password)
+
+    /**
+    A function which attempts to authenticate the mongodb connection.
+
+    - parameter username: The username of the registered user.
+    - parameter password: The password of the registered user.
+    
+    - returns: A boolean value stating whether the login succeeded or not.
+    */
+    public func login(username username: String, password: String) -> Bool {
+        return mongo_cmd_authenticate(self.connection!, self.db, username, password) == MONGO_OK
     }
     
     /**
@@ -85,10 +94,10 @@ public class MongoDB {
         }
     }
 
-    
+    /// A variable describing whether the connection failed or not. If it failed, all operations regarding MongoCollections will fail.
     private var connectionFailed = false
 
-    /// Returns the status of the mongodb connection
+    /// Describes the MongoDB error in the form of a Swift enum.
     public var connectionStatus: ConnectionStatus {
 
         if self.connectionFailed {
@@ -120,6 +129,11 @@ public class MongoDB {
         return self.connectionStatus == ConnectionStatus.Success
     }
     
+    /**
+    Registeres a MongoCollection. Alternatively the collection can be initialized with a MongoDB instance.
+    
+    - parameter collection: The MongoCollection to be registered.
+    */
     public func registerCollection(collection: MongoCollection) {
 
         collection.connection = self.connection
@@ -128,7 +142,15 @@ public class MongoDB {
         self.collections.insert(collection)
     }
 
-    public func createUser(user user: String, password: String) -> Bool{
+    /**
+    A function which will attempt to create a user in the current MongoDB database.
+    
+    - parameter username: The username of the created user.
+    - parameter password: The password of the created user.
+    
+    - returns: Returns a boolean value stating whether the user registration succeeded or not.
+    */
+    public func createUser(username user: String, password: String) -> Bool {
 
         let addUserResult = mongo_cmd_add_user(self.connection!, self.db, user, password)
         print(addUserResult)
@@ -139,7 +161,7 @@ public class MongoDB {
 
 
 /**
-*  An enum with the possible success/error values for a MongoDB connection.
+An enum with the possible success/error values for a MongoDB connection.
 */
 public enum ConnectionStatus: String {
     case Success = "Successful connection"
