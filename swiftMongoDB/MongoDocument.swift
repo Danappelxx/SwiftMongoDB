@@ -12,38 +12,6 @@ import mongo_c_driver
 // MARK: - MongoDocument
 public typealias DocumentData = [String : AnyObject]
 
-public func == (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
-
-    return (lhs.data as! [String : NSObject]) == (rhs.data as! [String : NSObject])    
-}
-
-public func == (lhs: DocumentData, rhs: DocumentData) -> Bool {
-
-    // if they're of different sizes
-    if lhs.count != rhs.count {
-        return false
-    }
-
-    
-    // only need to check from one side because they're the same size - if something doesn't match then they aren't equal.
-    // check that rhs contains all of lhs
-    for (lhkey, lhvalue) in lhs {
-
-        let lhval = lhvalue as! NSObject
-
-        // casting into nsobject
-        if let rhval = rhs[lhkey] as? NSObject {
-
-            // if they're not the same, return false
-            if rhval != lhval {
-                return false
-            }
-        }
-    }
-
-    return true
-}
-
 
 public class MongoDocument {
     
@@ -71,6 +39,10 @@ public class MongoDocument {
 //        bson_destroy(BSON)
     }
     
+    convenience init(withSchemaObject schema: MongoObject) {
+        self.init(data: schema.properties())
+    }
+    
     public func printSelf() {
         bson_print(self.BSONValue)
     }
@@ -85,4 +57,36 @@ public class MongoDocument {
     //    public var stringValue: String {
     //        bson_print(<#T##b: UnsafePointer<bson>##UnsafePointer<bson>#>)
     //    }
+}
+
+public func == (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
+    
+    return (lhs.data as! [String : NSObject]) == (rhs.data as! [String : NSObject])
+}
+
+public func == (lhs: DocumentData, rhs: DocumentData) -> Bool {
+    
+    // if they're of different sizes
+    if lhs.count != rhs.count {
+        return false
+    }
+    
+    
+    // only need to check from one side because they're the same size - if something doesn't match then they aren't equal.
+    // check that rhs contains all of lhs
+    for (lhkey, lhvalue) in lhs {
+        
+        let lhval = lhvalue as! NSObject
+        
+        // casting into nsobject
+        if let rhval = rhs[lhkey] as? NSObject {
+            
+            // if they're not the same, return false
+            if rhval != lhval {
+                return false
+            }
+        }
+    }
+    
+    return true
 }

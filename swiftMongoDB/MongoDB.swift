@@ -84,15 +84,6 @@ public class MongoDB {
             mongo_destroy(self.connection!)
         }
     }
-    
-    public enum ConnectionStatus: String {
-        case Success = "Successful connection"
-        case NoSocket = "No socket"
-        case Fail = "Connection fail"
-        case NotMaster = "Not master"
-        
-        case Unexpected = "Unexpected error"
-    }
 
     
     private var connectionFailed = false
@@ -124,6 +115,7 @@ public class MongoDB {
         }
     }
     
+    /// Returns a boolean stating whether self.connectionStatus is ConnectinStatus.Success
     public var connectionWasSuccessful: Bool {
         return self.connectionStatus == ConnectionStatus.Success
     }
@@ -143,4 +135,17 @@ public class MongoDB {
         
         return (addUserResult == MONGO_OK)
     }
+}
+
+
+/**
+*  An enum with the possible success/error values for a MongoDB connection.
+*/
+public enum ConnectionStatus: String {
+    case Success = "Successful connection"
+    case NoSocket = "No socket"
+    case Fail = "Connection fail"
+    case NotMaster = "Not master"
+    
+    case Unexpected = "Unexpected error"
 }

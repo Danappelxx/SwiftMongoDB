@@ -25,8 +25,26 @@ class ViewController: NSViewController {
         let subjects = MongoCollection(name: "subjects")
         mongodb.registerCollection(subjects)
 
+        // method #1
         let subject1 = MongoDocument(data: ["name" : "Dan", "age": 15, "friends": ["Billy", "Bob", "Joe"], "location": ["city":"San Francisco"]])
-        let subject2 = MongoDocument(data: ["name" : "Billy", "age": 16, "friends": ["Dan", "Bob", "Joe"], "location": ["city":"New York"]])
+
+        // method #2 (cleaner, reusable)
+        struct Subject: MongoObject {
+            var name = "Billy"
+            var age = 15
+            var friends = [
+                "Dan",
+                "Bob",
+                "Joe"
+            ]
+            var location = [
+                "city" : "New York"
+            ]
+        }
+        
+        let subject = Subject()
+        let subject2 = subject.Document()
+
 
         subjects.insert(subject1) // insert dan
         subjects.insert(subject2) // insert billy

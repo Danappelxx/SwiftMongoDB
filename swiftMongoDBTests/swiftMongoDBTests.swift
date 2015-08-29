@@ -61,12 +61,7 @@ class SwiftMongoDBSpec: QuickSpec {
         let blankDocumentData = DocumentData()
 
         
-        describe("Basic MongoDB operators") { () -> Void in
-
-            afterEach {
-                testCollection.remove(blankDocumentData)
-            }
-
+        describe("The MongoDB connection") {
 
             it("connects successfully") {
 
@@ -79,7 +74,14 @@ class SwiftMongoDBSpec: QuickSpec {
 
                 expect(testCollection.isRegistered).to(beTrue())
             }
+            
+        }
+        
+        describe("The MongoDB collection") {
 
+            afterEach {
+                testCollection.remove(blankDocumentData)
+            }
 
             it("inserts a document successfully") {
 
@@ -179,7 +181,7 @@ class SwiftMongoDBSpec: QuickSpec {
             }
         }
         
-        describe("All things BSON") { () -> Void in
+        describe("The BSON processor") {
             
             // assumes that decoding works
             it("encodes BSON correctly") {
@@ -203,14 +205,34 @@ class SwiftMongoDBSpec: QuickSpec {
                 expect(decodedData == testDocument.data).to(beTrue())
             }
         }
-    
-        describe("Mongo commands") { () -> Void in
-            
-            it("creates a user successfully") {
-                
+
+        describe("The MongoDB commands") {
+
+            it("create users successfully") {
+
                 let createUserResult = testDatabase.createUser(user: "Test", password: "12345")
-                
+
                 expect(createUserResult).to(beTrue())
+            }
+        }
+
+        describe("The Mongo objects") {
+
+            struct TestObject: MongoObject {
+                var prop1: String = "Str"
+                var prop2: Int = 10
+                var prop3: Bool = true
+                var prop4: [String] = ["One", "Two", "Three", "Four"]
+                var prop5: [String : AnyObject] = ["Hello" : "World", "Foo" : "Bar"]
+            }
+
+            it("properly converts into a document") {
+
+                let testObject = TestObject()
+
+                let documentFromObject = testObject.Document()
+
+                expect(testObject.properties() == documentFromObject.data).to(beTrue())
             }
         }
     }
