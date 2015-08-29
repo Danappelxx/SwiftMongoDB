@@ -44,6 +44,7 @@ if mongodb.connectionStatus != .Success {
 let subjects = MongoCollection(name: "subjects")
 mongodb.registerCollection(subjects)
 
+// method #1 (basic)
 let subject1 = MongoDocument(data:
 	[
 		"name" : "Dan",
@@ -58,20 +59,22 @@ let subject1 = MongoDocument(data:
 	]
 )
 
-let subject2 = MongoDocument(data:
-	[
-		"name" : "Billy",
-		"age" : 16,
-		"friends" : [
-			"Dan",
-			"Bob",
-			"Joe"
-		],
-		"location": [
-			"city" : "New York"
-		]
-	]
-)
+// method #2 (cleaner, reusable)
+struct Subject: MongoObject {
+    var name = "Billy"
+    var age = 15
+    var friends = [
+        "Dan",
+        "Bob",
+        "Joe"
+    ]
+    var location = [
+        "city" : "New York"
+    ]
+}
+
+let subject = Subject()
+let subject2 = subject.Document()
 
 subjects.insert(subject1) // insert dan
 subjects.insert(subject2) // insert billy
@@ -149,7 +152,7 @@ For example, say you wanted to create a human named Dan. This is how it would lo
 }
 ```
 
-Pretty standard stuff - it looks pretty similar in Swift.
+It looks pretty similar in Swift:
 
 ```swift
 let data = [
@@ -169,9 +172,26 @@ let data = [
 let subject = MongoDocument(data: data)
 ```
 
-Fairly straight-forward. The only part that can get confusing is when worthing with nested objects, but that's more of a readability issue.
+SwiftMongoDB provides you with another, slightly cleaner way of creating objects.
 
-You can then insert the newly created document into the collection.
+```swift
+struct Subject: MongoObject {
+    var name = "Billy"
+    var age = 15
+    var friends = [
+        "Dan",
+        "Bob",
+        "Joe"
+    ]
+    var location = [
+        "city" : "New York"
+    ]
+}
+
+let subject = Subject().document()
+```
+
+You can then insert the newly created document(s) into the collection.
 
 ```swift
 subjects.insert(subject)
@@ -239,20 +259,27 @@ let result = subjects.find(["age" : 15])
 
 The query parameter operates just as it would in most other MongoDB implementations. For instance, in the MongoDB shell, this would be the equivalent of `db.subjects.find( {"age" : 15} )`
 
-Removing documents works the same way - you can either remove all of them with
-
-```swift
-subjects.remove()
-```
-
-or only remove those whose name is Dan, for example, with:
+Removing documents works the same way - if you want to remove all humans named Dan, you simply do:
 
 ```swift
 subjects.remove(["name" : "Dan"])
 ```
 
-More operations are supported, but I think at this point you get the gist of it. Take a look at the block of code above for some more examples, and then take a look at the test suite if you want even more information.
+The last basic operation is update. MongoCollection.update takes 3 parameters: query, document, and type.
 
+Query is the query by which the documents to be updated will be found.
+Document is the new value that the queried will have.
+Type represents the type of update which will be performed - either basic, upsert, or multi. Basic is a single replacement, upsert inserts a document if the query doesn't match anything, and multi replaces all the documents matched.
+
+An example call might look like so:
+
+```swift
+subjects.update(query: ["name":"Dan"], document: subject, type: .Basic)
+```
+
+That code updates all people with the name "Dan" with a new subject with the update type of basic (single replacement).
+
+Those are the basics - it's really a very small library. You can take a look at the test suite which should show you some of the methods not shown here. Otherwise, feel free to jump right into the deep end and start using SwiftMongoDB!
 
 # Features
 Most of the features will be shown in the example project. As of now, the features supported are:
@@ -281,7 +308,10 @@ There's also a test suite included in the xcode project - so far the coverage is
 
 ## 0.0
 
-### 0.0.8
+### 0.0.9 (Saturday, August 29th, 2015)
+Add support for very simple mongoose-esque schemas by conforming to protocol MongoObject.
+
+### 0.0.8 (Friday, August 28th, 2015)
 Implement (untested) login, fix major issue with querying where objects would either get ignored or query would loop indefinitely.
 
 ### 0.0.7
@@ -297,4 +327,4 @@ Make SwiftMongoDB multiplatform.
 Getting Cocoapods to work, bugfixes.
 
 ### 0.0.1
-Core features finished (ish).
+Core operations implemented (insert, find, remove).

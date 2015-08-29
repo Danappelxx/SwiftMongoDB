@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SwiftMongoDB"
-  s.version      = "0.0.8"
+  s.version      = "0.0.9"
   s.summary      = "SwiftMongoDB is a Swifter way to interface with MongoDB"
   s.description  = <<-DESC
                    SwiftMongoDB provides you with a very clean api through which you can interface with MongoDB.
