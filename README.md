@@ -104,7 +104,7 @@ case .Failure(let err):
 
 ```
 
-For some more examples, I would take a look at the test suite (most of the main operations are tested).
+For some more examples, I would take a look at the 'schema' section of this readme. You can also take a look at the test suite.
 
 # Tutorial
 
@@ -281,15 +281,115 @@ That code updates all people with the name "Dan" with a new subject with the upd
 
 Those are the basics - it's really a very small library. You can take a look at the test suite which should show you some of the methods not shown here. Otherwise, feel free to jump right into the deep end and start using SwiftMongoDB!
 
-# Features
-Most of the features will be shown in the example project. As of now, the features supported are:
-* Connecting to the MongoDB database
-* Creation of collections
-* Creation of documents
-* Inserting documents into collections
-* Querying for documents (find) in collections
-* Removing documents from collections (with query)
-* Updating documents in collections
+# Schemas
+
+Schemas are a very powerful part of SwiftMongoDB. If you've ever used Mongoose, this might look a little familiar.
+
+The most basic example uses a generic object with properties, which can then be inserted into a collection.
+
+```swift
+struct MyBasicObject: MongoObject {
+
+    var _privateData: String {
+        return "some computed data which will be ignored."
+    }
+
+    var prop1 = "123"
+    var prop2 = 10
+    var prop3 = true
+
+    func doStuff() {
+        // do stuff
+    }
+}
+
+var myBasicObject = MyBasicObject()
+myBasicObject.prop3 = false
+// can now insert myBasicObject into a collection.
+```
+
+The next example uses protocols to define schemas to make it easier for you to create multiple objects under the same schema.
+
+```swift
+protocol MySchema: MongoObject {
+
+    var prop1: String {get}
+    var prop2: Int {get}
+    var prop3: Bool {get}
+}
+
+struct MySchemadObject1: MySchema {
+
+    var _privateData: String {
+        return "Some private, hidden data."
+    }
+
+    let prop1 = "123"
+    let prop2 = 10
+    let prop3 = true
+
+    func doStuff() {
+        // do stuff
+    }
+}
+
+struct MySchemadObject2: MySchema {
+
+    var _privateData: String {
+        return "Some private, hidden data."
+    }
+
+    var prop1 = "hello world!"
+    var prop2 = 1
+    var prop3 = false
+
+    func doOtherStuff() {
+        // do other stuff
+    }
+}
+
+var mySchemadObject1 = MySchemadObject1()
+//mySchemadObject1.prop2 = 5 cannot do
+var mySchemadObject2 = MySchemadObject2()
+//mySchemadObject2.prop2 = 5 can do
+
+// can now insert mySchemadObject1, mySchemadObject2 into a collection
+```
+
+This last example takes advantages of a new feature in Swift 2 called Protocol Extensions. Essentially, it allows you to insert implementations of the protocol in the protocol itself. In SwiftMongoDB, you can use protocol extensions to define default values in your schema.
+
+```swift
+protocol MySchemaWithDefaults: MongoObject {
+    var prop1: String {get}
+    var prop2: Int {get}
+    var prop3: Bool {get}
+}
+
+extension MySchemaWithDefaults {
+    var prop1: String {
+        return "hello world!"
+    }
+
+    var prop2: Int {
+        return 5
+    }
+}
+
+struct MyObjectWithDefaults: MySchemaWithDefaults {
+    var prop2 = 7
+    var prop3 = false
+}
+
+let myObjectWithDefaults = MyObjectWithDefaults()
+
+myObjectWithDefaults.prop1 // results in default value: hello world
+myObjectWithDefaults.prop2 // results in non-default value: 7
+myObjectWithDefaults.prop3 // results in schema'd but not defaulted value: false
+
+// can now insert myObjectWithDefaults into a collection.
+```
+
+Hopefully schemas will allow your code to be much more clean and strict by taking advantage of default values through protocol extensions and property-name autocomplete.
 
 # Roadmap
 
@@ -305,6 +405,11 @@ You should start by looking at the [trello board](https://trello.com/b/FT2OCCjQ/
 There's also a test suite included in the xcode project - so far the coverage isn't too good but it will get better, I promise.
 
 # Changelog
+
+## 0.1
+
+## 0.1.0
+Add documentation, clean up a lot of code, add examples for schemas using inheritence, protocols, and protocol extensions.
 
 ## 0.0
 
