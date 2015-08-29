@@ -408,7 +408,7 @@ There's also a test suite included in the xcode project - so far the coverage is
 
 ## 0.1
 
-## 0.1.0
+### 0.1.0
 Add documentation, clean up a lot of code, add examples for schemas using inheritence, protocols, and protocol extensions.
 
 ## 0.0
