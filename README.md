@@ -45,7 +45,7 @@ let subjects = MongoCollection(name: "subjects")
 mongodb.registerCollection(subjects)
 
 // method #1 (basic)
-let subject1 = MongoDocument(data:
+let subject1 = MongoDocument(
 	[
 		"name" : "Dan",
 		"age": 15,
@@ -76,30 +76,24 @@ struct Subject: MongoObject {
 let subject = Subject()
 let subject2 = subject.Document()
 
-subjects.insert(subject1) // insert dan
-subjects.insert(subject2) // insert billy
+// Using Swift 2 error handling model (methods can throw erorrs)
+do {
 
-subjects.remove(["_id": subject1.id!]) // remove dan
+    try subjects.insert(subject1) // insert dan
+    try subjects.insert(subject2) // insert billy
 
-subjects.update(query: ["name":"Billy"], document: subject1, type: .Basic) // replace billy with dan
+    try subjects.remove(["_id": subject1.id!]) // remove dan
 
-let results = subjects.find(["age": 15]) // find all people aged 15 (dan)
+    try subjects.update(query: ["name":"Dan"], document: subject2, type: .Basic) // basic = single override (non-additive)
 
-// results is of type MongoResult, which means it is either
-// .Success(result) or .Error(error)
-// below is an example of how to work with it
+    let results = try subjects.find(["age": 15])
 
-switch results {
-
-case .Success(let testSubjects):
-    print(testSubjects)
-    for testSubject in testSubjects {
-    	print(testSubject.data)
+    for testSubject in results {
+        print(testSubject.data)
     }
 
-case .Failure(let err):
-    print(err)
-
+} catch {
+    print(error)
 }
 
 ```
@@ -169,7 +163,7 @@ let data = [
 	]
 ]
 
-let subject = MongoDocument(data: data)
+let subject = MongoDocument(data)
 ```
 
 SwiftMongoDB provides you with another, slightly cleaner way of creating objects.
@@ -207,54 +201,32 @@ Here's the most basic query you can possibly perform:
 let result = subjects.find()
 ```
 
-If you're keen and took a look at the function signature, you might notice that the result of subjects.find() actually returns a mysterious `MongoResult<[MongoDocument]>`. I'll go over what this is really quickly.
-
-MongoResult is declared as such:
-
+If you're keen and took a look at the function signature, you might notice that the method `subjects.find()` actually throws an error. This is a new error handling model in Swift 2, where if a method is marked with throws, all calls to it have to be wrapped like so:
 ```swift
-public enum MongoResult<T> {
-    case Success(T)
-    case Failure(NSError)
+do {
+	try methodThatThrows()
+} catch {
+    print(error)
 }
 ```
 
-This means that the result is sort of like a promise - it can either be successful or throw an error. The way to handle these results is with a simple switch statement like this:
-
+In SwiftMongoDB's case, handling results generally looks something like this:
 ```swift
-switch result {
-
-case .Success(let data):
-    doSomethingWithResult(data)
-
-case .Failure(let err):
-    print(err)
-
+do {
+    let results = try subjects.find()
+} catch {
+    print(error)
 }
 ```
 
-Which turns the original `let result = subjects.find()` into
+... with more SwiftMongoDB calls being inserted into the `do` closure when necessary.
 
-```swift
-let result = subjects.find()
-switch results {
-
-case .Success(let testSubjects):
-	for testSubject in testSubjects {
-		testSubject.printSelf()
-	}
-
-case .Failure(let err):
-    print(err)
-
-}
-```
-
-Hopefully this way of handling results will make it cleaner to work with SwiftMongoDB (if it isn't, let me know and I'll add alternatives).
+Hopefully this way of handling results will make it cleaner and more safe to work with SwiftMongoDB. From this point on, all methods should be wrapped in a `do, catch` block.
 
 Now, say we inserted a few more test subjects and wanted to query for all of them whose age is exactly 15. This is pretty simple:
 
 ```swift
-let result = subjects.find(["age" : 15])
+let result = try subjects.find(["age" : 15])
 ```
 
 The query parameter operates just as it would in most other MongoDB implementations. For instance, in the MongoDB shell, this would be the equivalent of `db.subjects.find( {"age" : 15} )`
@@ -262,7 +234,7 @@ The query parameter operates just as it would in most other MongoDB implementati
 Removing documents works the same way - if you want to remove all humans named Dan, you simply do:
 
 ```swift
-subjects.remove(["name" : "Dan"])
+try subjects.remove(["name" : "Dan"])
 ```
 
 The last basic operation is update. MongoCollection.update takes 3 parameters: query, document, and type.
@@ -274,7 +246,7 @@ Type represents the type of update which will be performed - either basic, upser
 An example call might look like so:
 
 ```swift
-subjects.update(query: ["name":"Dan"], document: subject, type: .Basic)
+try subjects.update(query: ["name":"Dan"], document: subject, type: .Basic)
 ```
 
 That code updates all people with the name "Dan" with a new subject with the update type of basic (single replacement).
@@ -407,6 +379,9 @@ There's also a test suite included in the xcode project - so far the coverage is
 # Changelog
 
 ## 0.1
+
+### 0.1.1
+Migrate to Swift 2 error handling model
 
 ### 0.1.0
 Add documentation, clean up a lot of code, add examples for schemas using inheritence, protocols, and protocol extensions.
