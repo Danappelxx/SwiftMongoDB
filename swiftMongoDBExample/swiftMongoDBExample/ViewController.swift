@@ -41,7 +41,7 @@ class ViewController: NSViewController {
                 "city" : "New York"
             ]
         }
-        
+
         let subject = Subject()
         let subject2 = subject.Document()
 
@@ -56,14 +56,14 @@ class ViewController: NSViewController {
             try subjects.update(query: ["name":"Dan"], document: subject2, type: .Basic) // basic = single override (non-additive)
 
             let results = try subjects.find(["age": 15])
-            
+
             for testSubject in results {
-                
+
                 print(testSubject.data)
             }
-            
+
         } catch {
-            
+            print(error)
         }
     }
 }
