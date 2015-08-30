@@ -169,7 +169,7 @@ public class MongoCollection {
         let mwc = mongo_write_concern_alloc()
         mongo_update(self.connection, self.identifier, queryBSONRaw, dataBSONRaw, Int32(updateType), mwc)
         
-        return MongoDocument(data: document)
+        return MongoDocument(document)
 
     }
 

@@ -20,8 +20,7 @@ class SwiftMongoDBSpec: QuickSpec {
         
         let testDatabase = MongoDB(database: "database")
         let testCollection = MongoCollection(name: "collection")
-        let testDocument = MongoDocument(data:
-            [
+        let testDocument = MongoDocument([
                 "string" : "string",
                 "bool" : true,
                 "numbers" : [1,2,3],

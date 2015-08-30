@@ -26,7 +26,7 @@ class ViewController: NSViewController {
         mongodb.registerCollection(subjects)
 
         // method #1
-        let subject1 = MongoDocument(data: ["name" : "Dan", "age": 15, "friends": ["Billy", "Bob", "Joe"], "location": ["city":"San Francisco"]])
+        let subject1 = MongoDocument(["name" : "Dan", "age": 15, "friends": ["Billy", "Bob", "Joe"], "location": ["city":"San Francisco"]])
 
         // method #2 (cleaner, reusable)
         struct Subject: MongoObject {

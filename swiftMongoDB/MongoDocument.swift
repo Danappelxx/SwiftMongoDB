@@ -26,7 +26,7 @@ public class MongoDocument {
     
     - parameter data: A parameter of type DocumentData which is the data that the document will contain.
     */
-    public init(data: DocumentData) {
+    public init(_ data: DocumentData) {
         
         let objectId = MongoBSON.generateObjectId()
         self.id = objectId
@@ -60,7 +60,7 @@ public class MongoDocument {
     - returns: Returns an initialized MongoDocument.
     */
     convenience init(withSchemaObject schema: MongoObject) {
-        self.init(data: schema.properties())
+        self.init(schema.properties())
     }
 
     /**
