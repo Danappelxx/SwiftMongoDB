@@ -11,8 +11,6 @@
 		373E29EA1B7E68B800167998 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373E29E91B7E68B800167998 /* ViewController.swift */; };
 		373E29EC1B7E68B800167998 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 373E29EB1B7E68B800167998 /* Assets.xcassets */; };
 		373E29EF1B7E68B800167998 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 373E29ED1B7E68B800167998 /* Main.storyboard */; };
-		373E29FA1B7E68B800167998 /* swiftMongoDBExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373E29F91B7E68B800167998 /* swiftMongoDBExampleTests.swift */; };
-		373E2A051B7E68B800167998 /* swiftMongoDBExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373E2A041B7E68B800167998 /* swiftMongoDBExampleUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,11 +38,7 @@
 		373E29EE1B7E68B800167998 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		373E29F01B7E68B800167998 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		373E29F51B7E68B800167998 /* swiftMongoDBExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftMongoDBExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		373E29F91B7E68B800167998 /* swiftMongoDBExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftMongoDBExampleTests.swift; sourceTree = "<group>"; };
-		373E29FB1B7E68B800167998 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		373E2A001B7E68B800167998 /* swiftMongoDBExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftMongoDBExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		373E2A041B7E68B800167998 /* swiftMongoDBExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftMongoDBExampleUITests.swift; sourceTree = "<group>"; };
-		373E2A061B7E68B800167998 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +70,6 @@
 			isa = PBXGroup;
 			children = (
 				373E29E61B7E68B800167998 /* swiftMongoDBExample */,
-				373E29F81B7E68B800167998 /* swiftMongoDBExampleTests */,
-				373E2A031B7E68B800167998 /* swiftMongoDBExampleUITests */,
 				373E29E51B7E68B800167998 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -102,24 +94,6 @@
 				373E29F01B7E68B800167998 /* Info.plist */,
 			);
 			path = swiftMongoDBExample;
-			sourceTree = "<group>";
-		};
-		373E29F81B7E68B800167998 /* swiftMongoDBExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				373E29F91B7E68B800167998 /* swiftMongoDBExampleTests.swift */,
-				373E29FB1B7E68B800167998 /* Info.plist */,
-			);
-			path = swiftMongoDBExampleTests;
-			sourceTree = "<group>";
-		};
-		373E2A031B7E68B800167998 /* swiftMongoDBExampleUITests */ = {
-			isa = PBXGroup;
-			children = (
-				373E2A041B7E68B800167998 /* swiftMongoDBExampleUITests.swift */,
-				373E2A061B7E68B800167998 /* Info.plist */,
-			);
-			path = swiftMongoDBExampleUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,7 +234,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				373E29FA1B7E68B800167998 /* swiftMongoDBExampleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +241,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				373E2A051B7E68B800167998 /* swiftMongoDBExampleUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +311,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -376,6 +349,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_INCLUDE_PATHS = "";
 			};
 			name = Release;
 		};
@@ -474,6 +448,7 @@
 				373E2A0B1B7E68B800167998 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		373E2A0C1B7E68B800167998 /* Build configuration list for PBXNativeTarget "swiftMongoDBExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -482,6 +457,7 @@
 				373E2A0E1B7E68B800167998 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		373E2A0F1B7E68B800167998 /* Build configuration list for PBXNativeTarget "swiftMongoDBExampleUITests" */ = {
 			isa = XCConfigurationList;
@@ -490,6 +466,7 @@
 				373E2A111B7E68B800167998 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

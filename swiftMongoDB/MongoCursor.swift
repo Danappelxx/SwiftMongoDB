@@ -1,54 +1,98 @@
-//
-//  MongoCursor.swift
-//  swiftMongoDB
-//
-//  Created by Dan Appel on 8/20/15.
-//  Copyright © 2015 Dan Appel. All rights reserved.
-//
+////
+////  MongoCursor.swift
+////  swiftMongoDB
+////
+////  Created by Dan Appel on 8/20/15.
+////  Copyright © 2015 Dan Appel. All rights reserved.
+////
 
-import Foundation
-import mongo_c_driver
 
-// MARK: - Cursor
 public class MongoCursor {
+
+    let cursorRAW: _mongoc_cursor
+    let collection: MongoCollection
     
-    internal var cursor = mongo_cursor_alloc()
-    
-    public init(mongodb: MongoDB, collection: MongoCollection) {
-        mongo_cursor_init(self.cursor, mongodb.connection!, collection.identifier)
+    init(collection: MongoCollection, options: MongoOperationOptions) {
+
+        self.collection = collection
+
+        switch options.operation! {
+
+        case .Find:
+            self.cursorRAW = mongoc_collection_find(collection.collectionRAW, options.queryFlags, options.skipUInt32, options.limitUInt32, options.batchSizeUInt32, options.query!, nil, nil)
+            break
+        }
+        
+        var outputDocumentBSONTemp = bson_t()
+        self.outputDocumentBSON = bsonToPointer(&outputDocumentBSONTemp)
+    }
+
+    private func bsonToPointer(inout BSON: bson_t) -> _bson_ptr_immutable {
+        
+        return withUnsafePointer(&BSON, { (BSONPTR) -> _bson_ptr_immutable in
+            return BSONPTR
+        })
     }
     
-    internal init(connection: UnsafeMutablePointer<mongo>, collection: MongoCollection) {
-        mongo_cursor_init(self.cursor, connection, collection.identifier)
+    
+    private var outputDocumentBSON: _bson_ptr_immutable = nil
+
+    var nextDocument: MongoDocument {
+        return MongoDocument(data: self.nextDocumentData)
     }
     
+    var nextDocumentJSON: String {
+        let rawJSON = bson_as_json(self.outputDocumentBSON, nil)
+        let NSJSON = NSString(UTF8String: rawJSON)
+        return String(NSJSON)
+    }
+    
+    var nextDocumentBSON: _bson_ptr_immutable {
+        return self.outputDocumentBSON
+    }
+    
+    var nextDocumentData: DocumentData {
+        // TODO: - Implement this
+        return DocumentData()
+    }
+    
+    var nextIsOK: Bool {
+        return mongoc_cursor_next(self.cursorRAW, &self.outputDocumentBSON)
+    }
+
+    var lastError: bson_error_t {
+        var error = bson_error_t()
+        mongoc_cursor_error(self.cursorRAW, &error)
+        return error
+    }
+
     deinit {
-        mongo_cursor_destroy(cursor)
+        mongoc_cursor_destroy(self.cursorRAW)
     }
-    
-    
-    internal var nextIsOk: Bool {
-        return (mongo_cursor_next(self.cursor) == MONGO_OK)
+}
+
+enum MongoCursorOperation {
+    case Find
+}
+
+struct MongoOperationOptions {
+
+    var operation: MongoCursorOperation?
+    var queryFlags: mongoc_query_flags_t = MONGOC_QUERY_NONE
+    var skip: Int?
+    private var skipUInt32: UInt32 {
+        return UInt32(skip!)
     }
-    
-    internal var currentBSON: UnsafePointer<bson> {
-        return withUnsafePointer(&self.cursor.memory.current) { (bsonPtr) -> UnsafePointer<bson> in
-            return bsonPtr
-        }
+    var limit: Int?
+    private var limitUInt32: UInt32 {
+        return UInt32(limit!)
     }
-    
-    public var current: MongoDocument {
-        return MongoDocument(BSON: &self.cursor.memory.current)
+    var batchSize: Int?
+    private var batchSizeUInt32: UInt32 {
+        return UInt32(batchSize!)
     }
-    
-    internal var query: UnsafeMutablePointer<bson>? {
-        didSet {
-            mongo_cursor_set_query( self.cursor, self.query! );
-            print("did set query")
-        }
-    }
-    
-    private var BSON: UnsafePointer<bson> {
-        return mongo_cursor_bson(self.cursor)
-    }
+
+    var query: _bson_ptr_mutable?
+//    var fields: _bson_ptr_immutable?
+//    var readPrefs: _mongoc_read_prefs?
 }
