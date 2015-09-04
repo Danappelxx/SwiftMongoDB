@@ -22,62 +22,43 @@ class SwiftMongoDBSpec: QuickSpec {
         let collection = MongoCollection(collectionName: "subjects", client: client)
         
         let document = MongoDocument(data: [
-            "hello" : "world",
-            "foo" : 15,
-//            "isGucci" : true,
+            "string" : "string",
+//            "bool" : true,
+            "number" : 123,
+            "numbers" : [1,2,3],
+            "dictionary" : [
+                "key" : "value"
+            ],
+            // this is cheating but whatevs
+            "_id" : [
+                "$oid" : "55ea18cb1baf6a0fdb2191c2"
+            ],
         ])
-//        let testDatabase = MongoDB(database: "database")
-//        let testCollection = MongoCollection(name: "collection")
-//        let testDocument = MongoDocument([
-//                "string" : "string",
-//                "bool" : true,
-//                "numbers" : [1,2,3],
-//                "dictionary" : [
-//                    "key" : "value"
-//                ]
-//            ]
-//        ) 
-//        let blankDocumentData = DocumentData()
-
-        
-        xdescribe("The MongoDB connection") {
-
-            it("connects successfully") {
-
-//                expect(testDatabase.connectionWasSuccessful).to(beTrue())
-            }
-        }
         
         describe("The MongoDB collection") {
 
             afterEach {
-//                try! testCollection.remove(blankDocumentData)
+                try! collection.remove(DocumentData())
             }
 
             it("inserts a document successfully") {
                 
+                let resultBefore = try! collection.find().count
+                
                 try! collection.insert(document)
+                
+                let resultAfter = try! collection.find().count
+                
+                expect(resultAfter - resultBefore == 1).to(beTrue())
 
-                // queries, then inserts, then queries again. succeeds if the second query is larger than the first query by 1
-//
-//                let resultCount1 = try! testCollection.find().count
-//
-//                try! testCollection.insert(testDocument)
-//
-//
-//                let resultCount2 = try! testCollection.find().count
-//
-//                if resultCount2 == 1000 {
-//                    fail()
-//                }
-//
-//                expect( (resultCount2 - resultCount1) == 1).to(beTrue())
             }
 
             // needs to query for specific id, then insert document with said id, then query again
             it("queries for documents successfully") {
-                
+
                 let results = try! collection.find()
+                
+                print(results)
 
 //                let resultCount1 = try! testCollection.find(["_id" : testDocument.id!]).count
 //
@@ -94,6 +75,26 @@ class SwiftMongoDBSpec: QuickSpec {
             }
 
             it("updates documents successfully") {
+
+                try! collection.insert(document)
+
+                let resultBefore = try! collection.findOne(document.data)
+                
+                // run it through the encoder & decoder process to give it fair grounds
+                let resultBeforeData = try! MongoBSONDecoder(BSON: MongoBSONEncoder(data: resultBefore.data).BSONRAW).result
+
+                let newData = [
+                    "_id" : [
+                        "$oid" : "55ea18cb1baf6a0fdb2191c2"
+                    ],
+                    "hey" : "there"
+                ]
+
+                try! collection.update(document.data, newValue: newData)
+
+                let resultAfter = try! collection.findOne(newData)
+
+                expect(resultBeforeData != resultAfter.data && resultAfter.data == newData).to(beTrue())
 
 //                try! testCollection.insert(testDocument)
 //
@@ -112,39 +113,36 @@ class SwiftMongoDBSpec: QuickSpec {
             }
 
             it("removes documents successfully") {
-//                try! testCollection.insert(testDocument)
-//
-//                try! testCollection.remove(["_id" : testDocument.id!])
-//
-//                let documents = try! testCollection.find(["_id" : testDocument.id!])
-//
-//
-//                expect(documents).to(beEmpty())
+
+                try! collection.insert(document)
+
+                let countBefore = try! collection.find().count
+
+                try! collection.remove(document.data)
+
+                let countAfter = try! collection.find().count
+
+                expect(countBefore - countAfter == 1).to(beTrue())
             }
         }
-        
-        xdescribe("The BSON processor") {
-            
+
+        describe("The BSON processor") {
+
             // assumes that decoding works
             it("encodes BSON correctly") {
 
-//                let encodedData = MongoBSON(data: testDocument.data)
-//
-//                let encodedDataRAW = bson_alloc()
-//
-//                encodedData.copyTo(encodedDataRAW)
-//
-//                let decodedData = MongoBSON.getDataFromBSON(encodedDataRAW)
-//
-//                expect(decodedData == testDocument.data).to(beTrue())
+                let encodedDataRAW = try! MongoBSONEncoder(data: document.data).BSONRAW
 
+                let decodedData = try! MongoBSONDecoder(BSON: encodedDataRAW).result
+
+                expect(decodedData == document.data).to(beTrue())
             }
 
             it("decodes BSON correctly") {
 
-//                let decodedData = MongoBSON.getDataFromBSON(testDocument.BSONValue, ignoreObjectId: true)
-//
-//                expect(decodedData == testDocument.data).to(beTrue())
+                let decodedData = try! MongoBSONDecoder(BSON: document.BSONRAW).result
+                
+                expect(decodedData == document.data).to(beTrue())
             }
         }
 

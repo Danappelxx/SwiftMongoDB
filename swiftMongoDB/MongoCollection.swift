@@ -30,8 +30,10 @@ public class MongoCollection {
         mongoc_collection_destroy(self.collectionRAW)
     }
 
-    private func cursor(options: MongoOperationOptions) -> MongoCursor {
-        return MongoCursor(collection: self, options: options)
+    private func cursor(operation operation: MongoCursorOperation, query: _bson_ptr_mutable, options: (queryFlags: mongoc_query_flags_t, skip: Int, limit: Int, batchSize: Int)) -> MongoCursor {
+
+        // ugh so ugly
+        return MongoCursor(collection: self, operation: operation, query: query, options: (queryFlags: options.queryFlags, skip: options.skip, limit: options.limit, batchSize: options.batchSize))
     }
 
     public enum InsertFlags {
@@ -39,7 +41,7 @@ public class MongoCollection {
         case ContinueOnError
     }
 
-    public func insert(document: MongoDocument, flags: InsertFlags = InsertFlags.None, writeConcern: MongoWriteConcern? = nil) throws {
+    public func insert(document: MongoDocument, flags: InsertFlags = InsertFlags.None) throws {
 
         let insertFlags: mongoc_insert_flags_t
         switch flags {
@@ -58,27 +60,55 @@ public class MongoCollection {
             throw error
         }
     }
+    
+    public func insert(document: DocumentData, flags: InsertFlags = InsertFlags.None) throws {
 
-    public func find(query: DocumentData = DocumentData()) throws -> [MongoDocument] {
+        do {
+            try self.insert(MongoDocument(data: document), flags: flags)
+        } catch {
+            throw error
+        }
+    }
 
-        let queryBSON = MongoBSONEncoder(query).BSONRAW
+    public enum QueryFlags {
+        case None
+        case TailableCursor
+        case SlaveOK
+        case OPLogReplay
+        case NoCursorTimout
+        case AwaitData
+        case Exhaust
+        case Partial
+    }
+
+    public func find(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
+
+        let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
+
+        let queryFlags: mongoc_query_flags_t
+        switch flags {
+        case .None: queryFlags = MONGOC_QUERY_NONE; break
+        case .TailableCursor: queryFlags = MONGOC_QUERY_TAILABLE_CURSOR; break
+        case .SlaveOK: queryFlags = MONGOC_QUERY_SLAVE_OK; break
+        case .OPLogReplay: queryFlags = MONGOC_QUERY_OPLOG_REPLAY; break
+        case .NoCursorTimout: queryFlags = MONGOC_QUERY_NO_CURSOR_TIMEOUT; break
+        case .AwaitData: queryFlags = MONGOC_QUERY_AWAIT_DATA; break
+        case .Exhaust: queryFlags = MONGOC_QUERY_EXHAUST; break
+        case .Partial: queryFlags = MONGOC_QUERY_PARTIAL; break
+        }
 
         // standard options - should be customizable later on
-        var options = MongoOperationOptions()
-        options.operation = MongoCursorOperation.Find
-        options.skip = 0
-        options.limit = 0
-        options.batchSize = 0
-
-        options.query = queryBSON
-
-        let cursor = self.cursor(options)
+        let cursor = self.cursor(operation: .Find, query: queryBSON, options: (queryFlags: queryFlags, skip: skip, limit: skip, batchSize: skip))
 
         var outputDocuments = [MongoDocument]()
 
         while cursor.nextIsOK {
             print(cursor.nextDocumentJSON)
-            outputDocuments.append(cursor.nextDocument)
+            
+            guard let nextDocument = cursor.nextDocument else {
+                throw MongoError.CorruptDocument
+            }
+            outputDocuments.append(nextDocument)
         }
 
         if codeToMongoError(cursor.lastError.code) != MongoError.NoError {
@@ -89,5 +119,101 @@ public class MongoCollection {
         }
 
         return outputDocuments
+    }
+    
+    public func findOne(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> MongoDocument {
+        
+        let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
+        
+        let queryFlags: mongoc_query_flags_t
+        switch flags {
+        case .None: queryFlags = MONGOC_QUERY_NONE; break
+        case .TailableCursor: queryFlags = MONGOC_QUERY_TAILABLE_CURSOR; break
+        case .SlaveOK: queryFlags = MONGOC_QUERY_SLAVE_OK; break
+        case .OPLogReplay: queryFlags = MONGOC_QUERY_OPLOG_REPLAY; break
+        case .NoCursorTimout: queryFlags = MONGOC_QUERY_NO_CURSOR_TIMEOUT; break
+        case .AwaitData: queryFlags = MONGOC_QUERY_AWAIT_DATA; break
+        case .Exhaust: queryFlags = MONGOC_QUERY_EXHAUST; break
+        case .Partial: queryFlags = MONGOC_QUERY_PARTIAL; break
+        }
+        
+        // standard options - should be customizable later on
+        let cursor = self.cursor(operation: .Find, query: queryBSON, options: (queryFlags: queryFlags, skip: skip, limit: skip, batchSize: skip))
+        
+        if cursor.nextIsOK {
+            
+            guard let nextDocument = cursor.nextDocument else {
+                throw MongoError.CorruptDocument
+            }
+            
+            return nextDocument
+        }
+        
+        throw MongoError.NoDocumentsMatched
+        
+//        if codeToMongoError(cursor.lastError.code) != MongoError.NoError {
+//            var errorMessage = cursor.lastError.message
+//            print(errorMessageToString(&errorMessage))
+//            
+//            throw codeToMongoError(cursor.lastError.code)
+//        }
+
+    }
+
+    public enum UpdateFlags {
+        case None
+        case Upsert
+        case MultiUpdate
+    }
+
+    public func update(query: DocumentData = DocumentData(), newValue: DocumentData, flags: UpdateFlags = UpdateFlags.None) throws -> Bool {
+
+        let updateFlags: mongoc_update_flags_t
+        switch flags {
+        case .None: updateFlags = MONGOC_UPDATE_NONE; break
+        case .Upsert: updateFlags = MONGOC_UPDATE_UPSERT; break
+        case .MultiUpdate: updateFlags = MONGOC_UPDATE_MULTI_UPDATE; break
+        }
+
+        let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
+
+        let documentBSON = try! MongoBSONEncoder(data: newValue).BSONRAW
+
+        var error = bson_error_t()
+        let success = mongoc_collection_update(self.collectionRAW, updateFlags, queryBSON, documentBSON, nil, &error)
+
+        if codeToMongoError(error.code) != MongoError.NoError {
+            
+            print(errorMessageToString(&error.message))
+
+            throw codeToMongoError(error.code)
+        }
+
+        return success
+    }
+
+    public enum RemoveFlags {
+        case None
+        case SingleRemove
+    }
+
+    public func remove(query: DocumentData = DocumentData(), flags: RemoveFlags = RemoveFlags.None) throws -> Bool {
+
+        let removeFlags: mongoc_remove_flags_t
+        switch flags {
+        case .None: removeFlags = MONGOC_REMOVE_NONE; break
+        case .SingleRemove: removeFlags = MONGOC_REMOVE_SINGLE_REMOVE; break
+        }
+
+        let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
+
+        var error = bson_error_t()
+        let success = mongoc_collection_remove(self.collectionRAW, removeFlags, queryBSON, nil, &error)
+
+        if codeToMongoError(error.code) != MongoError.NoError {
+            throw codeToMongoError(error.code)
+        }
+
+        return success
     }
 }

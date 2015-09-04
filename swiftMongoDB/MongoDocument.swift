@@ -17,7 +17,7 @@ public class MongoDocument {
 
         self.data = data
 
-        MongoBSONEncoder(data).copyTo(self.BSONRAW)
+        try! MongoBSONEncoder(data: data).copyTo(self.BSONRAW)
     }
 
     deinit {
@@ -31,6 +31,14 @@ public class MongoDocument {
 public func == (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
     
     return (lhs.data as! [String : NSObject]) == (rhs.data as! [String : NSObject])
+}
+
+public func != (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
+    return !(lhs == rhs)
+}
+
+public func != (lhs: DocumentData, rhs: DocumentData) -> Bool {
+    return !(lhs == rhs)
 }
 
 public func == (lhs: DocumentData, rhs: DocumentData) -> Bool {

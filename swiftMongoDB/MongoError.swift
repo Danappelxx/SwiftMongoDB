@@ -19,6 +19,9 @@ internal enum MongoError: ErrorType {
 
     case UnknownErrorOccurred
     
+    case TypeNotSupported
+    
+    
     case NoError
 
 }

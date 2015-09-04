@@ -12,14 +12,15 @@ public class MongoCursor {
     let cursorRAW: _mongoc_cursor
     let collection: MongoCollection
     
-    init(collection: MongoCollection, options: MongoOperationOptions) {
+    // this is way too ugly
+    init(collection: MongoCollection, operation: MongoCursorOperation, query: _bson_ptr_mutable, options: (queryFlags: mongoc_query_flags_t, skip: Int, limit: Int, batchSize: Int)) {
 
         self.collection = collection
-
-        switch options.operation! {
+        
+        switch operation {
 
         case .Find:
-            self.cursorRAW = mongoc_collection_find(collection.collectionRAW, options.queryFlags, options.skipUInt32, options.limitUInt32, options.batchSizeUInt32, options.query!, nil, nil)
+            self.cursorRAW = mongoc_collection_find(collection.collectionRAW, options.queryFlags, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, query, nil, nil)
             break
         }
         
@@ -37,8 +38,13 @@ public class MongoCursor {
     
     private var outputDocumentBSON: _bson_ptr_immutable = nil
 
-    var nextDocument: MongoDocument {
-        return MongoDocument(data: self.nextDocumentData)
+    var nextDocument: MongoDocument? {
+        
+        if let documentData = self.nextDocumentData {
+            return MongoDocument(data: documentData)
+        }
+        
+        return nil
     }
     
     var nextDocumentJSON: String {
@@ -51,9 +57,13 @@ public class MongoCursor {
         return self.outputDocumentBSON
     }
     
-    var nextDocumentData: DocumentData {
-        // TODO: - Implement this
-        return DocumentData()
+    var nextDocumentData: DocumentData? {
+        
+        do {
+            return try MongoBSONDecoder(BSON: self.nextDocumentBSON).result
+        } catch {
+            return nil
+        }
     }
     
     var nextIsOK: Bool {

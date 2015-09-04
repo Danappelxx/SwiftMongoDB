@@ -7,6 +7,7 @@
 ////
 
 import Foundation
+import SwiftyJSON
 
 class MongoBSONEncoder {
 
@@ -14,15 +15,15 @@ class MongoBSONEncoder {
 
     let data: DocumentData
 
-    init(_ data: DocumentData) {
+    init(data: DocumentData) throws {
 
         self.BSONRAW = bson_new()
         self.data = data
-
+        
         // go through each key:value pair and append it to the bson object
-        for (key, value) in data {
-            self.processPair(key: key, value: value, BSON: self.BSONRAW)
-        }
+//        for (key, value) in data {
+//            self.processPair(key: key, value: value, BSON: self.BSONRAW)
+//        }
 
         // the following line causes the application to crash (invalid bson)
 //        bson_append_bool(self.BSONRAW, "hey", 3, true)
@@ -31,10 +32,15 @@ class MongoBSONEncoder {
 //        var jsonerror = bson_error_t()
 //        bson_init_from_json(self.BSONRAW, "{\"hey\": true}", -1, &jsonerror)
 
-        let jsonRAW = bson_as_json(self.BSONRAW, nil)
-        print(jsonRAW)
-        let jsonStr = NSString(UTF8String: jsonRAW)
-        print(jsonStr)
+        
+        guard let JSONData = JSON(self.data).rawString() else {
+            throw MongoError.CorruptDocument
+        }
+
+        let JSONDataRAW = NSString(string: JSONData).UTF8String
+
+        var error = bson_error_t()
+        bson_init_from_json(self.BSONRAW, JSONDataRAW, JSONData.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), &error)
     }
 
     deinit {
@@ -55,16 +61,18 @@ class MongoBSONEncoder {
 
     private func processPair(key key: String, value: AnyObject, BSON: UnsafeMutablePointer<bson_t>) {
 
-        if key == "_id" {
-
-            let oidPtr = UnsafeMutablePointer<bson_oid_t>.alloc(1)
-
-            bson_oid_init_from_string(oidPtr, (value as! String))
-
-            bson_append_oid(BSON, key, Int32(key.characters.count), oidPtr)
-
-            return
-        }
+//        if key == "_id" {
+//
+//            let oidPtr = UnsafeMutablePointer<bson_oid_t>.alloc(1)
+//
+//            bson_oid_init_from_string(oidPtr, (value as! String))
+//
+//            bson_append_oid(BSON, key, Int32(key.characters.count), oidPtr)
+//            
+//            oidPtr.dealloc(1)
+//
+//            return
+//        }
 
         switch value {
 
@@ -76,6 +84,7 @@ class MongoBSONEncoder {
             
         // covers both booleans and integers
         case let value as NSNumber:
+            
             
             if value.isBool {
                 bson_append_bool(BSON, key, lengthOfKey(key), value.boolValue)
@@ -367,6 +376,188 @@ class MongoBSONEncoder {
 //    }
 }
 
+class MongoBSONDecoder {
+
+    let BSONRAW: _bson_ptr_immutable
+
+    // makes result read only
+    var result: DocumentData {
+        return self.resultData
+    }
+
+    private var resultData: DocumentData
+    var resultJSON: String {
+        return String( NSString(UTF8String: bson_as_json(self.BSONRAW, nil) ) )
+    }
+    
+    class func BSONToJSON(BSON: _bson_ptr_immutable) -> String {
+        
+        return String( NSString(UTF8String: bson_as_json(BSON, nil) ) )
+    }
+
+    init(BSON: _bson_ptr_immutable) throws {
+        self.BSONRAW = BSON
+
+        self.resultData = DocumentData()
+
+        do {
+            self.resultData = try decode(BSON)
+        } catch {
+            throw error
+        }
+    }
+    
+    private func decode(BSON: _bson_ptr_immutable) throws -> DocumentData {
+        
+        let JSONRAW = bson_as_json(BSON, nil)
+        let JSONStringRAW = NSString(UTF8String: JSONRAW)
+        
+
+        // this is broken up into 3 pieces for readability
+
+        guard let JSONString = JSONStringRAW else {
+
+            throw MongoError.CorruptDocument
+        }
+
+        guard let JSONDataRAW = JSONString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) else {
+
+            throw MongoError.CorruptDocument
+
+        }
+
+        guard let JSONData = JSON(data: JSONDataRAW).dictionaryObject else {
+            throw MongoError.CorruptDocument
+        }
+
+        return JSONData
+        
+        //        var iterator = bson_iter_t()
+        //
+        //        if !bson_iter_init(&iterator, BSON) {
+        //            throw MongoError.UnknownErrorOccurred
+        //        }
+        //
+        //        var result = DocumentData()
+        //
+        //        while true {
+        //            let type = bson_iter_type(&iterator)
+        //
+        //            // eod = done
+        //            if type == BSON_TYPE_EOD {
+        //                break
+        //            }
+        //
+        //            do {
+        //                let (key, val) = try typeAndIteratorToKeyValPair(type, iterator: &iterator)
+        //
+        //                result[key] = val
+        //            } catch {
+        //                throw error
+        //            }
+        //
+        //            bson_iter_next(&iterator)
+        //        }
+        //        
+        //        return result
+    }
+    
+    private func typeAndIteratorToKeyValPair(type: bson_type_t, inout iterator: bson_iter_t) throws -> (key: String, val: AnyObject) {
+
+        let key = String( NSString(UTF8String: bson_iter_key(&iterator) ) )
+
+        let val: AnyObject
+        switch type {
+
+        case BSON_TYPE_INT32:
+
+            val = Int(bson_iter_int32(&iterator))
+
+        case BSON_TYPE_INT64:
+
+            val = Int(bson_iter_int64(&iterator))
+            
+        case BSON_TYPE_DOUBLE:
+            
+            val = bson_iter_double(&iterator)
+
+        case BSON_TYPE_BOOL:
+
+            val = bson_iter_bool(&iterator)
+
+        case BSON_TYPE_UTF8:
+
+            val = String( NSString(UTF8String: bson_iter_utf8(&iterator, nil) ) )
+
+//        case BSON_TYPE_ARRAY:
+//
+//            var arr = UnsafePointer<UInt8>()
+//
+//            bson_iter_array(&iterator, nil, &arr)
+//
+//            val = arr as! AnyObject
+
+//        case BSON_TYPE_DOCUMENT:
+//
+//            var doc = UnsafePointer<UInt8>()
+//
+//            bson_iter_document(&iterator, nil, &doc)
+//
+//            val = doc as! AnyObject
+
+//        case BSON_TYPE_OID:
+//
+//            let oid = bson_iter_oid(&iterator)
+//
+//            let oidStr = UnsafeMutablePointer<Int8>.alloc(100)
+//            bson_oid_to_string(oid, oidStr)
+//
+//            val = String( NSString(UTF8String: oidStr) )
+//            
+//            oidStr.dealloc(100)
+
+        default:
+            
+            print("type with identifier \(type) is not supported")
+            val = TypeNotSupported()
+
+//            throw MongoError.TypeNotSupported
+        }
+
+        return (key, val)
+
+        //        public var BSON_TYPE_EOD: bson_type_t { get }
+        //        public var BSON_TYPE_DOUBLE: bson_type_t { get }
+        //        public var BSON_TYPE_UTF8: bson_type_t { get }
+        //        public var BSON_TYPE_DOCUMENT: bson_type_t { get }
+        //        public var BSON_TYPE_ARRAY: bson_type_t { get }
+        //        public var BSON_TYPE_BINARY: bson_type_t { get }
+        //        public var BSON_TYPE_UNDEFINED: bson_type_t { get }
+        //        public var BSON_TYPE_OID: bson_type_t { get }
+        //        public var BSON_TYPE_BOOL: bson_type_t { get }
+        //        public var BSON_TYPE_DATE_TIME: bson_type_t { get }
+        //        public var BSON_TYPE_NULL: bson_type_t { get }
+        //        public var BSON_TYPE_REGEX: bson_type_t { get }
+        //        public var BSON_TYPE_DBPOINTER: bson_type_t { get }
+        //        public var BSON_TYPE_CODE: bson_type_t { get }
+        //        public var BSON_TYPE_SYMBOL: bson_type_t { get }
+        //        public var BSON_TYPE_CODEWSCOPE: bson_type_t { get }
+        //        public var BSON_TYPE_INT32: bson_type_t { get }
+        //        public var BSON_TYPE_TIMESTAMP: bson_type_t { get }
+        //        public var BSON_TYPE_INT64: bson_type_t { get }
+        //        public var BSON_TYPE_MAXKEY: bson_type_t { get }
+        //        public var BSON_TYPE_MINKEY: bson_type_t { get }
+    }
+    
+    private class TypeNotSupported {
+        
+    }
+}
+
+// for the switch statement to work
+private func ~=(lhs: bson_type_t, rhs: bson_type_t ) -> Bool {
+    return lhs.rawValue == rhs.rawValue
+}
 
 
 // Stolen from SwiftyJSON
@@ -379,8 +570,8 @@ private let falseObjCType = String.fromCString(falseNumber.objCType)
 
 // MARK: - NSNumber: Comparable
 
-extension NSNumber: Swift.Comparable {
-
+//extension NSNumber: Swift.Comparable {
+extension NSNumber {
     /// Returns whether the number is of boolean type
     var isBool:Bool {
         get {
