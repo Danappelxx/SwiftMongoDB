@@ -14,29 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef MONGOC_READ_PREFS_PRIVATE_H
-#define MONGOC_READ_PREFS_PRIVATE_H
+#ifndef MONGOC_OPCODE_PRIVATE_H
+#define MONGOC_OPCODE_PRIVATE_H
 
-#if !defined (MONGOC_I_AM_A_DRIVER) && !defined (MONGOC_COMPILATION)
-#error "Only <mongoc.h> can be included directly."
-#endif
+#include "mongoc-opcode.h"
 
-#include "bson.h"
+bool _mongoc_opcode_needs_primary(mongoc_opcode_t opcode);
 
-#include "mongoc-cluster-private.h"
-#include "mongoc-read-prefs.h"
-
-
-BSON_BEGIN_DECLS
-
-
-struct _mongoc_read_prefs_t
-{
-   mongoc_read_mode_t mode;
-   bson_t             tags;
-};
-
-BSON_END_DECLS
-
-
-#endif /* MONGOC_READ_PREFS_PRIVATE_H */
+#endif /* MONGOC_OPCODE_PRIVATE_H */
