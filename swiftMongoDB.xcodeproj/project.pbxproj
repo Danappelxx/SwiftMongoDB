@@ -375,10 +375,10 @@
 			children = (
 				37F58D121B9F47FF00E758C5 /* mongoc.h */,
 				37F58CB21B9F47FF00E758C5 /* bson.h */,
-				37F58CB51B9F47FF00E758C5 /* mongoc */,
-				37F58C9A1B9F47FF00E758C5 /* bson */,
 				37F58CB31B9F47FF00E758C5 /* libbson.dylib */,
 				37F58CB41B9F47FF00E758C5 /* libmongoc.dylib */,
+				37F58CB51B9F47FF00E758C5 /* mongoc */,
+				37F58C9A1B9F47FF00E758C5 /* bson */,
 			);
 			path = dependencies;
 			sourceTree = "<group>";

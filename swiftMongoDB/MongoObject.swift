@@ -23,9 +23,9 @@ public extension MongoObject {
     /**
     - returns: Returns a MongoDocument initialized from the Schema.
     */
-//    func Document() -> MongoDocument {
-//        return MongoDocument(withSchemaObject: self)
-//    }
+    func Document() -> MongoDocument {
+        return MongoDocument(withSchemaObject: self)
+    }
     
     /**
     - returns: Returns each of the properties of class in the form of DocumentData ([String : AnyObject])

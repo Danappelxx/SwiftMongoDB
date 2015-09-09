@@ -53,11 +53,10 @@ public class MongoCollection {
 
         mongoc_collection_insert(self.collectionRAW, insertFlags, document.BSONRAW, nil, &bsonError)
 
-        let error = codeToMongoError(bsonError.code)
-        if error != MongoError.NoError {
+        if bsonError.code.mongoError != MongoError.NoError {
 
             print(errorMessageToString(&bsonError.message))
-            throw error
+            throw bsonError.code.mongoError
         }
     }
     
@@ -83,7 +82,8 @@ public class MongoCollection {
 
     public func find(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
 
-        let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
+        var queryBSON = bson_t()
+        try! MongoBSONEncoder(data: query).copyTo(&queryBSON)
 
         let queryFlags: mongoc_query_flags_t
         switch flags {
@@ -98,7 +98,7 @@ public class MongoCollection {
         }
 
         // standard options - should be customizable later on
-        let cursor = self.cursor(operation: .Find, query: queryBSON, options: (queryFlags: queryFlags, skip: skip, limit: skip, batchSize: skip))
+        let cursor = self.cursor(operation: .Find, query: &queryBSON, options: (queryFlags: queryFlags, skip: skip, limit: skip, batchSize: skip))
 
         var outputDocuments = [MongoDocument]()
 
@@ -111,17 +111,17 @@ public class MongoCollection {
             outputDocuments.append(nextDocument)
         }
 
-        if codeToMongoError(cursor.lastError.code) != MongoError.NoError {
+        if cursor.lastError.code.mongoError != MongoError.NoError {
             var errorMessage = cursor.lastError.message
             print(errorMessageToString(&errorMessage))
 
-            throw codeToMongoError(cursor.lastError.code)
+            throw cursor.lastError.code.mongoError
         }
 
         return outputDocuments
     }
     
-    public func findOne(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> MongoDocument {
+    public func findOne(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> MongoDocument? {
         
         let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
         
@@ -149,15 +149,7 @@ public class MongoCollection {
             return nextDocument
         }
         
-        throw MongoError.NoDocumentsMatched
-        
-//        if codeToMongoError(cursor.lastError.code) != MongoError.NoError {
-//            var errorMessage = cursor.lastError.message
-//            print(errorMessageToString(&errorMessage))
-//            
-//            throw codeToMongoError(cursor.lastError.code)
-//        }
-
+        return nil
     }
 
     public enum UpdateFlags {
@@ -175,18 +167,20 @@ public class MongoCollection {
         case .MultiUpdate: updateFlags = MONGOC_UPDATE_MULTI_UPDATE; break
         }
 
-        let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
+        var queryBSON = bson_t()
+        try! MongoBSONEncoder(data: query).copyTo(&queryBSON)
 
-        let documentBSON = try! MongoBSONEncoder(data: newValue).BSONRAW
+        var documentBSON = bson_t()
+        try! MongoBSONEncoder(data: newValue).copyTo(&documentBSON)
 
         var error = bson_error_t()
-        let success = mongoc_collection_update(self.collectionRAW, updateFlags, queryBSON, documentBSON, nil, &error)
+        let success = mongoc_collection_update(self.collectionRAW, updateFlags, &queryBSON, &documentBSON, nil, &error)
 
-        if codeToMongoError(error.code) != MongoError.NoError {
+        if error.code.mongoError != MongoError.NoError {
             
             print(errorMessageToString(&error.message))
 
-            throw codeToMongoError(error.code)
+            throw error.code.mongoError
         }
 
         return success
@@ -205,13 +199,14 @@ public class MongoCollection {
         case .SingleRemove: removeFlags = MONGOC_REMOVE_SINGLE_REMOVE; break
         }
 
-        let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
+        var queryBSON = bson_t()
+        try! MongoBSONEncoder(data: query).copyTo(&queryBSON)
 
         var error = bson_error_t()
-        let success = mongoc_collection_remove(self.collectionRAW, removeFlags, queryBSON, nil, &error)
+        let success = mongoc_collection_remove(self.collectionRAW, removeFlags, &queryBSON, nil, &error)
 
-        if codeToMongoError(error.code) != MongoError.NoError {
-            throw codeToMongoError(error.code)
+        if error.code.mongoError != MongoError.NoError {
+            throw error.code.mongoError
         }
 
         return success

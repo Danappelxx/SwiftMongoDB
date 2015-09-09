@@ -9,6 +9,7 @@
 
 import Quick
 import Nimble
+import SwiftyJSON
 @testable import swiftMongoDB
 
 class SwiftMongoDBSpec: QuickSpec {
@@ -20,10 +21,10 @@ class SwiftMongoDBSpec: QuickSpec {
         let client = try! MongoClient(host: "localhost", port: 27017, database: "test")
 
         let collection = MongoCollection(collectionName: "subjects", client: client)
-        
+
         let document = MongoDocument(data: [
             "string" : "string",
-//            "bool" : true,
+            "bool" : true,
             "number" : 123,
             "numbers" : [1,2,3],
             "dictionary" : [
@@ -35,9 +36,11 @@ class SwiftMongoDBSpec: QuickSpec {
             ],
         ])
         
+        try! collection.remove()
+        
         describe("The MongoDB collection") {
 
-            afterEach {
+            beforeEach {
                 try! collection.remove(DocumentData())
             }
 
@@ -56,60 +59,43 @@ class SwiftMongoDBSpec: QuickSpec {
             // needs to query for specific id, then insert document with said id, then query again
             it("queries for documents successfully") {
 
-                let results = try! collection.find()
+                let objId = ["$oid":"55ef8ab5bb6a9b5717de15e9"]
                 
-                print(results)
+                let resultBefore = try! collection.find(["_id":objId]).count
+                
+                var doc2 = document.data
+                doc2["_id"] = objId
+                
+                try! collection.insert(doc2)
+                
+                let resultAfter = try! collection.find(["_id":objId]).count
 
-//                let resultCount1 = try! testCollection.find(["_id" : testDocument.id!]).count
-//
-//                try! testCollection.insert(testDocument)
-//
-//                let resultCount2 = try! testCollection.find(["_id" : testDocument.id!]).count
-//
-//                if resultCount2 == 1000 {
-//                    fail()
-//                }
-//                
-//                // this could fail if the database wasn't cleaned before running this test
-//                expect( (resultCount2 - resultCount1) == 1).to(beTrue())
+                expect(resultAfter - resultBefore == 1).to(beTrue())
             }
 
             it("updates documents successfully") {
 
                 try! collection.insert(document)
 
-                let resultBefore = try! collection.findOne(document.data)
-                
+                let resultBefore = try! collection.find(document.data)[0]
+
                 // run it through the encoder & decoder process to give it fair grounds
-                let resultBeforeData = try! MongoBSONDecoder(BSON: MongoBSONEncoder(data: resultBefore.data).BSONRAW).result
+                var resultBeforeDataRAW = bson_t()
+                try! MongoBSONEncoder(data: resultBefore.data).copyTo(&resultBeforeDataRAW)
+                let resultBeforeData = try! MongoBSONDecoder(BSON: &resultBeforeDataRAW).result
 
                 let newData = [
-                    "_id" : [
-                        "$oid" : "55ea18cb1baf6a0fdb2191c2"
-                    ],
+                    "_id" : document.data["_id"]!,
                     "hey" : "there"
                 ]
 
                 try! collection.update(document.data, newValue: newData)
 
-                let resultAfter = try! collection.findOne(newData)
+                let resultAfter = try! collection.find(newData)[0]
 
-                expect(resultBeforeData != resultAfter.data && resultAfter.data == newData).to(beTrue())
-
-//                try! testCollection.insert(testDocument)
-//
-//                let result1 = try! testCollection.findOne(id: testDocument.id!)
-//
-//
-//                try! testCollection.update(id: testDocument.id!, document: ["blank" : "document"], type: MongoCollection.UpdateType.Basic)
-//
-//                let result2 = try! testCollection.findOne(["blank" : "document"])
-//
-//
-//                result1.printSelf()
-//                result2.printSelf()
-//
-//                expect(result1 == result2).toNot(beTrue())
+                let newMatchesOld = resultBeforeData == resultAfter.data
+                let newMatchesNew = resultAfter.data == newData
+                expect(!newMatchesOld && newMatchesNew).to(beTrue())
             }
 
             it("removes documents successfully") {
@@ -131,17 +117,22 @@ class SwiftMongoDBSpec: QuickSpec {
             // assumes that decoding works
             it("encodes BSON correctly") {
 
-                let encodedDataRAW = try! MongoBSONEncoder(data: document.data).BSONRAW
+                var encodedDataRAW = bson_t()
+                try! MongoBSONEncoder(data: document.data).copyTo(&encodedDataRAW)
+                
+                let encodedData = MongoBSONDecoder.BSONToJSON(&encodedDataRAW)!.parseJSON!
+                let encodedDataJSON = JSON(encodedData).rawString()!
+                
+                let decodedData = JSON(document.data).rawString()!.parseJSON!
+                let decodedDataJSON = JSON(decodedData).rawString()!
 
-                let decodedData = try! MongoBSONDecoder(BSON: encodedDataRAW).result
-
-                expect(decodedData == document.data).to(beTrue())
+                expect(encodedDataJSON == decodedDataJSON).to(beTrue())
             }
 
             it("decodes BSON correctly") {
 
                 let decodedData = try! MongoBSONDecoder(BSON: document.BSONRAW).result
-                
+
                 expect(decodedData == document.data).to(beTrue())
             }
         }
@@ -155,25 +146,25 @@ class SwiftMongoDBSpec: QuickSpec {
 //                expect(createUserResult).to(beTrue())
 //            }
 //        }
-//
-//        describe("The Mongo objects") {
-//
-//            struct TestObject: MongoObject {
-//                var prop1: String = "Str"
-//                var prop2: Int = 10
-//                var prop3: Bool = true
-//                var prop4: [String] = ["One", "Two", "Three", "Four"]
-//                var prop5: [String : AnyObject] = ["Hello" : "World", "Foo" : "Bar"]
-//            }
-//
-//            it("properly converts into a document") {
-//
-//                let testObject = TestObject()
-//
-//                let documentFromObject = testObject.Document()
-//
-//                expect(testObject.properties() == documentFromObject.data).to(beTrue())
-//            }
-//        }
+
+        describe("The Mongo objects") {
+
+            struct TestObject: MongoObject {
+                var prop1: String = "Str"
+                var prop2: Int = 10
+                var prop3: Bool = true
+                var prop4: [String] = ["One", "Two", "Three", "Four"]
+                var prop5: [String : AnyObject] = ["Hello" : "World", "Foo" : "Bar"]
+            }
+
+            it("properly converts into a document") {
+
+                let testObject = TestObject()
+
+                let documentFromObject = testObject.Document()
+
+                expect(testObject.properties() == documentFromObject.data).to(beTrue())
+            }
+        }
     }
 }

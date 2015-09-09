@@ -8,32 +8,44 @@
 
 import Foundation
 
-internal enum MongoError: ErrorType {
+public enum MongoError: ErrorType {
 
-    case ConnectionNotEstablished
-    case NoDocumentsMatched
-    
-    case ConnectionToHostFailed
-    
-    case CorruptDocument
-
-    case UnknownErrorOccurred
+    // BSON
     
     case TypeNotSupported
-    
-    
-    case NoError
+    case CorruptDocument
 
+    // Client
+    case NoServersFound
+    case ConnectionToHostFailed
+    case ConnectionNotEstablished
+    case FailedToReadBytes
+
+    /// Collection
+    // Query
+    case NoDocumentsMatched
+    // Insert
+    case DuplicateObjectID
+    
+    // General
+    case NoError
+    case UnknownErrorOccurred
 }
 
 internal func codeToMongoError(code: UInt32) -> MongoError {
     
     switch code {
     case 0: return MongoError.NoError
+        
+    case 4: return MongoError.FailedToReadBytes
     
     case 5: return MongoError.ConnectionToHostFailed
         
     case 18: return MongoError.CorruptDocument
+        
+    case 11000: return MongoError.DuplicateObjectID
+        
+    case 13053: return MongoError.NoServersFound
 
     default:
         return MongoError.UnknownErrorOccurred
@@ -43,5 +55,12 @@ internal func codeToMongoError(code: UInt32) -> MongoError {
 internal func errorMessageToString(inout error: _mongoc_error_message) -> String {
     return withUnsafePointer(&error) {
         String.fromCString(UnsafePointer($0))!
+    }
+}
+
+// just to be less verbose - kind of silly to extend an integer, however :)
+extension UInt32 {
+    internal var mongoError: MongoError {
+        return codeToMongoError(self)
     }
 }
