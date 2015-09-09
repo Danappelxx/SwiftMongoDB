@@ -1,13 +1,12 @@
-
 Pod::Spec.new do |s|
 
   s.name         = "SwiftMongoDB"
-  s.version      = "0.1.1"
+  s.version      = "0.2.0"
   s.summary      = "SwiftMongoDB is a Swifter way to interface with MongoDB"
   s.description  = <<-DESC
                    SwiftMongoDB provides you with a very clean api through which you can interface with MongoDB.
 
-                   Includes most basic MongoDB features, more coming (hopefully) very soon.
+                   Currently supports most basic operations (more features coming soon!).
                    DESC
   s.homepage     = "https://github.com/danappelxx/SwiftMongoDB"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
@@ -18,6 +17,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
 
   s.source_files  = 'swiftMongoDB', 'swiftMongoDB/*.{h,swift}'
-  s.dependency 'mongo-c-driver', '~> 0.8.1'
+  s.dependency 'SwiftyJSON', :branch 'xcode7'
+  s.library = 'mongoc', 'bson'
 
 end
