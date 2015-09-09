@@ -14,8 +14,8 @@ public class MongoClient {
     public var databaseName: String? {
         return self.databaseNameInternal
     }
-    private var databaseNameInternal: String?
-    
+    private var databaseNameInternal = String()
+
     
     public let port: Int
     public let host: String
@@ -26,16 +26,18 @@ public class MongoClient {
 
     public init(host: String, port: Int, database: String? = nil) throws {
 
-        self.clientURI = "mongodb://\(host):\(port)"
-        
-        if let database = database {
-            self.databaseNameInternal = database
-        }
+        self.clientURI = "mongodb://\(host):\(port)"        
 
         self.host = host
         self.port = port
 
         self.clientRAW = mongoc_client_new(self.clientURI)
+
+        if database == nil {
+            self.databaseNameInternal = self.getDefaultDatabaseName()
+        } else {
+            self.databaseNameInternal = database!
+        }
 
         mongoc_init()
 
@@ -95,6 +97,15 @@ public class MongoClient {
         
         return names
         
+    }
+    
+    public func getDefaultDatabaseName() -> String {
+        let database = mongoc_client_get_default_database(self.clientRAW)
+
+        let databaseNameRAW = mongoc_database_get_name(database)
+        let databaseName = NSString(UTF8String: databaseNameRAW)
+
+        return databaseName! as String
     }
 
 //    public func getDatabases() -> Void {
