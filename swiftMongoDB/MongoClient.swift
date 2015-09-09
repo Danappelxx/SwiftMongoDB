@@ -11,7 +11,12 @@ import Foundation
 public class MongoClient {
 
     public let clientURI: String
-    public let databaseName: String
+    public var databaseName: String? {
+        return self.databaseNameInternal
+    }
+    private var databaseNameInternal: String?
+    
+    
     public let port: Int
     public let host: String
 
@@ -19,10 +24,14 @@ public class MongoClient {
 
 
 
-    public init(host: String, port: Int, database databaseName: String) throws {
+    public init(host: String, port: Int, database: String? = nil) throws {
 
         self.clientURI = "mongodb://\(host):\(port)"
-        self.databaseName = databaseName
+        
+        if let database = database {
+            self.databaseNameInternal = database
+        }
+
         self.host = host
         self.port = port
 
@@ -41,7 +50,59 @@ public class MongoClient {
         }
     }
     
+    public func setDatabaseName(name: String) {
+        self.databaseNameInternal = name
+    }
+    
     deinit {
         mongoc_client_destroy(self.clientRAW)
     }
+
+
+    public func getDatabaseNames() -> [String] {
+        var error = bson_error_t()
+        let namesRAW = mongoc_client_get_database_names(self.clientRAW, &error)
+
+        var names = [String]()
+
+        for (var i = 0; namesRAW.advancedBy(i).memory != nil; i++) {
+            let nameRawCur = namesRAW.advancedBy(i)
+
+            let currName = NSString(UTF8String: nameRawCur.memory)!
+
+            names.append(currName as String)
+        }
+
+        return names
+    }
+    
+    public func getCollectionNamesInDatabase(database: String) -> [String] {
+        
+        let database = mongoc_client_get_database(self.clientRAW, database)
+        
+        var error = bson_error_t()
+        let namesRAW = mongoc_database_get_collection_names(database, &error)
+        
+        var names = [String]()
+        
+        for (var i = 0; namesRAW.advancedBy(i).memory != nil; i++) {
+            let nameRawCur = namesRAW.advancedBy(i)
+            
+            let currName = NSString(UTF8String: nameRawCur.memory)!
+            
+            names.append(currName as String)
+        }
+        
+        return names
+        
+    }
+
+//    public func getDatabases() -> Void {
+//        
+//        var error = bson_error_t()
+//        let databases = mongoc_client_find_databases(self.clientRAW, &error)
+//    }
 }
+
+
+

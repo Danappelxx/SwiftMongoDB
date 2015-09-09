@@ -18,7 +18,7 @@ class SwiftMongoDBSpec: QuickSpec {
         
         // This suite assumes that the mongodb process is running
 
-        let client = try! MongoClient(host: "localhost", port: 27017, database: "test")
+        let client = try! MongoClient(host: "localhost", port: 27017, database: "test")/
 
         let collection = MongoCollection(collectionName: "subjects", client: client)
 
@@ -37,6 +37,23 @@ class SwiftMongoDBSpec: QuickSpec {
         ])
         
         try! collection.remove()
+        
+        describe("The MongoDB client") {
+            
+            it("can list the databases") {
+                let databases = client.getDatabaseNames()
+
+                expect(databases.contains("test")).to(beTrue())
+            }
+            
+            it("can list the collections") {
+                
+                let collections = client.getCollectionNamesInDatabase("test")
+                
+                expect(collections.contains("subjects")).to(beTrue())
+            }
+            
+        }
         
         describe("The MongoDB collection") {
 

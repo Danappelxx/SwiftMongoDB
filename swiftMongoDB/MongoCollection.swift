@@ -21,7 +21,7 @@ public class MongoCollection {
 
         self.collectionName = collectionName
 
-        self.collectionRAW = mongoc_client_get_collection(self.clientRAW, self.client.databaseName, self.collectionName)
+        self.collectionRAW = mongoc_client_get_collection(self.clientRAW, self.client.databaseName!, self.collectionName)
 
     }
 
