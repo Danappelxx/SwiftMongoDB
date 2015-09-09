@@ -18,7 +18,7 @@ class SwiftMongoDBSpec: QuickSpec {
         
         // This suite assumes that the mongodb process is running
 
-        let client = try! MongoClient(host: "localhost", port: 27017, database: "test")/
+        let client = try! MongoClient(host: "localhost", port: 27017, database: "test")
 
         let collection = MongoCollection(collectionName: "subjects", client: client)
 
@@ -154,15 +154,32 @@ class SwiftMongoDBSpec: QuickSpec {
             }
         }
 
-//        describe("The MongoDB commands") {
-//
+        describe("The MongoDB commands") {
+
+            context("the collection commands") {
+//                { collStats: "collection" , scale : 1024, verbose: true }
+                
+                it("performs collStats correctly") {
+                    
+                    let command: DocumentData = [
+                        "collStats" : collection.collectionName,
+                    ]
+
+                    try! collection.performBasicCollectionCommand(command)
+                    
+                    // lol
+                    expect(true).to(beTrue())
+
+                }
+            }
+            
 //            it("create users successfully") {
 //
 //                let createUserResult = testDatabase.createUser(username: "Test", password: "12345")
 //
 //                expect(createUserResult).to(beTrue())
 //            }
-//        }
+        }
 
         describe("The Mongo objects") {
 

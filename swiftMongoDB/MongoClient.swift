@@ -11,12 +11,16 @@ import Foundation
 public class MongoClient {
 
     public let clientURI: String
-    public var databaseName: String? {
+    public var databaseName: String {
         return self.databaseNameInternal
     }
     private var databaseNameInternal = String()
-
     
+    private var databaseRAW: _mongoc_database {
+        return mongoc_client_get_database(self.clientRAW, self.databaseName)
+    }
+
+
     public let port: Int
     public let host: String
 
@@ -107,13 +111,44 @@ public class MongoClient {
 
         return databaseName! as String
     }
+    
+    
+    
+    public func performBasicClientCommand(command: DocumentData) throws -> DocumentData {
 
-//    public func getDatabases() -> Void {
-//        
-//        var error = bson_error_t()
-//        let databases = mongoc_client_find_databases(self.clientRAW, &error)
-//    }
+        var commandRAW = bson_t()
+        try MongoBSONEncoder(data: command).copyTo(&commandRAW)
+
+        var reply = bson_t()
+        var error = bson_error_t()
+        
+        mongoc_client_command_simple(self.clientRAW, self.databaseNameInternal, &commandRAW, nil, &reply, &error)
+
+        if error.code.mongoError != MongoError.NoError {
+            print(errorMessageToString(&error.message))
+            throw error.code.mongoError
+        }
+
+        return try MongoBSONDecoder(BSON: &reply).result
+        //        mongoc_client_command_simple(client: COpaquePointer, db_name: UnsafePointer<Int8>, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
+    }
+
+    public func performBasicDatabaseCommand(command: DocumentData) throws -> DocumentData {
+        
+        var commandRAW = bson_t()
+        try MongoBSONEncoder(data: command).copyTo(&commandRAW)
+        
+        var reply = bson_t()
+        var error = bson_error_t()
+        
+        mongoc_database_command_simple(self.databaseRAW, &commandRAW, nil, &reply, &error)
+
+        if error.code.mongoError != MongoError.NoError {
+            print(errorMessageToString(&error.message))
+            throw error.code.mongoError
+        }
+        
+        return try MongoBSONDecoder(BSON: &reply).result
+        //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
+    }
 }
-
-
-

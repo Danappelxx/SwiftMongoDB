@@ -21,7 +21,7 @@ public class MongoCollection {
 
         self.collectionName = collectionName
 
-        self.collectionRAW = mongoc_client_get_collection(self.clientRAW, self.client.databaseName!, self.collectionName)
+        self.collectionRAW = mongoc_client_get_collection(self.clientRAW, self.client.databaseName, self.collectionName)
 
     }
 
@@ -69,36 +69,15 @@ public class MongoCollection {
         }
     }
 
-    public enum QueryFlags {
-        case None
-        case TailableCursor
-        case SlaveOK
-        case OPLogReplay
-        case NoCursorTimout
-        case AwaitData
-        case Exhaust
-        case Partial
-    }
-
     public func find(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
 
         var queryBSON = bson_t()
         try! MongoBSONEncoder(data: query).copyTo(&queryBSON)
 
-        let queryFlags: mongoc_query_flags_t
-        switch flags {
-        case .None: queryFlags = MONGOC_QUERY_NONE; break
-        case .TailableCursor: queryFlags = MONGOC_QUERY_TAILABLE_CURSOR; break
-        case .SlaveOK: queryFlags = MONGOC_QUERY_SLAVE_OK; break
-        case .OPLogReplay: queryFlags = MONGOC_QUERY_OPLOG_REPLAY; break
-        case .NoCursorTimout: queryFlags = MONGOC_QUERY_NO_CURSOR_TIMEOUT; break
-        case .AwaitData: queryFlags = MONGOC_QUERY_AWAIT_DATA; break
-        case .Exhaust: queryFlags = MONGOC_QUERY_EXHAUST; break
-        case .Partial: queryFlags = MONGOC_QUERY_PARTIAL; break
-        }
+
 
         // standard options - should be customizable later on
-        let cursor = self.cursor(operation: .Find, query: &queryBSON, options: (queryFlags: queryFlags, skip: skip, limit: skip, batchSize: skip))
+        let cursor = self.cursor(operation: .Find, query: &queryBSON, options: (queryFlags: flags.rawFlag, skip: skip, limit: skip, batchSize: skip))
 
         var outputDocuments = [MongoDocument]()
 
@@ -210,5 +189,24 @@ public class MongoCollection {
         }
 
         return success
+    }
+    
+    public func performBasicCollectionCommand(command: DocumentData) throws -> DocumentData {
+        
+        var commandRAW = bson_t()
+        try MongoBSONEncoder(data: command).copyTo(&commandRAW)
+        
+        var reply = bson_t()
+        var error = bson_error_t()
+        
+        mongoc_collection_command_simple(self.collectionRAW, &commandRAW, nil, &reply, &error)
+
+        if error.code.mongoError != MongoError.NoError {
+            print(errorMessageToString(&error.message))
+            throw error.code.mongoError
+        }
+        
+        return try MongoBSONDecoder(BSON: &reply).result
+//        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
     }
 }

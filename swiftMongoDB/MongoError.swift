@@ -35,6 +35,7 @@ public enum MongoError: ErrorType {
 internal func codeToMongoError(code: UInt32) -> MongoError {
     
     switch code {
+
     case 0: return MongoError.NoError
         
     case 4: return MongoError.FailedToReadBytes
