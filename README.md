@@ -308,7 +308,7 @@ There's also a test suite included in the xcode project - so far the coverage is
 
 # Changelog
 ## 0.2
-### 0.2.0 (September 8th, 2015)
+### 0.2.0
 Migrate to MongoDB C Driver 1.2.0 from 0.8, comes with a complete rewrite
 
 ## 0.1
@@ -319,10 +319,10 @@ Migrate to Swift 2 error handling model
 Add documentation, clean up a lot of code, add examples for schemas using inheritence, protocols, and protocol extensions.
 
 ## 0.0
-### 0.0.9 (August 29th, 2015)
+### 0.0.9
 Add support for very simple mongoose-esque schemas by conforming to protocol MongoObject.
 
-### 0.0.8 (August 28th, 2015)
+### 0.0.8
 Implement (untested) login, fix major issue with querying where objects would either get ignored or query would loop indefinitely.
 
 ### 0.0.7
