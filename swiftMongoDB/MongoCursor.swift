@@ -77,6 +77,7 @@ public class MongoCursor {
     }
 
     deinit {
+        self.outputDocumentBSON = nil
         mongoc_cursor_destroy(self.cursorRAW)
     }
 }

@@ -26,7 +26,6 @@ public class MongoCollection {
     }
 
     deinit {
-        mongoc_client_destroy(self.clientRAW)
         mongoc_collection_destroy(self.collectionRAW)
     }
 

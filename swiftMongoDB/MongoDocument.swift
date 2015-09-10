@@ -129,10 +129,7 @@ public class MongoDocument {
     }
 
     deinit {
-        // throws error when bson is not allocated due to bson being empty (it seems)
-        if self.data.count > 0 {
-            bson_destroy(self.BSONRAW)
-        }
+        self.BSONRAW.destroy()
     }
 }
 

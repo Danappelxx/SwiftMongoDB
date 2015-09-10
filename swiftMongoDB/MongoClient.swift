@@ -92,6 +92,7 @@ public class MongoClient {
     
     deinit {
         mongoc_client_destroy(self.clientRAW)
+        mongoc_cleanup()
     }
 
 
