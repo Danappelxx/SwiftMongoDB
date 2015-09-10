@@ -27,6 +27,9 @@ public enum MongoError: ErrorType {
     // Insert
     case DuplicateObjectID
     
+    // Documents
+    case MisplacedOrMissingOID
+    
     // General
     case NoError
     case UnknownErrorOccurred

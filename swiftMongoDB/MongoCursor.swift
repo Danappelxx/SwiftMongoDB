@@ -39,11 +39,11 @@ public class MongoCursor {
     private var outputDocumentBSON: _bson_ptr_immutable = nil
 
     var nextDocument: MongoDocument? {
-        
+
         if let documentData = self.nextDocumentData {
-            return MongoDocument(data: documentData)
+            return try! MongoDocument(data: documentData, containsObjectId: true)
         }
-        
+
         return nil
     }
     
@@ -60,7 +60,7 @@ public class MongoCursor {
     var nextDocumentData: DocumentData? {
         
         do {
-            return try MongoBSONDecoder(BSON: self.nextDocumentBSON).result
+            return try MongoBSONDecoder(BSON: self.nextDocumentBSON).result.data
         } catch {
             return nil
         }

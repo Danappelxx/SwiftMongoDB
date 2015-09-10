@@ -15,24 +15,29 @@ class MongoBSONEncoder {
 
     let data: DocumentData
 
-    init(data: DocumentData) throws {
-
+    init(JSON: String) throws {
+        
         self.BSONRAW = bson_new()
-        self.data = data
+        self.data = JSON.parseJSONDocumentData!
 
-        guard let JSONData = JSON(self.data).rawString() else {
-            throw MongoError.CorruptDocument
-        }
-
-        let JSONDataRAW = NSString(string: JSONData).UTF8String
-
+        let JSONDataRAW = NSString(string: JSON).UTF8String
+        
         var error = bson_error_t()
-        bson_init_from_json(self.BSONRAW, JSONDataRAW, JSONData.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), &error)
+        bson_init_from_json(self.BSONRAW, JSONDataRAW, JSON.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), &error)
         
         if error.code.mongoError != MongoError.NoError {
             print( errorMessageToString(&error.message) )
             throw error.code.mongoError
         }
+    }
+    
+    convenience init(data: DocumentData) throws {
+
+        guard let JSONData = JSON(data).rawString() else {
+            throw MongoError.CorruptDocument
+        }
+
+        try self.init(JSON: JSONData)
     }
 
     deinit {
@@ -75,8 +80,8 @@ class MongoBSONDecoder {
     let BSONRAW: _bson_ptr_immutable
 
     // result should be read only
-    var result: DocumentData {
-        return self.resultData
+    var result: MongoDocument {
+        return try! MongoDocument(data: self.resultData, containsObjectId: true)
     }
 
     private var resultData: DocumentData

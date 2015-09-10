@@ -14,36 +14,118 @@ public class MongoDocument {
     var JSONValue: String? {
         return JSON(self.data).rawString()
     }
-    
+
+    public var dataWithoutObjectId: DocumentData {
+        var copy = self.data
+        copy["_id"] = nil
+        return copy
+    }
+
     public var data: DocumentData {
         return self.documentData
+    }
+    
+    public var id: String? {
+        return self.data["_id"]?["$oid"] as? String
     }
 
     private var documentData = DocumentData()
     
     private func initBSON() {
-        try! MongoBSONEncoder(data: data).copyTo(self.BSONRAW)
+        try! MongoBSONEncoder(data: self.data).copyTo(self.BSONRAW)
     }
 
-    public init(data: DocumentData) {
-        self.documentData = data
-        self.initBSON()
-    }
+    public init(var data: DocumentData, containsObjectId: Bool = false) throws {
 
-    public init(JSON: String) throws {
+        // if user says that there is an object id, search for it and make sure it is properly inserted
+        if containsObjectId {
 
-        guard let data = JSON.parseJSONDocumentData else {
-            throw MongoError.CorruptDocument
+            // if the object id is found but is in the incorrect spot, put it in the correct spot
+            if let objectId = data["_id"] as? String {
+                data["_id"] = ["$oid" : objectId]
+            }
+
+            // check that object id is in proper position
+            if let objectIdContainer = data["_id"] as? DocumentData {
+                if objectIdContainer["$oid"] == nil {
+                    throw MongoError.MisplacedOrMissingOID
+                }
+            }
+
+        }
+        
+        if !containsObjectId {
+
+            let objectId = self.generateObjectId()
+
+            data["_id"] = ["$oid" : objectId]
         }
 
         self.documentData = data
         self.initBSON()
     }
     
-    public init(withSchemaObject object: MongoObject) {
-        self.documentData = object.properties()
+    convenience public init(var data: DocumentData, withObjectId objectId: String) throws {
+
+        data["_id"] = ["$oid" : objectId]
         
-        self.initBSON()
+        try self.init(data: data, containsObjectId: true)
+    }
+
+    convenience public init(JSON: String, withObjectId objectId: String) throws {
+
+        guard let data = JSON.parseJSONDocumentData else {
+            throw MongoError.CorruptDocument
+        }
+
+        try self.init(data: data, withObjectId: objectId)
+    }
+    
+    convenience public init(JSON: String, containsObjectId: Bool = false) throws {
+
+        guard let data = JSON.parseJSONDocumentData else {
+            throw MongoError.CorruptDocument
+        }
+
+        try self.init(data: data, containsObjectId: containsObjectId)
+    }
+    
+    convenience public init(withSchemaObject object: MongoObject, withObjectID objectId: String) throws {
+
+        let data = object.properties()
+        
+        try self.init(data: data, withObjectId: objectId)
+    }
+    
+    convenience public init(withSchemaObject object: MongoObject, containsObjectId: Bool = false) throws {
+        
+        let data = object.properties()
+        
+        try self.init(data: data, containsObjectId: containsObjectId)
+    }
+    
+    private func generateObjectId() -> String {
+
+        var oidRAW = bson_oid_t()
+
+        bson_oid_init(&oidRAW, nil)
+
+
+        let oidStrRAW = UnsafeMutablePointer<Int8>.alloc(100)
+//        try to minimize this memory usage while retaining safety, reference:
+//        4 bytes : The UNIX timestamp in big-endian format.
+//        3 bytes : The first 3 bytes of MD5(hostname).
+//        2 bytes : The pid_t of the current process. Alternatively the task-id if configured.
+//        3 bytes : A 24-bit monotonic counter incrementing from rand() in big-endian.
+
+
+        bson_oid_to_string(&oidRAW, oidStrRAW)
+        
+        let oidStr = NSString(UTF8String: oidStrRAW)
+        
+        oidStrRAW.destroy()
+
+        return oidStr as! String
     }
 
     deinit {

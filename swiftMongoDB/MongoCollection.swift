@@ -60,10 +60,10 @@ public class MongoCollection {
         }
     }
     
-    public func insert(document: DocumentData, flags: InsertFlags = InsertFlags.None) throws {
+    public func insert(document: DocumentData, containsObjectId: Bool = false, flags: InsertFlags = InsertFlags.None) throws {
 
         do {
-            try self.insert(MongoDocument(data: document), flags: flags)
+            try self.insert(MongoDocument(data: document, containsObjectId: containsObjectId), flags: flags)
         } catch {
             throw error
         }
@@ -206,7 +206,7 @@ public class MongoCollection {
             throw error.code.mongoError
         }
         
-        return try MongoBSONDecoder(BSON: &reply).result
+        return try MongoBSONDecoder(BSON: &reply).result.data
 //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
     }
 }

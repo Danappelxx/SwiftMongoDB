@@ -18,11 +18,11 @@ class SwiftMongoDBSpec: QuickSpec {
         
         // This suite assumes that the mongodb process is running
 
-        let client = try! MongoClient(host: "localhost", port: 27017, database: "test")
+        let client = try! MongoClient(host: "localhost", port: 27017, database: "test", usernameAndPassword: (username: "Dan", password: "Dan12345"))
 
         let collection = MongoCollection(collectionName: "subjects", client: client)
 
-        let document = MongoDocument(data: [
+        let document = try! MongoDocument(data: [
             "string" : "string",
             "bool" : true,
             "number" : 123,
@@ -35,7 +35,7 @@ class SwiftMongoDBSpec: QuickSpec {
                 "$oid" : "55ea18cb1baf6a0fdb2191c2"
             ],
         ])
-        
+
         try! collection.remove()
         
         describe("The MongoDB client") {
@@ -83,7 +83,7 @@ class SwiftMongoDBSpec: QuickSpec {
                 var doc2 = document.data
                 doc2["_id"] = objId
                 
-                try! collection.insert(doc2)
+                try! collection.insert(doc2, containsObjectId: true)
                 
                 let resultAfter = try! collection.find(["_id":objId]).count
 
@@ -99,7 +99,7 @@ class SwiftMongoDBSpec: QuickSpec {
                 // run it through the encoder & decoder process to give it fair grounds
                 var resultBeforeDataRAW = bson_t()
                 try! MongoBSONEncoder(data: resultBefore.data).copyTo(&resultBeforeDataRAW)
-                let resultBeforeData = try! MongoBSONDecoder(BSON: &resultBeforeDataRAW).result
+                let resultBeforeData = try! MongoBSONDecoder(BSON: &resultBeforeDataRAW).result.data
 
                 let newData = [
                     "_id" : document.data["_id"]!,
@@ -148,7 +148,7 @@ class SwiftMongoDBSpec: QuickSpec {
 
             it("decodes BSON correctly") {
 
-                let decodedData = try! MongoBSONDecoder(BSON: document.BSONRAW).result
+                let decodedData = try! MongoBSONDecoder(BSON: document.BSONRAW).result.data
 
                 expect(decodedData == document.data).to(beTrue())
             }
@@ -156,49 +156,66 @@ class SwiftMongoDBSpec: QuickSpec {
 
         describe("The MongoDB commands") {
 
-            context("the collection commands") {
+            it("performs collection commands correctly") {
 //                { collStats: "collection" , scale : 1024, verbose: true }
+                    
+                let command: DocumentData = [
+                    "collStats" : collection.collectionName,
+                ]
+
+                try! collection.performBasicCollectionCommand(command)
+            }
+        }
+        
+        describe("The MongoDocument") {
+            
+            context("initialization process") {
                 
-                it("performs collStats correctly") {
+                it("works with raw DocumentData") {
+                    let docBefore = try! MongoDocument(data: document.data, containsObjectId: true)
                     
-                    let command: DocumentData = [
-                        "collStats" : collection.collectionName,
-                    ]
-
-                    try! collection.performBasicCollectionCommand(command)
+                    var docRAW = bson_t()
+                    try! MongoBSONEncoder(data: docBefore.data).copyTo(&docRAW)
+                    let docAfter = try! MongoBSONDecoder(BSON: &docRAW).result
                     
-                    // lol
-                    expect(true).to(beTrue())
+                    expect(docBefore == docAfter).to(beTrue())
+                }
+                
+                it("works with JSON") {
+                    
+                    let docBefore = try! MongoDocument(JSON: JSON(document.data).rawString()!, containsObjectId: true).JSONValue!
 
+                    var docRAW = bson_t()
+                    try! MongoBSONEncoder(JSON: docBefore).copyTo(&docRAW)
+                    let docAfter = try! MongoBSONDecoder(BSON: &docRAW).resultJSON!
+
+                    expect(docBefore.parseJSONDocumentData! == docAfter.parseJSONDocumentData!).to(beTrue())
+                }
+                
+                it("works with MongoObject schemas") {
+
+                    struct TestObject: MongoObject {
+                        var prop1: String = "Str"
+                        var prop2: Int = 10
+                        var prop3: Bool = true
+                        var prop4: [String] = ["One", "Two", "Three", "Four"]
+                        var prop5: [String : AnyObject] = ["Hello" : "World", "Foo" : "Bar"]
+                    }
+                        
+                    let testObject = TestObject()
+                    
+                    let documentFromObject = testObject.Document()
+                    
+                    expect(testObject.properties() == documentFromObject.dataWithoutObjectId).to(beTrue())
                 }
             }
             
-//            it("create users successfully") {
-//
-//                let createUserResult = testDatabase.createUser(username: "Test", password: "12345")
-//
-//                expect(createUserResult).to(beTrue())
-//            }
+            
         }
 
         describe("The Mongo objects") {
 
-            struct TestObject: MongoObject {
-                var prop1: String = "Str"
-                var prop2: Int = 10
-                var prop3: Bool = true
-                var prop4: [String] = ["One", "Two", "Three", "Four"]
-                var prop5: [String : AnyObject] = ["Hello" : "World", "Foo" : "Bar"]
-            }
 
-            it("properly converts into a document") {
-
-                let testObject = TestObject()
-
-                let documentFromObject = testObject.Document()
-
-                expect(testObject.properties() == documentFromObject.data).to(beTrue())
-            }
         }
     }
 }

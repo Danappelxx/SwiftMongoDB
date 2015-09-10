@@ -30,18 +30,12 @@ public class MongoClient {
 
     public init(host: String, port: Int, database: String? = nil) throws {
 
-        self.clientURI = "mongodb://\(host):\(port)"        
+        self.clientURI = "mongodb://\(host):\(port)"
 
         self.host = host
         self.port = port
 
         self.clientRAW = mongoc_client_new(self.clientURI)
-
-        if database == nil {
-            self.databaseNameInternal = self.getDefaultDatabaseName()
-        } else {
-            self.databaseNameInternal = database!
-        }
 
         mongoc_init()
 
@@ -54,7 +48,43 @@ public class MongoClient {
             print(errorMessageToString(&status.message))
             throw status.code.mongoError
         }
+        
+        if database == nil {
+            self.databaseNameInternal = self.getDefaultDatabaseName()
+        } else {
+            self.databaseNameInternal = database!
+        }
     }
+    
+
+    // authenticated connection - required specific database
+    public init(host: String, port: Int, database: String, usernameAndPassword: (username: String, password: String)) throws {
+    
+        let userAndPass = "\(usernameAndPassword.username):\(usernameAndPassword.password)@"
+        
+        self.clientURI = "mongodb://\(userAndPass)\(host):\(port)/?authSource=\(database)"
+        
+        self.host = host
+        self.port = port
+        
+        self.clientRAW = mongoc_client_new(self.clientURI)
+        
+        mongoc_init()
+        
+        let reply = bson_new()
+        var status = bson_error_t()
+        mongoc_client_get_server_status(self.clientRAW, nil, reply, &status)
+        
+        
+        if status.code.mongoError != MongoError.NoError {
+        print(errorMessageToString(&status.message))
+        throw status.code.mongoError
+        }
+        
+        self.databaseNameInternal = database
+        
+    }
+
     
     public func setDatabaseName(name: String) {
         self.databaseNameInternal = name
@@ -129,7 +159,7 @@ public class MongoClient {
             throw error.code.mongoError
         }
 
-        return try MongoBSONDecoder(BSON: &reply).result
+        return try MongoBSONDecoder(BSON: &reply).result.data
         //        mongoc_client_command_simple(client: COpaquePointer, db_name: UnsafePointer<Int8>, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
     }
 
@@ -148,7 +178,7 @@ public class MongoClient {
             throw error.code.mongoError
         }
         
-        return try MongoBSONDecoder(BSON: &reply).result
+        return try MongoBSONDecoder(BSON: &reply).result.data
         //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
     }
 }
