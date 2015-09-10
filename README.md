@@ -22,7 +22,7 @@ then, assuming that you have MongoDB setup, open up terminal and run:
 mongod
 ```
 
-You can either open the example project (same thing as the quickstart), or go through the slightly more in-depth version in the Tutorial.
+You can now go skip to the quickstart or read through the more in-depth Tutorial.
 
 # Quickstart
 Make sure you have MongoDB (`mongod` in bash) running and have the library imported.
