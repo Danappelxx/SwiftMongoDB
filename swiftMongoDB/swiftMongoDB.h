@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "bson.h"
 #import "mongoc.h"
 
 //! Project version number for swiftMongoDB.

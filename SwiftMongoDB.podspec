@@ -16,8 +16,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.10'
   s.ios.deployment_target = '8.0'
 
-  s.source_files  = 'swiftMongoDB', 'swiftMongoDB/*.{h,swift}'
-  s.dependency 'SwiftyJSON', :branch 'xcode7'
+  s.source_files  = 'swiftMongoDB/dependencies/*.{h,dylib}', 'swiftMongoDB/dependencies/{mongoc,bson, private}/*.{h}', 'swiftMongoDB/*.{h,swift}'
   s.library = 'mongoc', 'bson'
 
 end

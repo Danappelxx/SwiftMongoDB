@@ -14,6 +14,52 @@
 		375F5F1B1B7E65E0007EA172 /* swiftMongoDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F5F1A1B7E65E0007EA172 /* swiftMongoDBTests.swift */; };
 		37D8EB541B96A8B700D87177 /* Declarations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D8EB531B96A8B700D87177 /* Declarations.swift */; };
 		37D8EB561B96AB4500D87177 /* MongoWriteConcern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D8EB551B96AB4500D87177 /* MongoWriteConcern.swift */; };
+		37E1505E1BABCC9E000E4B87 /* mongoc-array-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150301BABCC9E000E4B87 /* mongoc-array-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1505F1BABCC9E000E4B87 /* mongoc-async-cmd-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150311BABCC9E000E4B87 /* mongoc-async-cmd-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150601BABCC9E000E4B87 /* mongoc-async-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150321BABCC9E000E4B87 /* mongoc-async-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150611BABCC9E000E4B87 /* mongoc-b64-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150331BABCC9E000E4B87 /* mongoc-b64-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150621BABCC9E000E4B87 /* mongoc-buffer-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150341BABCC9E000E4B87 /* mongoc-buffer-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150631BABCC9E000E4B87 /* mongoc-bulk-operation-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150351BABCC9E000E4B87 /* mongoc-bulk-operation-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150641BABCC9E000E4B87 /* mongoc-client-pool-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150361BABCC9E000E4B87 /* mongoc-client-pool-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150651BABCC9E000E4B87 /* mongoc-client-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150371BABCC9E000E4B87 /* mongoc-client-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150661BABCC9E000E4B87 /* mongoc-cluster-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150381BABCC9E000E4B87 /* mongoc-cluster-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150671BABCC9E000E4B87 /* mongoc-collection-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150391BABCC9E000E4B87 /* mongoc-collection-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150681BABCC9E000E4B87 /* mongoc-counters-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1503A1BABCC9E000E4B87 /* mongoc-counters-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150691BABCC9E000E4B87 /* mongoc-cursor-array-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1503B1BABCC9E000E4B87 /* mongoc-cursor-array-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1506A1BABCC9E000E4B87 /* mongoc-cursor-cursorid-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1503C1BABCC9E000E4B87 /* mongoc-cursor-cursorid-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1506B1BABCC9E000E4B87 /* mongoc-cursor-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1503D1BABCC9E000E4B87 /* mongoc-cursor-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1506C1BABCC9E000E4B87 /* mongoc-cursor-transform-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1503E1BABCC9E000E4B87 /* mongoc-cursor-transform-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1506D1BABCC9E000E4B87 /* mongoc-database-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1503F1BABCC9E000E4B87 /* mongoc-database-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1506E1BABCC9E000E4B87 /* mongoc-errno-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150401BABCC9E000E4B87 /* mongoc-errno-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1506F1BABCC9E000E4B87 /* mongoc-gridfs-file-list-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150411BABCC9E000E4B87 /* mongoc-gridfs-file-list-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150701BABCC9E000E4B87 /* mongoc-gridfs-file-page-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150421BABCC9E000E4B87 /* mongoc-gridfs-file-page-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150711BABCC9E000E4B87 /* mongoc-gridfs-file-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150431BABCC9E000E4B87 /* mongoc-gridfs-file-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150721BABCC9E000E4B87 /* mongoc-gridfs-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150441BABCC9E000E4B87 /* mongoc-gridfs-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150731BABCC9E000E4B87 /* mongoc-host-list-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150451BABCC9E000E4B87 /* mongoc-host-list-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150741BABCC9E000E4B87 /* mongoc-list-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150461BABCC9E000E4B87 /* mongoc-list-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150751BABCC9E000E4B87 /* mongoc-log-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150471BABCC9E000E4B87 /* mongoc-log-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150761BABCC9E000E4B87 /* mongoc-matcher-op-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150481BABCC9E000E4B87 /* mongoc-matcher-op-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150771BABCC9E000E4B87 /* mongoc-matcher-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150491BABCC9E000E4B87 /* mongoc-matcher-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150781BABCC9E000E4B87 /* mongoc-opcode-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1504A1BABCC9E000E4B87 /* mongoc-opcode-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150791BABCC9E000E4B87 /* mongoc-queue-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1504B1BABCC9E000E4B87 /* mongoc-queue-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1507A1BABCC9E000E4B87 /* mongoc-rand-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1504C1BABCC9E000E4B87 /* mongoc-rand-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1507B1BABCC9E000E4B87 /* mongoc-read-prefs-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1504D1BABCC9E000E4B87 /* mongoc-read-prefs-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1507C1BABCC9E000E4B87 /* mongoc-rpc-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1504E1BABCC9E000E4B87 /* mongoc-rpc-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1507D1BABCC9E000E4B87 /* mongoc-sasl-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1504F1BABCC9E000E4B87 /* mongoc-sasl-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1507E1BABCC9E000E4B87 /* mongoc-scram-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150501BABCC9E000E4B87 /* mongoc-scram-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1507F1BABCC9E000E4B87 /* mongoc-server-description-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150511BABCC9E000E4B87 /* mongoc-server-description-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150801BABCC9E000E4B87 /* mongoc-set-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150521BABCC9E000E4B87 /* mongoc-set-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150811BABCC9E000E4B87 /* mongoc-socket-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150531BABCC9E000E4B87 /* mongoc-socket-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150821BABCC9E000E4B87 /* mongoc-ssl-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150541BABCC9E000E4B87 /* mongoc-ssl-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150831BABCC9E000E4B87 /* mongoc-stream-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150551BABCC9E000E4B87 /* mongoc-stream-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150841BABCC9E000E4B87 /* mongoc-thread-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150561BABCC9E000E4B87 /* mongoc-thread-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150851BABCC9E000E4B87 /* mongoc-topology-description-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150571BABCC9E000E4B87 /* mongoc-topology-description-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150861BABCC9E000E4B87 /* mongoc-topology-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150581BABCC9E000E4B87 /* mongoc-topology-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150871BABCC9E000E4B87 /* mongoc-topology-scanner-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E150591BABCC9E000E4B87 /* mongoc-topology-scanner-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150881BABCC9E000E4B87 /* mongoc-uri-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1505A1BABCC9E000E4B87 /* mongoc-uri-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E150891BABCC9E000E4B87 /* mongoc-util-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1505B1BABCC9E000E4B87 /* mongoc-util-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1508A1BABCC9E000E4B87 /* mongoc-write-command-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1505C1BABCC9E000E4B87 /* mongoc-write-command-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E1508B1BABCC9E000E4B87 /* mongoc-write-concern-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E1505D1BABCC9E000E4B87 /* mongoc-write-concern-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D131B9F47FF00E758C5 /* bcon.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58C9B1B9F47FF00E758C5 /* bcon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D141B9F47FF00E758C5 /* bson-atomic.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58C9C1B9F47FF00E758C5 /* bson-atomic.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D151B9F47FF00E758C5 /* bson-clock.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58C9D1B9F47FF00E758C5 /* bson-clock.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -40,86 +86,40 @@
 		37F58D2A1B9F47FF00E758C5 /* bson.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CB21B9F47FF00E758C5 /* bson.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D2B1B9F47FF00E758C5 /* libbson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F58CB31B9F47FF00E758C5 /* libbson.dylib */; };
 		37F58D2C1B9F47FF00E758C5 /* libmongoc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F58CB41B9F47FF00E758C5 /* libmongoc.dylib */; };
-		37F58D2D1B9F47FF00E758C5 /* mongoc-array-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CB61B9F47FF00E758C5 /* mongoc-array-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D2E1B9F47FF00E758C5 /* mongoc-async-cmd-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CB71B9F47FF00E758C5 /* mongoc-async-cmd-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D2F1B9F47FF00E758C5 /* mongoc-async-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CB81B9F47FF00E758C5 /* mongoc-async-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D301B9F47FF00E758C5 /* mongoc-b64-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CB91B9F47FF00E758C5 /* mongoc-b64-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D311B9F47FF00E758C5 /* mongoc-buffer-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CBA1B9F47FF00E758C5 /* mongoc-buffer-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D321B9F47FF00E758C5 /* mongoc-bulk-operation-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CBB1B9F47FF00E758C5 /* mongoc-bulk-operation-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D331B9F47FF00E758C5 /* mongoc-bulk-operation.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CBC1B9F47FF00E758C5 /* mongoc-bulk-operation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D341B9F47FF00E758C5 /* mongoc-client-pool-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CBD1B9F47FF00E758C5 /* mongoc-client-pool-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D351B9F47FF00E758C5 /* mongoc-client-pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CBE1B9F47FF00E758C5 /* mongoc-client-pool.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D361B9F47FF00E758C5 /* mongoc-client-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CBF1B9F47FF00E758C5 /* mongoc-client-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D371B9F47FF00E758C5 /* mongoc-client.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CC01B9F47FF00E758C5 /* mongoc-client.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D381B9F47FF00E758C5 /* mongoc-cluster-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CC11B9F47FF00E758C5 /* mongoc-cluster-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D391B9F47FF00E758C5 /* mongoc-collection-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CC21B9F47FF00E758C5 /* mongoc-collection-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D3A1B9F47FF00E758C5 /* mongoc-collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CC31B9F47FF00E758C5 /* mongoc-collection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D3B1B9F47FF00E758C5 /* mongoc-config.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CC41B9F47FF00E758C5 /* mongoc-config.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D3C1B9F47FF00E758C5 /* mongoc-counters-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CC51B9F47FF00E758C5 /* mongoc-counters-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D3E1B9F47FF00E758C5 /* mongoc-cursor-array-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CC71B9F47FF00E758C5 /* mongoc-cursor-array-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D3F1B9F47FF00E758C5 /* mongoc-cursor-cursorid-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CC81B9F47FF00E758C5 /* mongoc-cursor-cursorid-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D401B9F47FF00E758C5 /* mongoc-cursor-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CC91B9F47FF00E758C5 /* mongoc-cursor-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D411B9F47FF00E758C5 /* mongoc-cursor-transform-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CCA1B9F47FF00E758C5 /* mongoc-cursor-transform-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D421B9F47FF00E758C5 /* mongoc-cursor.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CCB1B9F47FF00E758C5 /* mongoc-cursor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D431B9F47FF00E758C5 /* mongoc-database-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CCC1B9F47FF00E758C5 /* mongoc-database-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D441B9F47FF00E758C5 /* mongoc-database.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CCD1B9F47FF00E758C5 /* mongoc-database.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D451B9F47FF00E758C5 /* mongoc-errno-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CCE1B9F47FF00E758C5 /* mongoc-errno-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D461B9F47FF00E758C5 /* mongoc-error.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CCF1B9F47FF00E758C5 /* mongoc-error.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D471B9F47FF00E758C5 /* mongoc-flags.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD01B9F47FF00E758C5 /* mongoc-flags.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D481B9F47FF00E758C5 /* mongoc-gridfs-file-list-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD11B9F47FF00E758C5 /* mongoc-gridfs-file-list-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D491B9F47FF00E758C5 /* mongoc-gridfs-file-list.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD21B9F47FF00E758C5 /* mongoc-gridfs-file-list.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D4A1B9F47FF00E758C5 /* mongoc-gridfs-file-page-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD31B9F47FF00E758C5 /* mongoc-gridfs-file-page-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D4B1B9F47FF00E758C5 /* mongoc-gridfs-file-page.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD41B9F47FF00E758C5 /* mongoc-gridfs-file-page.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D4C1B9F47FF00E758C5 /* mongoc-gridfs-file-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD51B9F47FF00E758C5 /* mongoc-gridfs-file-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D4D1B9F47FF00E758C5 /* mongoc-gridfs-file.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD61B9F47FF00E758C5 /* mongoc-gridfs-file.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D4E1B9F47FF00E758C5 /* mongoc-gridfs-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD71B9F47FF00E758C5 /* mongoc-gridfs-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D4F1B9F47FF00E758C5 /* mongoc-gridfs.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD81B9F47FF00E758C5 /* mongoc-gridfs.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D501B9F47FF00E758C5 /* mongoc-host-list-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CD91B9F47FF00E758C5 /* mongoc-host-list-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D511B9F47FF00E758C5 /* mongoc-host-list.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CDA1B9F47FF00E758C5 /* mongoc-host-list.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D521B9F47FF00E758C5 /* mongoc-index.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CDB1B9F47FF00E758C5 /* mongoc-index.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D531B9F47FF00E758C5 /* mongoc-init.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CDC1B9F47FF00E758C5 /* mongoc-init.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D541B9F47FF00E758C5 /* mongoc-iovec.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CDD1B9F47FF00E758C5 /* mongoc-iovec.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D551B9F47FF00E758C5 /* mongoc-list-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CDE1B9F47FF00E758C5 /* mongoc-list-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D561B9F47FF00E758C5 /* mongoc-log-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CDF1B9F47FF00E758C5 /* mongoc-log-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D571B9F47FF00E758C5 /* mongoc-log.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE01B9F47FF00E758C5 /* mongoc-log.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D581B9F47FF00E758C5 /* mongoc-matcher-op-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE11B9F47FF00E758C5 /* mongoc-matcher-op-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D591B9F47FF00E758C5 /* mongoc-matcher-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE21B9F47FF00E758C5 /* mongoc-matcher-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D5A1B9F47FF00E758C5 /* mongoc-matcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE31B9F47FF00E758C5 /* mongoc-matcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D5B1B9F47FF00E758C5 /* mongoc-opcode-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE41B9F47FF00E758C5 /* mongoc-opcode-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D5C1B9F47FF00E758C5 /* mongoc-opcode.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE51B9F47FF00E758C5 /* mongoc-opcode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D5D1B9F47FF00E758C5 /* mongoc-queue-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE61B9F47FF00E758C5 /* mongoc-queue-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D5E1B9F47FF00E758C5 /* mongoc-rand-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE71B9F47FF00E758C5 /* mongoc-rand-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D5F1B9F47FF00E758C5 /* mongoc-rand.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE81B9F47FF00E758C5 /* mongoc-rand.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D601B9F47FF00E758C5 /* mongoc-read-prefs-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CE91B9F47FF00E758C5 /* mongoc-read-prefs-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D611B9F47FF00E758C5 /* mongoc-read-prefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CEA1B9F47FF00E758C5 /* mongoc-read-prefs.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D621B9F47FF00E758C5 /* mongoc-rpc-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CEB1B9F47FF00E758C5 /* mongoc-rpc-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D631B9F47FF00E758C5 /* mongoc-sasl-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CEC1B9F47FF00E758C5 /* mongoc-sasl-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D641B9F47FF00E758C5 /* mongoc-scram-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CED1B9F47FF00E758C5 /* mongoc-scram-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D651B9F47FF00E758C5 /* mongoc-server-description-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CEE1B9F47FF00E758C5 /* mongoc-server-description-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D661B9F47FF00E758C5 /* mongoc-server-description.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CEF1B9F47FF00E758C5 /* mongoc-server-description.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D671B9F47FF00E758C5 /* mongoc-set-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF01B9F47FF00E758C5 /* mongoc-set-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D681B9F47FF00E758C5 /* mongoc-socket-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF11B9F47FF00E758C5 /* mongoc-socket-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D691B9F47FF00E758C5 /* mongoc-socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF21B9F47FF00E758C5 /* mongoc-socket.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D6A1B9F47FF00E758C5 /* mongoc-ssl-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF31B9F47FF00E758C5 /* mongoc-ssl-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D6B1B9F47FF00E758C5 /* mongoc-ssl.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF41B9F47FF00E758C5 /* mongoc-ssl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D6C1B9F47FF00E758C5 /* mongoc-stream-buffered.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF51B9F47FF00E758C5 /* mongoc-stream-buffered.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D6D1B9F47FF00E758C5 /* mongoc-stream-file.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF61B9F47FF00E758C5 /* mongoc-stream-file.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D6E1B9F47FF00E758C5 /* mongoc-stream-gridfs.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF71B9F47FF00E758C5 /* mongoc-stream-gridfs.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D6F1B9F47FF00E758C5 /* mongoc-stream-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF81B9F47FF00E758C5 /* mongoc-stream-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D701B9F47FF00E758C5 /* mongoc-stream-socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CF91B9F47FF00E758C5 /* mongoc-stream-socket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D711B9F47FF00E758C5 /* mongoc-stream-tls.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CFA1B9F47FF00E758C5 /* mongoc-stream-tls.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D721B9F47FF00E758C5 /* mongoc-stream.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CFB1B9F47FF00E758C5 /* mongoc-stream.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D731B9F47FF00E758C5 /* mongoc-thread-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CFC1B9F47FF00E758C5 /* mongoc-thread-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D741B9F47FF00E758C5 /* mongoc-topology-description-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CFD1B9F47FF00E758C5 /* mongoc-topology-description-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D751B9F47FF00E758C5 /* mongoc-topology-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CFE1B9F47FF00E758C5 /* mongoc-topology-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D761B9F47FF00E758C5 /* mongoc-topology-scanner-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58CFF1B9F47FF00E758C5 /* mongoc-topology-scanner-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D771B9F47FF00E758C5 /* mongoc-trace.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D001B9F47FF00E758C5 /* mongoc-trace.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D781B9F47FF00E758C5 /* mongoc-uri-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D011B9F47FF00E758C5 /* mongoc-uri-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D791B9F47FF00E758C5 /* mongoc-uri.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D021B9F47FF00E758C5 /* mongoc-uri.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D7A1B9F47FF00E758C5 /* mongoc-util-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D031B9F47FF00E758C5 /* mongoc-util-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D7B1B9F47FF00E758C5 /* mongoc-version.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D041B9F47FF00E758C5 /* mongoc-version.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D7C1B9F47FF00E758C5 /* mongoc-write-command-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D051B9F47FF00E758C5 /* mongoc-write-command-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37F58D7D1B9F47FF00E758C5 /* mongoc-write-concern-private.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D061B9F47FF00E758C5 /* mongoc-write-concern-private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D7E1B9F47FF00E758C5 /* mongoc-write-concern.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D071B9F47FF00E758C5 /* mongoc-write-concern.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D881B9F47FF00E758C5 /* utlist.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D111B9F47FF00E758C5 /* utlist.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37F58D891B9F47FF00E758C5 /* mongoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F58D121B9F47FF00E758C5 /* mongoc.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -154,6 +154,52 @@
 		375F5F1C1B7E65E0007EA172 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37D8EB531B96A8B700D87177 /* Declarations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Declarations.swift; sourceTree = "<group>"; };
 		37D8EB551B96AB4500D87177 /* MongoWriteConcern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MongoWriteConcern.swift; sourceTree = "<group>"; };
+		37E150301BABCC9E000E4B87 /* mongoc-array-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-array-private.h"; sourceTree = "<group>"; };
+		37E150311BABCC9E000E4B87 /* mongoc-async-cmd-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-async-cmd-private.h"; sourceTree = "<group>"; };
+		37E150321BABCC9E000E4B87 /* mongoc-async-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-async-private.h"; sourceTree = "<group>"; };
+		37E150331BABCC9E000E4B87 /* mongoc-b64-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-b64-private.h"; sourceTree = "<group>"; };
+		37E150341BABCC9E000E4B87 /* mongoc-buffer-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-buffer-private.h"; sourceTree = "<group>"; };
+		37E150351BABCC9E000E4B87 /* mongoc-bulk-operation-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-bulk-operation-private.h"; sourceTree = "<group>"; };
+		37E150361BABCC9E000E4B87 /* mongoc-client-pool-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-client-pool-private.h"; sourceTree = "<group>"; };
+		37E150371BABCC9E000E4B87 /* mongoc-client-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-client-private.h"; sourceTree = "<group>"; };
+		37E150381BABCC9E000E4B87 /* mongoc-cluster-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cluster-private.h"; sourceTree = "<group>"; };
+		37E150391BABCC9E000E4B87 /* mongoc-collection-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-collection-private.h"; sourceTree = "<group>"; };
+		37E1503A1BABCC9E000E4B87 /* mongoc-counters-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-counters-private.h"; sourceTree = "<group>"; };
+		37E1503B1BABCC9E000E4B87 /* mongoc-cursor-array-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cursor-array-private.h"; sourceTree = "<group>"; };
+		37E1503C1BABCC9E000E4B87 /* mongoc-cursor-cursorid-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cursor-cursorid-private.h"; sourceTree = "<group>"; };
+		37E1503D1BABCC9E000E4B87 /* mongoc-cursor-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cursor-private.h"; sourceTree = "<group>"; };
+		37E1503E1BABCC9E000E4B87 /* mongoc-cursor-transform-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cursor-transform-private.h"; sourceTree = "<group>"; };
+		37E1503F1BABCC9E000E4B87 /* mongoc-database-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-database-private.h"; sourceTree = "<group>"; };
+		37E150401BABCC9E000E4B87 /* mongoc-errno-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-errno-private.h"; sourceTree = "<group>"; };
+		37E150411BABCC9E000E4B87 /* mongoc-gridfs-file-list-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-file-list-private.h"; sourceTree = "<group>"; };
+		37E150421BABCC9E000E4B87 /* mongoc-gridfs-file-page-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-file-page-private.h"; sourceTree = "<group>"; };
+		37E150431BABCC9E000E4B87 /* mongoc-gridfs-file-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-file-private.h"; sourceTree = "<group>"; };
+		37E150441BABCC9E000E4B87 /* mongoc-gridfs-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-private.h"; sourceTree = "<group>"; };
+		37E150451BABCC9E000E4B87 /* mongoc-host-list-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-host-list-private.h"; sourceTree = "<group>"; };
+		37E150461BABCC9E000E4B87 /* mongoc-list-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-list-private.h"; sourceTree = "<group>"; };
+		37E150471BABCC9E000E4B87 /* mongoc-log-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-log-private.h"; sourceTree = "<group>"; };
+		37E150481BABCC9E000E4B87 /* mongoc-matcher-op-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-matcher-op-private.h"; sourceTree = "<group>"; };
+		37E150491BABCC9E000E4B87 /* mongoc-matcher-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-matcher-private.h"; sourceTree = "<group>"; };
+		37E1504A1BABCC9E000E4B87 /* mongoc-opcode-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-opcode-private.h"; sourceTree = "<group>"; };
+		37E1504B1BABCC9E000E4B87 /* mongoc-queue-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-queue-private.h"; sourceTree = "<group>"; };
+		37E1504C1BABCC9E000E4B87 /* mongoc-rand-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-rand-private.h"; sourceTree = "<group>"; };
+		37E1504D1BABCC9E000E4B87 /* mongoc-read-prefs-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-read-prefs-private.h"; sourceTree = "<group>"; };
+		37E1504E1BABCC9E000E4B87 /* mongoc-rpc-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-rpc-private.h"; sourceTree = "<group>"; };
+		37E1504F1BABCC9E000E4B87 /* mongoc-sasl-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-sasl-private.h"; sourceTree = "<group>"; };
+		37E150501BABCC9E000E4B87 /* mongoc-scram-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-scram-private.h"; sourceTree = "<group>"; };
+		37E150511BABCC9E000E4B87 /* mongoc-server-description-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-server-description-private.h"; sourceTree = "<group>"; };
+		37E150521BABCC9E000E4B87 /* mongoc-set-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-set-private.h"; sourceTree = "<group>"; };
+		37E150531BABCC9E000E4B87 /* mongoc-socket-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-socket-private.h"; sourceTree = "<group>"; };
+		37E150541BABCC9E000E4B87 /* mongoc-ssl-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-ssl-private.h"; sourceTree = "<group>"; };
+		37E150551BABCC9E000E4B87 /* mongoc-stream-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-stream-private.h"; sourceTree = "<group>"; };
+		37E150561BABCC9E000E4B87 /* mongoc-thread-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-thread-private.h"; sourceTree = "<group>"; };
+		37E150571BABCC9E000E4B87 /* mongoc-topology-description-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-topology-description-private.h"; sourceTree = "<group>"; };
+		37E150581BABCC9E000E4B87 /* mongoc-topology-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-topology-private.h"; sourceTree = "<group>"; };
+		37E150591BABCC9E000E4B87 /* mongoc-topology-scanner-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-topology-scanner-private.h"; sourceTree = "<group>"; };
+		37E1505A1BABCC9E000E4B87 /* mongoc-uri-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-uri-private.h"; sourceTree = "<group>"; };
+		37E1505B1BABCC9E000E4B87 /* mongoc-util-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-util-private.h"; sourceTree = "<group>"; };
+		37E1505C1BABCC9E000E4B87 /* mongoc-write-command-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-write-command-private.h"; sourceTree = "<group>"; };
+		37E1505D1BABCC9E000E4B87 /* mongoc-write-concern-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-write-concern-private.h"; sourceTree = "<group>"; };
 		37F58C9B1B9F47FF00E758C5 /* bcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bcon.h; sourceTree = "<group>"; };
 		37F58C9C1B9F47FF00E758C5 /* bson-atomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "bson-atomic.h"; sourceTree = "<group>"; };
 		37F58C9D1B9F47FF00E758C5 /* bson-clock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "bson-clock.h"; sourceTree = "<group>"; };
@@ -180,86 +226,40 @@
 		37F58CB21B9F47FF00E758C5 /* bson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bson.h; sourceTree = "<group>"; };
 		37F58CB31B9F47FF00E758C5 /* libbson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libbson.dylib; sourceTree = "<group>"; };
 		37F58CB41B9F47FF00E758C5 /* libmongoc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmongoc.dylib; sourceTree = "<group>"; };
-		37F58CB61B9F47FF00E758C5 /* mongoc-array-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-array-private.h"; sourceTree = "<group>"; };
-		37F58CB71B9F47FF00E758C5 /* mongoc-async-cmd-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-async-cmd-private.h"; sourceTree = "<group>"; };
-		37F58CB81B9F47FF00E758C5 /* mongoc-async-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-async-private.h"; sourceTree = "<group>"; };
-		37F58CB91B9F47FF00E758C5 /* mongoc-b64-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-b64-private.h"; sourceTree = "<group>"; };
-		37F58CBA1B9F47FF00E758C5 /* mongoc-buffer-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-buffer-private.h"; sourceTree = "<group>"; };
-		37F58CBB1B9F47FF00E758C5 /* mongoc-bulk-operation-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-bulk-operation-private.h"; sourceTree = "<group>"; };
 		37F58CBC1B9F47FF00E758C5 /* mongoc-bulk-operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-bulk-operation.h"; sourceTree = "<group>"; };
-		37F58CBD1B9F47FF00E758C5 /* mongoc-client-pool-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-client-pool-private.h"; sourceTree = "<group>"; };
 		37F58CBE1B9F47FF00E758C5 /* mongoc-client-pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-client-pool.h"; sourceTree = "<group>"; };
-		37F58CBF1B9F47FF00E758C5 /* mongoc-client-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-client-private.h"; sourceTree = "<group>"; };
 		37F58CC01B9F47FF00E758C5 /* mongoc-client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-client.h"; sourceTree = "<group>"; };
-		37F58CC11B9F47FF00E758C5 /* mongoc-cluster-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cluster-private.h"; sourceTree = "<group>"; };
-		37F58CC21B9F47FF00E758C5 /* mongoc-collection-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-collection-private.h"; sourceTree = "<group>"; };
 		37F58CC31B9F47FF00E758C5 /* mongoc-collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-collection.h"; sourceTree = "<group>"; };
 		37F58CC41B9F47FF00E758C5 /* mongoc-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-config.h"; sourceTree = "<group>"; };
-		37F58CC51B9F47FF00E758C5 /* mongoc-counters-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-counters-private.h"; sourceTree = "<group>"; };
-		37F58CC71B9F47FF00E758C5 /* mongoc-cursor-array-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cursor-array-private.h"; sourceTree = "<group>"; };
-		37F58CC81B9F47FF00E758C5 /* mongoc-cursor-cursorid-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cursor-cursorid-private.h"; sourceTree = "<group>"; };
-		37F58CC91B9F47FF00E758C5 /* mongoc-cursor-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cursor-private.h"; sourceTree = "<group>"; };
-		37F58CCA1B9F47FF00E758C5 /* mongoc-cursor-transform-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cursor-transform-private.h"; sourceTree = "<group>"; };
 		37F58CCB1B9F47FF00E758C5 /* mongoc-cursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-cursor.h"; sourceTree = "<group>"; };
-		37F58CCC1B9F47FF00E758C5 /* mongoc-database-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-database-private.h"; sourceTree = "<group>"; };
 		37F58CCD1B9F47FF00E758C5 /* mongoc-database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-database.h"; sourceTree = "<group>"; };
-		37F58CCE1B9F47FF00E758C5 /* mongoc-errno-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-errno-private.h"; sourceTree = "<group>"; };
 		37F58CCF1B9F47FF00E758C5 /* mongoc-error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-error.h"; sourceTree = "<group>"; };
 		37F58CD01B9F47FF00E758C5 /* mongoc-flags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-flags.h"; sourceTree = "<group>"; };
-		37F58CD11B9F47FF00E758C5 /* mongoc-gridfs-file-list-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-file-list-private.h"; sourceTree = "<group>"; };
 		37F58CD21B9F47FF00E758C5 /* mongoc-gridfs-file-list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-file-list.h"; sourceTree = "<group>"; };
-		37F58CD31B9F47FF00E758C5 /* mongoc-gridfs-file-page-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-file-page-private.h"; sourceTree = "<group>"; };
 		37F58CD41B9F47FF00E758C5 /* mongoc-gridfs-file-page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-file-page.h"; sourceTree = "<group>"; };
-		37F58CD51B9F47FF00E758C5 /* mongoc-gridfs-file-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-file-private.h"; sourceTree = "<group>"; };
 		37F58CD61B9F47FF00E758C5 /* mongoc-gridfs-file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-file.h"; sourceTree = "<group>"; };
-		37F58CD71B9F47FF00E758C5 /* mongoc-gridfs-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs-private.h"; sourceTree = "<group>"; };
 		37F58CD81B9F47FF00E758C5 /* mongoc-gridfs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-gridfs.h"; sourceTree = "<group>"; };
-		37F58CD91B9F47FF00E758C5 /* mongoc-host-list-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-host-list-private.h"; sourceTree = "<group>"; };
 		37F58CDA1B9F47FF00E758C5 /* mongoc-host-list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-host-list.h"; sourceTree = "<group>"; };
 		37F58CDB1B9F47FF00E758C5 /* mongoc-index.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-index.h"; sourceTree = "<group>"; };
 		37F58CDC1B9F47FF00E758C5 /* mongoc-init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-init.h"; sourceTree = "<group>"; };
 		37F58CDD1B9F47FF00E758C5 /* mongoc-iovec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-iovec.h"; sourceTree = "<group>"; };
-		37F58CDE1B9F47FF00E758C5 /* mongoc-list-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-list-private.h"; sourceTree = "<group>"; };
-		37F58CDF1B9F47FF00E758C5 /* mongoc-log-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-log-private.h"; sourceTree = "<group>"; };
 		37F58CE01B9F47FF00E758C5 /* mongoc-log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-log.h"; sourceTree = "<group>"; };
-		37F58CE11B9F47FF00E758C5 /* mongoc-matcher-op-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-matcher-op-private.h"; sourceTree = "<group>"; };
-		37F58CE21B9F47FF00E758C5 /* mongoc-matcher-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-matcher-private.h"; sourceTree = "<group>"; };
 		37F58CE31B9F47FF00E758C5 /* mongoc-matcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-matcher.h"; sourceTree = "<group>"; };
-		37F58CE41B9F47FF00E758C5 /* mongoc-opcode-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-opcode-private.h"; sourceTree = "<group>"; };
 		37F58CE51B9F47FF00E758C5 /* mongoc-opcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-opcode.h"; sourceTree = "<group>"; };
-		37F58CE61B9F47FF00E758C5 /* mongoc-queue-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-queue-private.h"; sourceTree = "<group>"; };
-		37F58CE71B9F47FF00E758C5 /* mongoc-rand-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-rand-private.h"; sourceTree = "<group>"; };
 		37F58CE81B9F47FF00E758C5 /* mongoc-rand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-rand.h"; sourceTree = "<group>"; };
-		37F58CE91B9F47FF00E758C5 /* mongoc-read-prefs-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-read-prefs-private.h"; sourceTree = "<group>"; };
 		37F58CEA1B9F47FF00E758C5 /* mongoc-read-prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-read-prefs.h"; sourceTree = "<group>"; };
-		37F58CEB1B9F47FF00E758C5 /* mongoc-rpc-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-rpc-private.h"; sourceTree = "<group>"; };
-		37F58CEC1B9F47FF00E758C5 /* mongoc-sasl-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-sasl-private.h"; sourceTree = "<group>"; };
-		37F58CED1B9F47FF00E758C5 /* mongoc-scram-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-scram-private.h"; sourceTree = "<group>"; };
-		37F58CEE1B9F47FF00E758C5 /* mongoc-server-description-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-server-description-private.h"; sourceTree = "<group>"; };
 		37F58CEF1B9F47FF00E758C5 /* mongoc-server-description.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-server-description.h"; sourceTree = "<group>"; };
-		37F58CF01B9F47FF00E758C5 /* mongoc-set-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-set-private.h"; sourceTree = "<group>"; };
-		37F58CF11B9F47FF00E758C5 /* mongoc-socket-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-socket-private.h"; sourceTree = "<group>"; };
 		37F58CF21B9F47FF00E758C5 /* mongoc-socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-socket.h"; sourceTree = "<group>"; };
-		37F58CF31B9F47FF00E758C5 /* mongoc-ssl-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-ssl-private.h"; sourceTree = "<group>"; };
 		37F58CF41B9F47FF00E758C5 /* mongoc-ssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-ssl.h"; sourceTree = "<group>"; };
 		37F58CF51B9F47FF00E758C5 /* mongoc-stream-buffered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-stream-buffered.h"; sourceTree = "<group>"; };
 		37F58CF61B9F47FF00E758C5 /* mongoc-stream-file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-stream-file.h"; sourceTree = "<group>"; };
 		37F58CF71B9F47FF00E758C5 /* mongoc-stream-gridfs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-stream-gridfs.h"; sourceTree = "<group>"; };
-		37F58CF81B9F47FF00E758C5 /* mongoc-stream-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-stream-private.h"; sourceTree = "<group>"; };
 		37F58CF91B9F47FF00E758C5 /* mongoc-stream-socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-stream-socket.h"; sourceTree = "<group>"; };
 		37F58CFA1B9F47FF00E758C5 /* mongoc-stream-tls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-stream-tls.h"; sourceTree = "<group>"; };
 		37F58CFB1B9F47FF00E758C5 /* mongoc-stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-stream.h"; sourceTree = "<group>"; };
-		37F58CFC1B9F47FF00E758C5 /* mongoc-thread-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-thread-private.h"; sourceTree = "<group>"; };
-		37F58CFD1B9F47FF00E758C5 /* mongoc-topology-description-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-topology-description-private.h"; sourceTree = "<group>"; };
-		37F58CFE1B9F47FF00E758C5 /* mongoc-topology-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-topology-private.h"; sourceTree = "<group>"; };
-		37F58CFF1B9F47FF00E758C5 /* mongoc-topology-scanner-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-topology-scanner-private.h"; sourceTree = "<group>"; };
 		37F58D001B9F47FF00E758C5 /* mongoc-trace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-trace.h"; sourceTree = "<group>"; };
-		37F58D011B9F47FF00E758C5 /* mongoc-uri-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-uri-private.h"; sourceTree = "<group>"; };
 		37F58D021B9F47FF00E758C5 /* mongoc-uri.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-uri.h"; sourceTree = "<group>"; };
-		37F58D031B9F47FF00E758C5 /* mongoc-util-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-util-private.h"; sourceTree = "<group>"; };
 		37F58D041B9F47FF00E758C5 /* mongoc-version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-version.h"; sourceTree = "<group>"; };
-		37F58D051B9F47FF00E758C5 /* mongoc-write-command-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-write-command-private.h"; sourceTree = "<group>"; };
-		37F58D061B9F47FF00E758C5 /* mongoc-write-concern-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-write-concern-private.h"; sourceTree = "<group>"; };
 		37F58D071B9F47FF00E758C5 /* mongoc-write-concern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mongoc-write-concern.h"; sourceTree = "<group>"; };
 		37F58D111B9F47FF00E758C5 /* utlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utlist.h; sourceTree = "<group>"; };
 		37F58D121B9F47FF00E758C5 /* mongoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mongoc.h; sourceTree = "<group>"; };
@@ -346,29 +346,59 @@
 			path = swiftMongoDBTests;
 			sourceTree = "<group>";
 		};
-		377EC3CA1B9648EE0021D748 /* dependencies */ = {
+		37E1502F1BABCC9E000E4B87 /* private */ = {
 			isa = PBXGroup;
 			children = (
-				377EC3CC1B9649020021D748 /* mongoc */,
-				377EC3CB1B9648FA0021D748 /* bson */,
+				37E150301BABCC9E000E4B87 /* mongoc-array-private.h */,
+				37E150311BABCC9E000E4B87 /* mongoc-async-cmd-private.h */,
+				37E150321BABCC9E000E4B87 /* mongoc-async-private.h */,
+				37E150331BABCC9E000E4B87 /* mongoc-b64-private.h */,
+				37E150341BABCC9E000E4B87 /* mongoc-buffer-private.h */,
+				37E150351BABCC9E000E4B87 /* mongoc-bulk-operation-private.h */,
+				37E150361BABCC9E000E4B87 /* mongoc-client-pool-private.h */,
+				37E150371BABCC9E000E4B87 /* mongoc-client-private.h */,
+				37E150381BABCC9E000E4B87 /* mongoc-cluster-private.h */,
+				37E150391BABCC9E000E4B87 /* mongoc-collection-private.h */,
+				37E1503A1BABCC9E000E4B87 /* mongoc-counters-private.h */,
+				37E1503B1BABCC9E000E4B87 /* mongoc-cursor-array-private.h */,
+				37E1503C1BABCC9E000E4B87 /* mongoc-cursor-cursorid-private.h */,
+				37E1503D1BABCC9E000E4B87 /* mongoc-cursor-private.h */,
+				37E1503E1BABCC9E000E4B87 /* mongoc-cursor-transform-private.h */,
+				37E1503F1BABCC9E000E4B87 /* mongoc-database-private.h */,
+				37E150401BABCC9E000E4B87 /* mongoc-errno-private.h */,
+				37E150411BABCC9E000E4B87 /* mongoc-gridfs-file-list-private.h */,
+				37E150421BABCC9E000E4B87 /* mongoc-gridfs-file-page-private.h */,
+				37E150431BABCC9E000E4B87 /* mongoc-gridfs-file-private.h */,
+				37E150441BABCC9E000E4B87 /* mongoc-gridfs-private.h */,
+				37E150451BABCC9E000E4B87 /* mongoc-host-list-private.h */,
+				37E150461BABCC9E000E4B87 /* mongoc-list-private.h */,
+				37E150471BABCC9E000E4B87 /* mongoc-log-private.h */,
+				37E150481BABCC9E000E4B87 /* mongoc-matcher-op-private.h */,
+				37E150491BABCC9E000E4B87 /* mongoc-matcher-private.h */,
+				37E1504A1BABCC9E000E4B87 /* mongoc-opcode-private.h */,
+				37E1504B1BABCC9E000E4B87 /* mongoc-queue-private.h */,
+				37E1504C1BABCC9E000E4B87 /* mongoc-rand-private.h */,
+				37E1504D1BABCC9E000E4B87 /* mongoc-read-prefs-private.h */,
+				37E1504E1BABCC9E000E4B87 /* mongoc-rpc-private.h */,
+				37E1504F1BABCC9E000E4B87 /* mongoc-sasl-private.h */,
+				37E150501BABCC9E000E4B87 /* mongoc-scram-private.h */,
+				37E150511BABCC9E000E4B87 /* mongoc-server-description-private.h */,
+				37E150521BABCC9E000E4B87 /* mongoc-set-private.h */,
+				37E150531BABCC9E000E4B87 /* mongoc-socket-private.h */,
+				37E150541BABCC9E000E4B87 /* mongoc-ssl-private.h */,
+				37E150551BABCC9E000E4B87 /* mongoc-stream-private.h */,
+				37E150561BABCC9E000E4B87 /* mongoc-thread-private.h */,
+				37E150571BABCC9E000E4B87 /* mongoc-topology-description-private.h */,
+				37E150581BABCC9E000E4B87 /* mongoc-topology-private.h */,
+				37E150591BABCC9E000E4B87 /* mongoc-topology-scanner-private.h */,
+				37E1505A1BABCC9E000E4B87 /* mongoc-uri-private.h */,
+				37E1505B1BABCC9E000E4B87 /* mongoc-util-private.h */,
+				37E1505C1BABCC9E000E4B87 /* mongoc-write-command-private.h */,
+				37E1505D1BABCC9E000E4B87 /* mongoc-write-concern-private.h */,
 			);
-			name = dependencies;
-			path = swiftMongoDB;
-			sourceTree = "<group>";
-		};
-		377EC3CB1B9648FA0021D748 /* bson */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = bson;
-			sourceTree = "<group>";
-		};
-		377EC3CC1B9649020021D748 /* mongoc */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = mongoc;
-			sourceTree = "<group>";
+			name = private;
+			path = swiftMongoDB/dependencies/private;
+			sourceTree = SOURCE_ROOT;
 		};
 		37F58C991B9F47FF00E758C5 /* dependencies */ = {
 			isa = PBXGroup;
@@ -416,86 +446,41 @@
 		37F58CB51B9F47FF00E758C5 /* mongoc */ = {
 			isa = PBXGroup;
 			children = (
-				37F58CB61B9F47FF00E758C5 /* mongoc-array-private.h */,
-				37F58CB71B9F47FF00E758C5 /* mongoc-async-cmd-private.h */,
-				37F58CB81B9F47FF00E758C5 /* mongoc-async-private.h */,
-				37F58CB91B9F47FF00E758C5 /* mongoc-b64-private.h */,
-				37F58CBA1B9F47FF00E758C5 /* mongoc-buffer-private.h */,
-				37F58CBB1B9F47FF00E758C5 /* mongoc-bulk-operation-private.h */,
+				37E1502F1BABCC9E000E4B87 /* private */,
 				37F58CBC1B9F47FF00E758C5 /* mongoc-bulk-operation.h */,
-				37F58CBD1B9F47FF00E758C5 /* mongoc-client-pool-private.h */,
 				37F58CBE1B9F47FF00E758C5 /* mongoc-client-pool.h */,
-				37F58CBF1B9F47FF00E758C5 /* mongoc-client-private.h */,
 				37F58CC01B9F47FF00E758C5 /* mongoc-client.h */,
-				37F58CC11B9F47FF00E758C5 /* mongoc-cluster-private.h */,
-				37F58CC21B9F47FF00E758C5 /* mongoc-collection-private.h */,
 				37F58CC31B9F47FF00E758C5 /* mongoc-collection.h */,
 				37F58CC41B9F47FF00E758C5 /* mongoc-config.h */,
-				37F58CC51B9F47FF00E758C5 /* mongoc-counters-private.h */,
-				37F58CC71B9F47FF00E758C5 /* mongoc-cursor-array-private.h */,
-				37F58CC81B9F47FF00E758C5 /* mongoc-cursor-cursorid-private.h */,
-				37F58CC91B9F47FF00E758C5 /* mongoc-cursor-private.h */,
-				37F58CCA1B9F47FF00E758C5 /* mongoc-cursor-transform-private.h */,
 				37F58CCB1B9F47FF00E758C5 /* mongoc-cursor.h */,
-				37F58CCC1B9F47FF00E758C5 /* mongoc-database-private.h */,
 				37F58CCD1B9F47FF00E758C5 /* mongoc-database.h */,
-				37F58CCE1B9F47FF00E758C5 /* mongoc-errno-private.h */,
 				37F58CCF1B9F47FF00E758C5 /* mongoc-error.h */,
 				37F58CD01B9F47FF00E758C5 /* mongoc-flags.h */,
-				37F58CD11B9F47FF00E758C5 /* mongoc-gridfs-file-list-private.h */,
 				37F58CD21B9F47FF00E758C5 /* mongoc-gridfs-file-list.h */,
-				37F58CD31B9F47FF00E758C5 /* mongoc-gridfs-file-page-private.h */,
 				37F58CD41B9F47FF00E758C5 /* mongoc-gridfs-file-page.h */,
-				37F58CD51B9F47FF00E758C5 /* mongoc-gridfs-file-private.h */,
 				37F58CD61B9F47FF00E758C5 /* mongoc-gridfs-file.h */,
-				37F58CD71B9F47FF00E758C5 /* mongoc-gridfs-private.h */,
 				37F58CD81B9F47FF00E758C5 /* mongoc-gridfs.h */,
-				37F58CD91B9F47FF00E758C5 /* mongoc-host-list-private.h */,
 				37F58CDA1B9F47FF00E758C5 /* mongoc-host-list.h */,
 				37F58CDB1B9F47FF00E758C5 /* mongoc-index.h */,
 				37F58CDC1B9F47FF00E758C5 /* mongoc-init.h */,
 				37F58CDD1B9F47FF00E758C5 /* mongoc-iovec.h */,
-				37F58CDE1B9F47FF00E758C5 /* mongoc-list-private.h */,
-				37F58CDF1B9F47FF00E758C5 /* mongoc-log-private.h */,
 				37F58CE01B9F47FF00E758C5 /* mongoc-log.h */,
-				37F58CE11B9F47FF00E758C5 /* mongoc-matcher-op-private.h */,
-				37F58CE21B9F47FF00E758C5 /* mongoc-matcher-private.h */,
 				37F58CE31B9F47FF00E758C5 /* mongoc-matcher.h */,
-				37F58CE41B9F47FF00E758C5 /* mongoc-opcode-private.h */,
 				37F58CE51B9F47FF00E758C5 /* mongoc-opcode.h */,
-				37F58CE61B9F47FF00E758C5 /* mongoc-queue-private.h */,
-				37F58CE71B9F47FF00E758C5 /* mongoc-rand-private.h */,
 				37F58CE81B9F47FF00E758C5 /* mongoc-rand.h */,
-				37F58CE91B9F47FF00E758C5 /* mongoc-read-prefs-private.h */,
 				37F58CEA1B9F47FF00E758C5 /* mongoc-read-prefs.h */,
-				37F58CEB1B9F47FF00E758C5 /* mongoc-rpc-private.h */,
-				37F58CEC1B9F47FF00E758C5 /* mongoc-sasl-private.h */,
-				37F58CED1B9F47FF00E758C5 /* mongoc-scram-private.h */,
-				37F58CEE1B9F47FF00E758C5 /* mongoc-server-description-private.h */,
 				37F58CEF1B9F47FF00E758C5 /* mongoc-server-description.h */,
-				37F58CF01B9F47FF00E758C5 /* mongoc-set-private.h */,
-				37F58CF11B9F47FF00E758C5 /* mongoc-socket-private.h */,
 				37F58CF21B9F47FF00E758C5 /* mongoc-socket.h */,
-				37F58CF31B9F47FF00E758C5 /* mongoc-ssl-private.h */,
 				37F58CF41B9F47FF00E758C5 /* mongoc-ssl.h */,
 				37F58CF51B9F47FF00E758C5 /* mongoc-stream-buffered.h */,
 				37F58CF61B9F47FF00E758C5 /* mongoc-stream-file.h */,
 				37F58CF71B9F47FF00E758C5 /* mongoc-stream-gridfs.h */,
-				37F58CF81B9F47FF00E758C5 /* mongoc-stream-private.h */,
 				37F58CF91B9F47FF00E758C5 /* mongoc-stream-socket.h */,
 				37F58CFA1B9F47FF00E758C5 /* mongoc-stream-tls.h */,
 				37F58CFB1B9F47FF00E758C5 /* mongoc-stream.h */,
-				37F58CFC1B9F47FF00E758C5 /* mongoc-thread-private.h */,
-				37F58CFD1B9F47FF00E758C5 /* mongoc-topology-description-private.h */,
-				37F58CFE1B9F47FF00E758C5 /* mongoc-topology-private.h */,
-				37F58CFF1B9F47FF00E758C5 /* mongoc-topology-scanner-private.h */,
 				37F58D001B9F47FF00E758C5 /* mongoc-trace.h */,
-				37F58D011B9F47FF00E758C5 /* mongoc-uri-private.h */,
 				37F58D021B9F47FF00E758C5 /* mongoc-uri.h */,
-				37F58D031B9F47FF00E758C5 /* mongoc-util-private.h */,
 				37F58D041B9F47FF00E758C5 /* mongoc-version.h */,
-				37F58D051B9F47FF00E758C5 /* mongoc-write-command-private.h */,
-				37F58D061B9F47FF00E758C5 /* mongoc-write-concern-private.h */,
 				37F58D071B9F47FF00E758C5 /* mongoc-write-concern.h */,
 				37F58D111B9F47FF00E758C5 /* utlist.h */,
 			);
@@ -516,7 +501,6 @@
 		DDB0E9D70B09F5A491EC0433 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				377EC3CA1B9648EE0021D748 /* dependencies */,
 				A3A23E280A007CEEAA718C6C /* Pods_swiftMongoDB.framework */,
 				22392163DDF259BA9328E5A3 /* Pods_swiftMongoDBTests.framework */,
 			);
@@ -532,112 +516,112 @@
 			files = (
 				37F58D5A1B9F47FF00E758C5 /* mongoc-matcher.h in Headers */,
 				37F58D691B9F47FF00E758C5 /* mongoc-socket.h in Headers */,
-				37F58D731B9F47FF00E758C5 /* mongoc-thread-private.h in Headers */,
+				37E150671BABCC9E000E4B87 /* mongoc-collection-private.h in Headers */,
+				37E1508B1BABCC9E000E4B87 /* mongoc-write-concern-private.h in Headers */,
+				37E150801BABCC9E000E4B87 /* mongoc-set-private.h in Headers */,
 				37F58D2A1B9F47FF00E758C5 /* bson.h in Headers */,
 				37F58D131B9F47FF00E758C5 /* bcon.h in Headers */,
-				37F58D431B9F47FF00E758C5 /* mongoc-database-private.h in Headers */,
-				37F58D3C1B9F47FF00E758C5 /* mongoc-counters-private.h in Headers */,
+				37E1507F1BABCC9E000E4B87 /* mongoc-server-description-private.h in Headers */,
 				37F58D191B9F47FF00E758C5 /* bson-endian.h in Headers */,
-				37F58D601B9F47FF00E758C5 /* mongoc-read-prefs-private.h in Headers */,
+				37E150721BABCC9E000E4B87 /* mongoc-gridfs-private.h in Headers */,
+				37E1506F1BABCC9E000E4B87 /* mongoc-gridfs-file-list-private.h in Headers */,
 				37F58D221B9F47FF00E758C5 /* bson-reader.h in Headers */,
 				37F58D201B9F47FF00E758C5 /* bson-memory.h in Headers */,
-				37F58D311B9F47FF00E758C5 /* mongoc-buffer-private.h in Headers */,
+				37E150601BABCC9E000E4B87 /* mongoc-async-private.h in Headers */,
 				37F58D791B9F47FF00E758C5 /* mongoc-uri.h in Headers */,
-				37F58D2D1B9F47FF00E758C5 /* mongoc-array-private.h in Headers */,
+				37E1507E1BABCC9E000E4B87 /* mongoc-scram-private.h in Headers */,
+				37E1506B1BABCC9E000E4B87 /* mongoc-cursor-private.h in Headers */,
+				37E1506C1BABCC9E000E4B87 /* mongoc-cursor-transform-private.h in Headers */,
 				37F58D261B9F47FF00E758C5 /* bson-utf8.h in Headers */,
 				37F58D6D1B9F47FF00E758C5 /* mongoc-stream-file.h in Headers */,
 				37F58D5F1B9F47FF00E758C5 /* mongoc-rand.h in Headers */,
-				37F58D321B9F47FF00E758C5 /* mongoc-bulk-operation-private.h in Headers */,
-				37F58D651B9F47FF00E758C5 /* mongoc-server-description-private.h in Headers */,
 				37F58D3A1B9F47FF00E758C5 /* mongoc-collection.h in Headers */,
-				37F58D3E1B9F47FF00E758C5 /* mongoc-cursor-array-private.h in Headers */,
+				37E150781BABCC9E000E4B87 /* mongoc-opcode-private.h in Headers */,
+				37E150831BABCC9E000E4B87 /* mongoc-stream-private.h in Headers */,
 				37F58D891B9F47FF00E758C5 /* mongoc.h in Headers */,
-				37F58D581B9F47FF00E758C5 /* mongoc-matcher-op-private.h in Headers */,
-				37F58D631B9F47FF00E758C5 /* mongoc-sasl-private.h in Headers */,
+				37E1506D1BABCC9E000E4B87 /* mongoc-database-private.h in Headers */,
+				37E150681BABCC9E000E4B87 /* mongoc-counters-private.h in Headers */,
+				37E150791BABCC9E000E4B87 /* mongoc-queue-private.h in Headers */,
+				37E150621BABCC9E000E4B87 /* mongoc-buffer-private.h in Headers */,
 				37F58D471B9F47FF00E758C5 /* mongoc-flags.h in Headers */,
 				37F58D331B9F47FF00E758C5 /* mongoc-bulk-operation.h in Headers */,
-				37F58D501B9F47FF00E758C5 /* mongoc-host-list-private.h in Headers */,
-				37F58D5E1B9F47FF00E758C5 /* mongoc-rand-private.h in Headers */,
-				37F58D7C1B9F47FF00E758C5 /* mongoc-write-command-private.h in Headers */,
-				37F58D781B9F47FF00E758C5 /* mongoc-uri-private.h in Headers */,
-				37F58D341B9F47FF00E758C5 /* mongoc-client-pool-private.h in Headers */,
 				37F58D701B9F47FF00E758C5 /* mongoc-stream-socket.h in Headers */,
-				37F58D381B9F47FF00E758C5 /* mongoc-cluster-private.h in Headers */,
-				37F58D561B9F47FF00E758C5 /* mongoc-log-private.h in Headers */,
 				37F58D421B9F47FF00E758C5 /* mongoc-cursor.h in Headers */,
-				37F58D451B9F47FF00E758C5 /* mongoc-errno-private.h in Headers */,
+				37E150731BABCC9E000E4B87 /* mongoc-host-list-private.h in Headers */,
 				37F58D5C1B9F47FF00E758C5 /* mongoc-opcode.h in Headers */,
 				37F58D1E1B9F47FF00E758C5 /* bson-macros.h in Headers */,
 				37F58D1F1B9F47FF00E758C5 /* bson-md5.h in Headers */,
+				37E150631BABCC9E000E4B87 /* mongoc-bulk-operation-private.h in Headers */,
 				37F58D251B9F47FF00E758C5 /* bson-types.h in Headers */,
+				37E150891BABCC9E000E4B87 /* mongoc-util-private.h in Headers */,
 				37F58D4D1B9F47FF00E758C5 /* mongoc-gridfs-file.h in Headers */,
 				37F58D6C1B9F47FF00E758C5 /* mongoc-stream-buffered.h in Headers */,
 				37F58D7B1B9F47FF00E758C5 /* mongoc-version.h in Headers */,
-				37F58D6F1B9F47FF00E758C5 /* mongoc-stream-private.h in Headers */,
-				37F58D591B9F47FF00E758C5 /* mongoc-matcher-private.h in Headers */,
+				37E150771BABCC9E000E4B87 /* mongoc-matcher-private.h in Headers */,
 				37F58D151B9F47FF00E758C5 /* bson-clock.h in Headers */,
-				37F58D401B9F47FF00E758C5 /* mongoc-cursor-private.h in Headers */,
 				37F58D161B9F47FF00E758C5 /* bson-compat.h in Headers */,
-				37F58D5D1B9F47FF00E758C5 /* mongoc-queue-private.h in Headers */,
+				37E1507D1BABCC9E000E4B87 /* mongoc-sasl-private.h in Headers */,
 				37F58D371B9F47FF00E758C5 /* mongoc-client.h in Headers */,
 				37F58D231B9F47FF00E758C5 /* bson-stdint.h in Headers */,
-				37F58D391B9F47FF00E758C5 /* mongoc-collection-private.h in Headers */,
-				37F58D751B9F47FF00E758C5 /* mongoc-topology-private.h in Headers */,
-				37F58D481B9F47FF00E758C5 /* mongoc-gridfs-file-list-private.h in Headers */,
+				37E150871BABCC9E000E4B87 /* mongoc-topology-scanner-private.h in Headers */,
 				37F58D1D1B9F47FF00E758C5 /* bson-keys.h in Headers */,
 				37F58D711B9F47FF00E758C5 /* mongoc-stream-tls.h in Headers */,
 				37F58D241B9F47FF00E758C5 /* bson-string.h in Headers */,
 				37F58D441B9F47FF00E758C5 /* mongoc-database.h in Headers */,
 				37F58D881B9F47FF00E758C5 /* utlist.h in Headers */,
-				37F58D361B9F47FF00E758C5 /* mongoc-client-private.h in Headers */,
+				37E150821BABCC9E000E4B87 /* mongoc-ssl-private.h in Headers */,
+				37E1506A1BABCC9E000E4B87 /* mongoc-cursor-cursorid-private.h in Headers */,
 				375F5F0F1B7E65DF007EA172 /* swiftMongoDB.h in Headers */,
-				37F58D671B9F47FF00E758C5 /* mongoc-set-private.h in Headers */,
 				37F58D461B9F47FF00E758C5 /* mongoc-error.h in Headers */,
 				37F58D1C1B9F47FF00E758C5 /* bson-json.h in Headers */,
-				37F58D681B9F47FF00E758C5 /* mongoc-socket-private.h in Headers */,
 				37F58D771B9F47FF00E758C5 /* mongoc-trace.h in Headers */,
 				37F58D531B9F47FF00E758C5 /* mongoc-init.h in Headers */,
 				37F58D291B9F47FF00E758C5 /* bson-writer.h in Headers */,
 				37F58D491B9F47FF00E758C5 /* mongoc-gridfs-file-list.h in Headers */,
-				37F58D4C1B9F47FF00E758C5 /* mongoc-gridfs-file-private.h in Headers */,
+				37E1506E1BABCC9E000E4B87 /* mongoc-errno-private.h in Headers */,
+				37E1505E1BABCC9E000E4B87 /* mongoc-array-private.h in Headers */,
+				37E150751BABCC9E000E4B87 /* mongoc-log-private.h in Headers */,
 				37F58D541B9F47FF00E758C5 /* mongoc-iovec.h in Headers */,
+				37E150691BABCC9E000E4B87 /* mongoc-cursor-array-private.h in Headers */,
 				37F58D3B1B9F47FF00E758C5 /* mongoc-config.h in Headers */,
+				37E150651BABCC9E000E4B87 /* mongoc-client-private.h in Headers */,
+				37E150711BABCC9E000E4B87 /* mongoc-gridfs-file-private.h in Headers */,
+				37E150841BABCC9E000E4B87 /* mongoc-thread-private.h in Headers */,
+				37E1505F1BABCC9E000E4B87 /* mongoc-async-cmd-private.h in Headers */,
 				37F58D7E1B9F47FF00E758C5 /* mongoc-write-concern.h in Headers */,
-				37F58D2F1B9F47FF00E758C5 /* mongoc-async-private.h in Headers */,
-				37F58D741B9F47FF00E758C5 /* mongoc-topology-description-private.h in Headers */,
+				37E1507A1BABCC9E000E4B87 /* mongoc-rand-private.h in Headers */,
 				37F58D4F1B9F47FF00E758C5 /* mongoc-gridfs.h in Headers */,
 				37F58D281B9F47FF00E758C5 /* bson-version.h in Headers */,
-				37F58D5B1B9F47FF00E758C5 /* mongoc-opcode-private.h in Headers */,
 				37F58D661B9F47FF00E758C5 /* mongoc-server-description.h in Headers */,
-				37F58D551B9F47FF00E758C5 /* mongoc-list-private.h in Headers */,
-				37F58D2E1B9F47FF00E758C5 /* mongoc-async-cmd-private.h in Headers */,
+				37E150641BABCC9E000E4B87 /* mongoc-client-pool-private.h in Headers */,
+				37E1507C1BABCC9E000E4B87 /* mongoc-rpc-private.h in Headers */,
+				37E150661BABCC9E000E4B87 /* mongoc-cluster-private.h in Headers */,
+				37E150861BABCC9E000E4B87 /* mongoc-topology-private.h in Headers */,
+				37E150811BABCC9E000E4B87 /* mongoc-socket-private.h in Headers */,
 				37F58D171B9F47FF00E758C5 /* bson-config.h in Headers */,
 				37F58D211B9F47FF00E758C5 /* bson-oid.h in Headers */,
-				37F58D761B9F47FF00E758C5 /* mongoc-topology-scanner-private.h in Headers */,
 				37F58D521B9F47FF00E758C5 /* mongoc-index.h in Headers */,
 				37F58D1A1B9F47FF00E758C5 /* bson-error.h in Headers */,
-				37F58D301B9F47FF00E758C5 /* mongoc-b64-private.h in Headers */,
+				37E150881BABCC9E000E4B87 /* mongoc-uri-private.h in Headers */,
 				37F58D141B9F47FF00E758C5 /* bson-atomic.h in Headers */,
-				37F58D3F1B9F47FF00E758C5 /* mongoc-cursor-cursorid-private.h in Headers */,
 				37F58D721B9F47FF00E758C5 /* mongoc-stream.h in Headers */,
 				37F58D1B1B9F47FF00E758C5 /* bson-iter.h in Headers */,
 				37F58D271B9F47FF00E758C5 /* bson-value.h in Headers */,
-				37F58D6A1B9F47FF00E758C5 /* mongoc-ssl-private.h in Headers */,
 				37F58D4B1B9F47FF00E758C5 /* mongoc-gridfs-file-page.h in Headers */,
 				37F58D6B1B9F47FF00E758C5 /* mongoc-ssl.h in Headers */,
 				37F58D351B9F47FF00E758C5 /* mongoc-client-pool.h in Headers */,
 				37F58D181B9F47FF00E758C5 /* bson-context.h in Headers */,
-				37F58D621B9F47FF00E758C5 /* mongoc-rpc-private.h in Headers */,
 				37F58D6E1B9F47FF00E758C5 /* mongoc-stream-gridfs.h in Headers */,
+				37E1507B1BABCC9E000E4B87 /* mongoc-read-prefs-private.h in Headers */,
 				37F58D571B9F47FF00E758C5 /* mongoc-log.h in Headers */,
-				37F58D641B9F47FF00E758C5 /* mongoc-scram-private.h in Headers */,
-				37F58D411B9F47FF00E758C5 /* mongoc-cursor-transform-private.h in Headers */,
-				37F58D7A1B9F47FF00E758C5 /* mongoc-util-private.h in Headers */,
-				37F58D4E1B9F47FF00E758C5 /* mongoc-gridfs-private.h in Headers */,
-				37F58D4A1B9F47FF00E758C5 /* mongoc-gridfs-file-page-private.h in Headers */,
-				37F58D7D1B9F47FF00E758C5 /* mongoc-write-concern-private.h in Headers */,
+				37E1508A1BABCC9E000E4B87 /* mongoc-write-command-private.h in Headers */,
+				37E150701BABCC9E000E4B87 /* mongoc-gridfs-file-page-private.h in Headers */,
 				37F58D611B9F47FF00E758C5 /* mongoc-read-prefs.h in Headers */,
+				37E150611BABCC9E000E4B87 /* mongoc-b64-private.h in Headers */,
+				37E150741BABCC9E000E4B87 /* mongoc-list-private.h in Headers */,
+				37E150851BABCC9E000E4B87 /* mongoc-topology-description-private.h in Headers */,
 				37F58D511B9F47FF00E758C5 /* mongoc-host-list.h in Headers */,
+				37E150761BABCC9E000E4B87 /* mongoc-matcher-op-private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

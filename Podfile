@@ -1,6 +1,7 @@
 use_frameworks!
 target 'swiftMongoDB' do
-    pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'xcode7'
+    pod 'SwiftyJSON'
+#    pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'xcode7'
 end
 
 target 'swiftMongoDBTests' do
