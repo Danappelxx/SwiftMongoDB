@@ -56,13 +56,23 @@ public class MongoClient {
         }
     }
     
-
     // authenticated connection - required specific database
-    public init(host: String, port: Int, database: String, usernameAndPassword: (username: String, password: String)) throws {
+    public convenience init(host: String, port: Int, database: String, usernameAndPassword: (username: String, password: String)) throws {
+        try self.init(
+            host: host,
+            port: port,
+            database: database,
+            authenticationDatabase: database,
+            usernameAndPassword: usernameAndPassword
+        )
+    }
+    
+    // authenticated connection - required specific database and specific database for authentication
+    public init(host: String, port: Int, database: String, authenticationDatabase: String, usernameAndPassword: (username: String, password: String)) throws {
     
         let userAndPass = "\(usernameAndPassword.username):\(usernameAndPassword.password)@"
         
-        self.clientURI = "mongodb://\(userAndPass)\(host):\(port)/?authSource=\(database)"
+        self.clientURI = "mongodb://\(userAndPass)\(host):\(port)/\(database)?authSource=\(authenticationDatabase)"
         
         self.host = host
         self.port = port
@@ -135,9 +145,7 @@ public class MongoClient {
     }
     
     public func getDefaultDatabaseName() -> String {
-        let database = mongoc_client_get_default_database(self.clientRAW)
-
-        let databaseNameRAW = mongoc_database_get_name(database)
+        let databaseNameRAW = mongoc_database_get_name(self.clientRAW)
         let databaseName = NSString(UTF8String: databaseNameRAW)
 
         return databaseName! as String
