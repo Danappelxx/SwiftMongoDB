@@ -77,18 +77,13 @@ public class MongoClient {
         self.host = host
         self.port = port
         
-        self.clientRAW = mongoc_client_new(self.clientURI)
-        
         mongoc_init()
         
-        let reply = bson_new()
-        var status = bson_error_t()
-        mongoc_client_get_server_status(self.clientRAW, nil, reply, &status)
+        self.clientRAW = mongoc_client_new(self.clientURI)
         
-        
-        if status.code.mongoError != MongoError.NoError {
-        print(errorMessageToString(&status.message))
-        throw status.code.mongoError
+        if (self.clientRAW == nil) {
+            print("Invalid hostname or port: %s\n", self.host+" \(+self.port)");
+            throw MongoError.ConnectionToHostFailed
         }
         
         self.databaseNameInternal = database
@@ -151,8 +146,6 @@ public class MongoClient {
         return databaseName! as String
     }
     
-    
-    
     public func performBasicClientCommand(command: DocumentData) throws -> DocumentData {
 
         var commandRAW = bson_t()
@@ -182,6 +175,25 @@ public class MongoClient {
         
         mongoc_database_command_simple(self.databaseRAW, &commandRAW, nil, &reply, &error)
 
+        if error.code.mongoError != MongoError.NoError {
+            print(errorMessageToString(&error.message))
+            throw error.code.mongoError
+        }
+        
+        return try MongoBSONDecoder(BSON: &reply).result.data
+        //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
+    }
+    
+    public func performBasicDatabaseCommand(JSONString : String) throws -> DocumentData {
+        var error0 = bson_error_t()
+        
+        let commandRAW = bson_new_from_json(JSONString, -1, &error0)
+        print("commandRAW --> ",commandRAW)
+        var reply = bson_t()
+        var error = bson_error_t()
+        
+        mongoc_database_command_simple(self.databaseRAW, commandRAW, nil, &reply, &error)
+        
         if error.code.mongoError != MongoError.NoError {
             print(errorMessageToString(&error.message))
             throw error.code.mongoError
