@@ -62,7 +62,7 @@ public class MongoCollection {
     public func insert(document: DocumentData, containsObjectId: Bool = false, flags: InsertFlags = InsertFlags.None) throws {
 
         do {
-            try self.insert(MongoDocument(data: document, containsObjectId: containsObjectId), flags: flags)
+            try self.insert(MongoDocument(data: document), flags: flags)
         } catch {
             throw error
         }
