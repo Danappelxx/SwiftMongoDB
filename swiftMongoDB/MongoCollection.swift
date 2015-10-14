@@ -91,7 +91,7 @@ public class MongoCollection {
         var outputDocuments = [MongoDocument]()
 
         while cursor.nextIsOK {
-            print(cursor.nextDocumentJSON)
+            //print(cursor.nextDocumentJSON)
             
             guard let nextDocument = cursor.nextDocument else {
                 throw MongoError.CorruptDocument
