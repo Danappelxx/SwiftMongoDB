@@ -35,33 +35,7 @@ public class MongoDocument {
         try! MongoBSONEncoder(data: self.data).copyTo(self.BSONRAW)
     }
 
-    public init(var data: DocumentData) throws {
-
-        let containsObjectId = (data["_id"] != nil)
-
-        if containsObjectId {
-
-            // if the object id is found but is in the incorrect spot, put it in the correct spot
-            if let objectId = data["_id"] as? String {
-                data["_id"] = ["$oid" : objectId]
-            }
-
-            // check that object id is in proper position
-            // where objectIDContainer should be ["$oid":"<oid>"]
-            if let objectIdContainer = data["_id"] as? DocumentData {
-                if objectIdContainer["$oid"] == nil {
-                    throw MongoError.MisplacedOrMissingOID
-                }
-            }
-        }
-
-        if !containsObjectId {
-
-            let objectId = self.generateObjectId()
-
-            data["_id"] = ["$oid" : objectId]
-        }
-
+    public init(let data: DocumentData) throws {
         self.documentData = data
         self.initBSON()
     }
