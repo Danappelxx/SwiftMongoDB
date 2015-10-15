@@ -11,8 +11,13 @@ import SwiftyJSON
 public class MongoDocument {
 
     let BSONRAW: _bson_ptr_mutable = bson_new()
-    var JSONValue: String? {
+    
+    public var JSONString: String? {
         return JSON(self.data).rawString()
+    }
+    
+    public var JSONValue: JSON {
+        return JSON(self.data)
     }
 
     public var dataWithoutObjectId: DocumentData {
@@ -102,7 +107,20 @@ public class MongoDocument {
 
         return oidStr as! String
     }
-
+    
+    public func getObjectFromKey(key : String) -> AnyObject? {
+        return self.data[key]
+    }
+    
+    public func getKeys() -> [String]{
+        var keys = [String]()
+        for (key, _ ) in self.JSONValue {
+            keys.append(key)
+        }
+        keys = keys.sort(<)
+        return keys
+    }
+    
     deinit {
         self.BSONRAW.destroy()
     }
