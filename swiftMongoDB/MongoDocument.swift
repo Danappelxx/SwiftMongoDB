@@ -35,9 +35,10 @@ public class MongoDocument {
         try! MongoBSONEncoder(data: self.data).copyTo(self.BSONRAW)
     }
 
-    public init(var data: DocumentData, containsObjectId: Bool = false) throws {
+    public init(var data: DocumentData) throws {
 
-        // if user says that there is an object id, search for it and make sure it is properly inserted
+        let containsObjectId = (data["_id"] != nil)
+
         if containsObjectId {
 
             // if the object id is found but is in the incorrect spot, put it in the correct spot
@@ -46,14 +47,14 @@ public class MongoDocument {
             }
 
             // check that object id is in proper position
+            // where objectIDContainer should be ["$oid":"<oid>"]
             if let objectIdContainer = data["_id"] as? DocumentData {
                 if objectIdContainer["$oid"] == nil {
                     throw MongoError.MisplacedOrMissingOID
                 }
             }
-
         }
-        
+
         if !containsObjectId {
 
             let objectId = self.generateObjectId()
@@ -64,12 +65,12 @@ public class MongoDocument {
         self.documentData = data
         self.initBSON()
     }
-    
+
     convenience public init(var data: DocumentData, withObjectId objectId: String) throws {
 
         data["_id"] = ["$oid" : objectId]
         
-        try self.init(data: data, containsObjectId: true)
+        try self.init(data: data)
     }
 
     convenience public init(JSON: String, withObjectId objectId: String) throws {
@@ -81,13 +82,13 @@ public class MongoDocument {
         try self.init(data: data, withObjectId: objectId)
     }
     
-    convenience public init(JSON: String, containsObjectId: Bool = false) throws {
+    convenience public init(JSON: String) throws {
 
         guard let data = JSON.parseJSONDocumentData else {
             throw MongoError.CorruptDocument
         }
 
-        try self.init(data: data, containsObjectId: containsObjectId)
+        try self.init(data: data)
     }
     
     convenience public init(withSchemaObject object: MongoObject, withObjectID objectId: String) throws {
@@ -97,11 +98,11 @@ public class MongoDocument {
         try self.init(data: data, withObjectId: objectId)
     }
     
-    convenience public init(withSchemaObject object: MongoObject, containsObjectId: Bool = false) throws {
+    convenience public init(withSchemaObject object: MongoObject) throws {
         
         let data = object.properties()
         
-        try self.init(data: data, containsObjectId: containsObjectId)
+        try self.init(data: data)
     }
     
     private func generateObjectId() -> String {

@@ -81,7 +81,7 @@ class MongoBSONDecoder {
 
     // result should be read only
     var result: MongoDocument {
-        return try! MongoDocument(data: self.resultData, containsObjectId: true)
+        return try! MongoDocument(data: self.resultData)
     }
 
     private var resultData: DocumentData

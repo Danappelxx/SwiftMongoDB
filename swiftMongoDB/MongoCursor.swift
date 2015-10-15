@@ -42,7 +42,7 @@ public class MongoCursor {
     var nextDocument: MongoDocument? {
 
         if let documentData = self.nextDocumentData {
-            return try! MongoDocument(data: documentData, containsObjectId: true)
+            return try! MongoDocument(data: documentData)
         }
 
         return nil

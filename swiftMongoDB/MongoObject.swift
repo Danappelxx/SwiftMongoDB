@@ -23,8 +23,8 @@ public extension MongoObject {
     /**
     - returns: Returns a MongoDocument initialized from the Schema.
     */
-    func Document(containsObjectId: Bool = false) -> MongoDocument {
-        return try! MongoDocument(withSchemaObject: self, containsObjectId: containsObjectId)
+    func Document(containsObjectId: Bool) -> MongoDocument {
+        return try! MongoDocument(withSchemaObject: self)
     }
     
     /**
