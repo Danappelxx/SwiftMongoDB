@@ -56,35 +56,51 @@ public class MongoClient {
         }
     }
     
-
     // authenticated connection - required specific database
-    public init(host: String, port: Int, database: String, usernameAndPassword: (username: String, password: String)) throws {
+    public convenience init(host: String, port: Int, database: String, usernameAndPassword: (username: String, password: String)) throws {
+        try self.init(
+            host: host,
+            port: port,
+            database: database,
+            authenticationDatabase: database,
+            usernameAndPassword: usernameAndPassword
+        )
+    }
+    
+    // authenticated connection - required specific database and specific database for authentication
+    public init(host: String, port: Int, database: String, authenticationDatabase: String, usernameAndPassword: (username: String, password: String)) throws {
     
         let userAndPass = "\(usernameAndPassword.username):\(usernameAndPassword.password)@"
         
-        self.clientURI = "mongodb://\(userAndPass)\(host):\(port)/?authSource=\(database)"
+        self.clientURI = "mongodb://\(userAndPass)\(host):\(port)/\(database)?authSource=\(authenticationDatabase)"
         
         self.host = host
         self.port = port
-        
-        self.clientRAW = mongoc_client_new(self.clientURI)
+        self.databaseNameInternal = database
         
         mongoc_init()
         
-        let reply = bson_new()
-        var status = bson_error_t()
-        mongoc_client_get_server_status(self.clientRAW, nil, reply, &status)
+        self.clientRAW = mongoc_client_new(self.clientURI)
         
-        
-        if status.code.mongoError != MongoError.NoError {
-        print(errorMessageToString(&status.message))
-        throw status.code.mongoError
-        }
-        
-        self.databaseNameInternal = database
-        
+        try checkConnection()
     }
-
+    
+    public func checkConnection() throws {
+        var commandRAW = bson_t()
+        try MongoBSONEncoder(JSON: "{\"fakeCommand\" : 1}").copyTo(&commandRAW)
+        
+        var reply = bson_t()
+        var error = bson_error_t()
+        
+        mongoc_database_command_simple(self.databaseRAW, &commandRAW, nil, &reply, &error)
+        
+        if error.code.mongoError != MongoError.NoError && errorMessageToString(&error.message) != "no such command: fakeCommand"{
+            print("LOGIN ERROR : ",errorMessageToString(&error.message))
+            throw error.code.mongoError
+        }else{
+            // LOGGED CORRECTLY
+        }
+    }
     
     public func setDatabaseName(name: String) {
         self.databaseNameInternal = name
@@ -135,15 +151,11 @@ public class MongoClient {
     }
     
     public func getDefaultDatabaseName() -> String {
-        let database = mongoc_client_get_default_database(self.clientRAW)
-
-        let databaseNameRAW = mongoc_database_get_name(database)
+        let databaseNameRAW = mongoc_database_get_name(self.clientRAW)
         let databaseName = NSString(UTF8String: databaseNameRAW)
 
         return databaseName! as String
     }
-    
-    
     
     public func performBasicClientCommand(command: DocumentData) throws -> DocumentData {
 
@@ -163,7 +175,11 @@ public class MongoClient {
         return try MongoBSONDecoder(BSON: &reply).result.data
         //        mongoc_client_command_simple(client: COpaquePointer, db_name: UnsafePointer<Int8>, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
     }
-
+    
+    public func performBasicClientCommand(JSONString : String) throws -> DocumentData {
+        return try performBasicClientCommand(MongoBSONEncoder(JSON: JSONString).data)
+    }
+    
     public func performBasicDatabaseCommand(command: DocumentData) throws -> DocumentData {
         
         var commandRAW = bson_t()
@@ -181,5 +197,9 @@ public class MongoClient {
         
         return try MongoBSONDecoder(BSON: &reply).result.data
         //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
+    }
+    
+    public func performBasicDatabaseCommand(JSONString : String) throws -> DocumentData {
+        return try performBasicDatabaseCommand(MongoBSONEncoder(JSON: JSONString).data)
     }
 }

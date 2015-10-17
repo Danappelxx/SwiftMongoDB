@@ -67,7 +67,17 @@ public class MongoCollection {
             throw error
         }
     }
-
+    
+    public func renameCollectionTo(newName : String) throws{
+        var bsonError = bson_error_t()
+        mongoc_collection_rename(self.collectionRAW, client.databaseName, newName, false, &bsonError)
+        if bsonError.code.mongoError != MongoError.NoError {
+            
+            print(errorMessageToString(&bsonError.message))
+            throw bsonError.code.mongoError
+        }
+    }
+    
     public func find(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
 
         var queryBSON = bson_t()
@@ -81,7 +91,7 @@ public class MongoCollection {
         var outputDocuments = [MongoDocument]()
 
         while cursor.nextIsOK {
-            print(cursor.nextDocumentJSON)
+            //print(cursor.nextDocumentJSON)
             
             guard let nextDocument = cursor.nextDocument else {
                 throw MongoError.CorruptDocument

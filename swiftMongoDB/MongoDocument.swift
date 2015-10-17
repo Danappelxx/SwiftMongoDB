@@ -11,8 +11,13 @@ import SwiftyJSON
 public class MongoDocument {
 
     let BSONRAW: _bson_ptr_mutable = bson_new()
-    var JSONValue: String? {
+    
+    public var JSONString: String? {
         return JSON(self.data).rawString()
+    }
+    
+    public var JSONValue: JSON {
+        return JSON(self.data)
     }
 
     public var dataWithoutObjectId: DocumentData {
@@ -35,33 +40,7 @@ public class MongoDocument {
         try! MongoBSONEncoder(data: self.data).copyTo(self.BSONRAW)
     }
 
-    public init(var data: DocumentData) throws {
-
-        let containsObjectId = (data["_id"] != nil)
-
-        if containsObjectId {
-
-            // if the object id is found but is in the incorrect spot, put it in the correct spot
-            if let objectId = data["_id"] as? String {
-                data["_id"] = ["$oid" : objectId]
-            }
-
-            // check that object id is in proper position
-            // where objectIDContainer should be ["$oid":"<oid>"]
-            if let objectIdContainer = data["_id"] as? DocumentData {
-                if objectIdContainer["$oid"] == nil {
-                    throw MongoError.MisplacedOrMissingOID
-                }
-            }
-        }
-
-        if !containsObjectId {
-
-            let objectId = self.generateObjectId()
-
-            data["_id"] = ["$oid" : objectId]
-        }
-
+    public init(let data: DocumentData) throws {
         self.documentData = data
         self.initBSON()
     }
@@ -128,7 +107,20 @@ public class MongoDocument {
 
         return oidStr as! String
     }
-
+    
+    public func getObjectFromKey(key : String) -> AnyObject? {
+        return self.data[key]
+    }
+    
+    public func getKeys() -> [String]{
+        var keys = [String]()
+        for (key, _ ) in self.JSONValue {
+            keys.append(key)
+        }
+        keys = keys.sort(<)
+        return keys
+    }
+    
     deinit {
         self.BSONRAW.destroy()
     }
