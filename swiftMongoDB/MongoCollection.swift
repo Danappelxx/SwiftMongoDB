@@ -132,8 +132,8 @@ public class MongoCollection {
         internal var rawFlag: mongoc_update_flags_t {
             switch self {
             case .None: return MONGOC_UPDATE_NONE
-            case .Upsert: return MONGOC_UPDATE_UPSERT; break
-            case .MultiUpdate: return MONGOC_UPDATE_MULTI_UPDATE; break
+            case .Upsert: return MONGOC_UPDATE_UPSERT
+            case .MultiUpdate: return MONGOC_UPDATE_MULTI_UPDATE
             }
         }
     }
