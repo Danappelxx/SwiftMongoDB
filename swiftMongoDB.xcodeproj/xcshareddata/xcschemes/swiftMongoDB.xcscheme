@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "375F5F0A1B7E65DF007EA172"
-               BuildableName = "swiftMongoDB.framework"
-               BlueprintName = "swiftMongoDB"
-               ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+               BuildableName = "SwiftMongoDB.framework"
+               BlueprintName = "SwiftMongoDB"
+               ReferencedContainer = "container:SwiftMongoDB.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "375F5F141B7E65E0007EA172"
-               BuildableName = "swiftMongoDB.xctest"
-               BlueprintName = "swiftMongoDBTests"
-               ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+               BuildableName = "SwiftMongoDBTests.xctest"
+               BlueprintName = "SwiftMongoDBTests"
+               ReferencedContainer = "container:SwiftMongoDB.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "375F5F0A1B7E65DF007EA172"
-            BuildableName = "swiftMongoDB.framework"
-            BlueprintName = "swiftMongoDB"
-            ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+            BuildableName = "SwiftMongoDB.framework"
+            BlueprintName = "SwiftMongoDB"
+            ReferencedContainer = "container:SwiftMongoDB.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,9 +65,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "375F5F0A1B7E65DF007EA172"
-            BuildableName = "swiftMongoDB.framework"
-            BlueprintName = "swiftMongoDB"
-            ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+            BuildableName = "SwiftMongoDB.framework"
+            BlueprintName = "SwiftMongoDB"
+            ReferencedContainer = "container:SwiftMongoDB.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -83,9 +83,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "375F5F0A1B7E65DF007EA172"
-            BuildableName = "swiftMongoDB.framework"
-            BlueprintName = "swiftMongoDB"
-            ReferencedContainer = "container:swiftMongoDB.xcodeproj">
+            BuildableName = "SwiftMongoDB.framework"
+            BlueprintName = "SwiftMongoDB"
+            ReferencedContainer = "container:SwiftMongoDB.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
