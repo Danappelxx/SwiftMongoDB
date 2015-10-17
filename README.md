@@ -1,84 +1,22 @@
-# SwiftMongoDB
+# SwiftMongoDB [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 A Swifter way to work with MongoDB in Swift. Wraps around the [MongoDB C Driver 1.2.0](http://api.mongodb.org/c/1.2.0/) (supports MongoDB version 2.4 and later).
 
-[![Version](https://img.shields.io/cocoapods/v/SwiftMongoDB.svg?style=flat)](https://cocoapods.org/pods/SwiftMongoDB) [![License](https://img.shields.io/cocoapods/l/SwiftMongoDB.svg?style=flat)](https://cocoapods.org/pods/SwiftMongoDB) [![Platform](https://img.shields.io/cocoapods/p/SwiftMongoDB.svg?style=flat)](https://cocoapods.org/pods/SwiftMongoDB)
-
 # Setup
-If you're using cocoapods, add the following line to your Podfile. You can then proceed to either the Quickstart or Tutorial.
+The simplest way to use SwiftMongoDB is through Carthage.
 
-```ruby
-pod 'SwiftMongoDB'
+All you have to do is add the following to your Cartfile:
+
+```
+github "Danappelxx/SwiftMongoDB"
 ```
 
-Otherwise, clone the repository, cd into the directory, and run
+and then run:
 
-```bash
-pod install
+```
+$ carthage bootstrap
 ```
 
-then, assuming that you have MongoDB setup, open up terminal and run:
-
-```bash
-mongod
-```
-
-You can now go skip to the quickstart or read through the more in-depth Tutorial.
-
-# Quickstart
-Make sure you have MongoDB (`mongod` in bash) running and have the library imported.
-
-You can now paste the following code into any function and it will work. The code executes synchronously.
-
-```swift
-
-// assumes you have mongod running
-// using Swift 2 error handling model (methods can throw errors)
-do {
-  let client = try! MongoClient(host: "localhost", port: 27017, database: "test")
-
-  let subjects = MongoCollection(collectionName: "subjects", client: client)
-
-  // method #1, basic
-  let testSubject1 = MongoDocument(data: [
-    "name" : "Dan",
-    "age" : 15,
-    "lovesProgramming" : true,
-    "location" : [
-      "general_area" : "SF Bay Area",
-      "state" : "California"
-    ],
-    "favorite_numbers" : [1, 2, 3, 4, 5]
-  ])
-
-  // method #2, cleaner (better)
-  struct TestSubject: MongoObject {
-    let name = "Dan"
-    let age = 15
-    let lovesProgramming = true
-    let location = [
-      "general_area" : "SF Bay Area",
-      "state" : "California"
-    ]
-    let favorite_numbers = [1, 2, 3, 4, 5]
-  }
-
-  let testSubject2 = TestSubject().Document()
-
-  try subjects.insert(testSubject1)
-  try subjects.insert(testSubject2)
-
-  let testSubjects = try subjects.find()
-  let testSubjectsData = testSubjects.map { $0.data }
-  print(testSubjectsData)
-
-  try testSubjects.remove(testSubject1.data)
-
-} catch {
-  print(error)
-}
-```
-
-For some more examples, I would take a look at the 'schema' section of this readme. You can also take a look at the test suite.
+This gives you a built `SwiftMongoDB.framework` in `Carthage/Build/Mac`. For instructions on how to use it, refer to the [Carthage README](https://github.com/Carthage/Carthage) You can now proceed to read through the tutorial.
 
 # Tutorial
 This example assumes that you have setup the project and have MongoDB running.
@@ -99,7 +37,7 @@ Then you need to pick a collection. The collection doesn't have to exist (it wil
 let subjects = MongoCollection(collectionName: "subjects", client: client)
 ```
 
-An important aspect of SwiftMongoDB is how it handles inserting documents. Most of the work will be done with a medium called MongoDocument, where you insert either a `[String : AnyObject]` type dictionary, a JSON string, or from a mongoose-like schema. It then gets converted to a MongoDB type called BSON behind the scenes (you, fortunately, don't have to worry about this).
+An important aspect of SwiftMongoDB is how it handles inserting documents. Most of the work will be done with a medium called MongoDocument, where you insert either a `[String : AnyObject]` type dictionary, a JSON string, or from a mongoose-like schema. It then gets converted to a lower level type called BSON behind the scenes (you, fortunately, don't have to worry about this).
 
 For example, say you wanted to create a human named Dan. This is how it would look in JSON:
 
@@ -109,10 +47,9 @@ For example, say you wanted to create a human named Dan. This is how it would lo
   "age" : 15,
   "lovesProgramming" : true,
   "location" : {
-    "general_area" : "SF Bay Area",
     "state" : "California"
   },
-  "favorite_numbers" : [1, 2, 3, 4, 5]
+  "favoriteNumbers" : [1, 2, 3, 4, 5]
 }
 ```
 
@@ -122,32 +59,32 @@ It looks pretty similar in Swift:
 let data = [
     "name": "Dan",
     "age": 15,
-    "friends": [
-        "Billy",
-        "Bob",
-        "Joe"
-    ],
+    "lovesProgramming" : true,
     "location": [
-        "city": "San Francisco",
         "state": "California"
     ]
+    "favoriteNumbers" : [1,2,3,4,5]
 ]
 
 let subject = MongoDocument(data)
 ```
 
-Either of those will work, but SwiftMongoDB provides you with a third, cleaner option that is similar to a schema. All you have to do is create a struct, class, or protocol that conforms to MongoObject.
+And the (much cleaner) schema option which SwiftMongoDB provides you with looks like this. All you have to do is create a struct, class, or protocol that conforms to the type `MongoObject`. For more information about schemas, visit the schema section of this README.
 
 ```swift
 struct TestSubject: MongoObject {
   let name = "Dan"
   let age = 15
   let lovesProgramming = true
+  let friends = [
+    "Billy",
+    "Bob",
+    "Joe"
+  ]
   let location = [
-    "general_area" : "SF Bay Area",
     "state" : "California"
   ]
-  let favorite_numbers = [1, 2, 3, 4, 5]
+  let favoriteNumbers = [1,2,3,4,5]
 }
 
 let subject = TestSubject().Document()
@@ -177,13 +114,13 @@ let result = try subjects.find(["age" : 15])
 
 The query parameter operates just as it would in most other MongoDB implementations. For instance, in the MongoDB shell, this would be the equivalent of `db.subjects.find( {"age" : 15} )`.
 
-Removing documents works the same way - if you want to remove all humans named Dan, you simply do:
+Removing documents works the same way - if you want to remove all of the test subjects named Dan, you simply do:
 
 ```swift
 try subjects.remove(["name" : "Dan"])
 ```
 
-Those are the basics - it's really a very small library. You can take a look at the test suite which should show you some of the methods not shown here. Otherwise, feel free to jump right into the deep end and start using SwiftMongoDB!
+Those are the basics - it's really a very small simple library. You can take a look at the test suite which should show you some of the methods not shown here. Otherwise, feel free to jump right into the deep end and start using SwiftMongoDB!
 
 # Schemas
 Schemas are a very powerful part of SwiftMongoDB. If you've ever used Mongoose, this might look a little familiar.
@@ -295,16 +232,12 @@ myObjectWithDefaults.prop3 // results in schema'd but not defaulted value: false
 Hopefully schemas will allow your code to be much more clean and strict by taking advantage of default values through protocol extensions and property-name autocomplete.
 
 # Roadmap
-[Here's the Trello board for this project](https://trello.com/b/FT2OCCjQ/swiftmongodb).
-
-Ideally I would like to mirror all of the features that the Mongo Shell offers, and eventually add my own touch to it.
+Ideally I would like to mirror all of the features that the Mongo Shell/drivers offer, and eventually add my own touch to it.
 
 # Contributing
 Any and all help is very welcome! Feel free to fork and submit a pull request - I will almost certainly merge it.
 
-You should start by looking at the [trello board](https://trello.com/b/FT2OCCjQ/swiftmongodb) and see if there's anything you want to implement there. You can also create feature requests.
-
-There's also a test suite included in the xcode project - so far the coverage isn't too good but it will get better, I promise.
+You should start by taking a look at the current issues and see if there's anything you want to implement/fix there.
 
 # Changelog
 ## 0.2
