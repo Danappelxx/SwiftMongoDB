@@ -1,10 +1,10 @@
-////
-////  MongoBSON.swift
-////  swiftMongoDB
-////
-////  Created by Dan Appel on 8/20/15.
-////  Copyright © 2015 Dan Appel. All rights reserved.
-////
+//
+//  MongoBSON.swift
+//  swiftMongoDB
+//
+//  Created by Dan Appel on 8/20/15.
+//  Copyright © 2015 Dan Appel. All rights reserved.
+//
 
 import Foundation
 import SwiftyJSON
@@ -90,13 +90,9 @@ class MongoBSONDecoder {
     }
 
     static func BSONToJSON(BSON: _bson_ptr_immutable) -> String? {
-        let rawJSON = NSString(UTF8String: bson_as_json(BSON, nil))
-        
-        guard let json = rawJSON else {
-            return nil
-        }
+        let json = String(UTF8String: bson_as_json(BSON, nil))
 
-        return String(json)
+        return json
     }
 
     init(BSON: _bson_ptr_immutable) throws {
@@ -104,11 +100,7 @@ class MongoBSONDecoder {
 
         self.resultData = DocumentData()
 
-        do {
-            self.resultData = try MongoBSONDecoder.decode(BSON)
-        } catch {
-            throw error
-        }
+        self.resultData = try MongoBSONDecoder.decode(BSON)
     }
 
     static private func decode(BSON: _bson_ptr_immutable) throws -> DocumentData {

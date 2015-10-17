@@ -1,10 +1,10 @@
-////
-////  MongoDB.swift
-////  swiftMongoDB
-////
-////  Created by Dan Appel on 8/20/15.
-////  Copyright © 2015 Dan Appel. All rights reserved.
-////
+//
+//  MongoDB.swift
+//  swiftMongoDB
+//
+//  Created by Dan Appel on 8/20/15.
+//  Copyright © 2015 Dan Appel. All rights reserved.
+//
 
 import Foundation
 
@@ -35,25 +35,17 @@ public class MongoClient {
         self.host = host
         self.port = port
 
-        self.clientRAW = mongoc_client_new(self.clientURI)
-
         mongoc_init()
 
-        let reply = bson_new()
-        var status = bson_error_t()
-        mongoc_client_get_server_status(self.clientRAW, nil, reply, &status)
-
-
-        if status.code.mongoError != MongoError.NoError {
-            print(errorMessageToString(&status.message))
-            throw status.code.mongoError
-        }
+        self.clientRAW = mongoc_client_new(self.clientURI)
         
         if database == nil {
             self.databaseNameInternal = self.getDefaultDatabaseName()
         } else {
             self.databaseNameInternal = database!
         }
+        
+        try checkConnection()
     }
     
     // authenticated connection - required specific database
@@ -152,9 +144,9 @@ public class MongoClient {
     
     public func getDefaultDatabaseName() -> String {
         let databaseNameRAW = mongoc_database_get_name(self.clientRAW)
-        let databaseName = NSString(UTF8String: databaseNameRAW)
+        let databaseName = String(UTF8String: databaseNameRAW)
 
-        return databaseName! as String
+        return databaseName!
     }
     
     public func performBasicClientCommand(command: DocumentData) throws -> DocumentData {

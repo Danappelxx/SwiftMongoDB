@@ -14,7 +14,7 @@ import Foundation
 */
 public protocol MongoObject {
 
-    func Document(containsObjectID: Bool) -> MongoDocument
+    func Document() throws -> MongoDocument
     func properties() -> DocumentData
 }
 
@@ -23,8 +23,8 @@ public extension MongoObject {
     /**
     - returns: Returns a MongoDocument initialized from the Schema.
     */
-    func Document(containsObjectId: Bool) -> MongoDocument {
-        return try! MongoDocument(withSchemaObject: self)
+    func Document() throws -> MongoDocument {
+        return try MongoDocument(withSchemaObject: self)
     }
     
     /**

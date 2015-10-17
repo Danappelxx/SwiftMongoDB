@@ -1,10 +1,10 @@
-////
-////  MongoDocument.swift
-////  swiftMongoDB
-////
-////  Created by Dan Appel on 8/20/15.
-////  Copyright © 2015 Dan Appel. All rights reserved.
-////
+//
+//  MongoDocument.swift
+//  swiftMongoDB
+//
+//  Created by Dan Appel on 8/20/15.
+//  Copyright © 2015 Dan Appel. All rights reserved.
+//
 
 import SwiftyJSON
 

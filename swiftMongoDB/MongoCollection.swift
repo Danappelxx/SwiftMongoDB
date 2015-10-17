@@ -1,10 +1,10 @@
-////
-////  MongoCollection.swift
-////  swiftMongoDB
-////
-////  Created by Dan Appel on 8/20/15.
-////  Copyright © 2015 Dan Appel. All rights reserved.
-////
+//
+//  MongoCollection.swift
+//  swiftMongoDB
+//
+//  Created by Dan Appel on 8/20/15.
+//  Copyright © 2015 Dan Appel. All rights reserved.
+//
 
 public class MongoCollection {
 
@@ -61,11 +61,7 @@ public class MongoCollection {
     
     public func insert(document: DocumentData, containsObjectId: Bool = false, flags: InsertFlags = InsertFlags.None) throws {
 
-        do {
-            try self.insert(MongoDocument(data: document), flags: flags)
-        } catch {
-            throw error
-        }
+        try self.insert(MongoDocument(data: document), flags: flags)
     }
     
     public func renameCollectionTo(newName : String) throws{
@@ -91,8 +87,6 @@ public class MongoCollection {
         var outputDocuments = [MongoDocument]()
 
         while cursor.nextIsOK {
-            //print(cursor.nextDocumentJSON)
-            
             guard let nextDocument = cursor.nextDocument else {
                 throw MongoError.CorruptDocument
             }
@@ -113,17 +107,7 @@ public class MongoCollection {
         
         let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
         
-        let queryFlags: mongoc_query_flags_t
-        switch flags {
-        case .None: queryFlags = MONGOC_QUERY_NONE; break
-        case .TailableCursor: queryFlags = MONGOC_QUERY_TAILABLE_CURSOR; break
-        case .SlaveOK: queryFlags = MONGOC_QUERY_SLAVE_OK; break
-        case .OPLogReplay: queryFlags = MONGOC_QUERY_OPLOG_REPLAY; break
-        case .NoCursorTimout: queryFlags = MONGOC_QUERY_NO_CURSOR_TIMEOUT; break
-        case .AwaitData: queryFlags = MONGOC_QUERY_AWAIT_DATA; break
-        case .Exhaust: queryFlags = MONGOC_QUERY_EXHAUST; break
-        case .Partial: queryFlags = MONGOC_QUERY_PARTIAL; break
-        }
+        let queryFlags: mongoc_query_flags_t = flags.rawFlag
         
         // standard options - should be customizable later on
         let cursor = self.cursor(operation: .Find, query: queryBSON, options: (queryFlags: queryFlags, skip: skip, limit: skip, batchSize: skip))
@@ -144,22 +128,25 @@ public class MongoCollection {
         case None
         case Upsert
         case MultiUpdate
+
+        internal var rawFlag: mongoc_update_flags_t {
+            switch self {
+            case .None: return MONGOC_UPDATE_NONE
+            case .Upsert: return MONGOC_UPDATE_UPSERT; break
+            case .MultiUpdate: return MONGOC_UPDATE_MULTI_UPDATE; break
+            }
+        }
     }
 
     public func update(query: DocumentData = DocumentData(), newValue: DocumentData, flags: UpdateFlags = UpdateFlags.None) throws -> Bool {
 
-        let updateFlags: mongoc_update_flags_t
-        switch flags {
-        case .None: updateFlags = MONGOC_UPDATE_NONE; break
-        case .Upsert: updateFlags = MONGOC_UPDATE_UPSERT; break
-        case .MultiUpdate: updateFlags = MONGOC_UPDATE_MULTI_UPDATE; break
-        }
+        let updateFlags: mongoc_update_flags_t = flags.rawFlag
 
         var queryBSON = bson_t()
-        try! MongoBSONEncoder(data: query).copyTo(&queryBSON)
+        try MongoBSONEncoder(data: query).copyTo(&queryBSON)
 
         var documentBSON = bson_t()
-        try! MongoBSONEncoder(data: newValue).copyTo(&documentBSON)
+        try MongoBSONEncoder(data: newValue).copyTo(&documentBSON)
 
         var error = bson_error_t()
         let success = mongoc_collection_update(self.collectionRAW, updateFlags, &queryBSON, &documentBSON, nil, &error)
