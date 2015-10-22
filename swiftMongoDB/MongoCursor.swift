@@ -71,10 +71,10 @@ public class MongoCursor {
         return mongoc_cursor_next(self.cursorRAW, &self.outputDocumentBSON)
     }
 
-    var lastError: bson_error_t {
+    var lastError: MongoError {
         var error = bson_error_t()
         mongoc_cursor_error(self.cursorRAW, &error)
-        return error
+        return error.error
     }
 
     deinit {

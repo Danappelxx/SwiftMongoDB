@@ -76,21 +76,22 @@ public class MongoClient {
         
         try checkConnection()
     }
-    
+
+    /**
+     Attempts to run the `ping` command on the database. If it executes without throwing errors, you are successfully connected.
+
+     - throws: Any errors it encounters while connecting to the database.
+     */
     public func checkConnection() throws {
         var commandRAW = bson_t()
-        try MongoBSONEncoder(JSON: "{\"fakeCommand\" : 1}").copyTo(&commandRAW)
-        
-        var reply = bson_t()
+        try MongoBSONEncoder(data: ["ping" : 1]).copyTo(&commandRAW)
+
         var error = bson_error_t()
-        
-        mongoc_database_command_simple(self.databaseRAW, &commandRAW, nil, &reply, &error)
-        
-        if error.code.mongoError != MongoError.NoError && errorMessageToString(&error.message) != "no such command: fakeCommand"{
-            print("LOGIN ERROR : ",errorMessageToString(&error.message))
-            throw error.code.mongoError
-        }else{
-            // LOGGED CORRECTLY
+
+        mongoc_database_command_simple(self.databaseRAW, &commandRAW, nil, nil, &error)
+
+        if error.error.isError {
+            throw error.error
         }
     }
     
@@ -159,9 +160,8 @@ public class MongoClient {
         
         mongoc_client_command_simple(self.clientRAW, self.databaseNameInternal, &commandRAW, nil, &reply, &error)
 
-        if error.code.mongoError != MongoError.NoError {
-            print(errorMessageToString(&error.message))
-            throw error.code.mongoError
+        if error.error.isError {
+            throw error.error
         }
 
         return try MongoBSONDecoder(BSON: &reply).result.data
@@ -182,9 +182,8 @@ public class MongoClient {
         
         mongoc_database_command_simple(self.databaseRAW, &commandRAW, nil, &reply, &error)
 
-        if error.code.mongoError != MongoError.NoError {
-            print(errorMessageToString(&error.message))
-            throw error.code.mongoError
+        if error.error.isError {
+            throw error.error
         }
         
         return try MongoBSONDecoder(BSON: &reply).result.data

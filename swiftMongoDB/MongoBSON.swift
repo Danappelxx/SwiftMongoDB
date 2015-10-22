@@ -25,9 +25,8 @@ class MongoBSONEncoder {
         var error = bson_error_t()
         bson_init_from_json(self.BSONRAW, JSONDataRAW, JSON.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), &error)
         
-        if error.code.mongoError != MongoError.NoError {
-            print( errorMessageToString(&error.message) )
-            throw error.code.mongoError
+        if error.error.isError {
+            throw error.error
         }
     }
     

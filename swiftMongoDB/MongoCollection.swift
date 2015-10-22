@@ -52,10 +52,8 @@ public class MongoCollection {
 
         mongoc_collection_insert(self.collectionRAW, insertFlags, document.BSONRAW, nil, &bsonError)
 
-        if bsonError.code.mongoError != MongoError.NoError {
-
-            print(errorMessageToString(&bsonError.message))
-            throw bsonError.code.mongoError
+        if bsonError.error.isError {
+            throw bsonError.error
         }
     }
     
@@ -67,10 +65,8 @@ public class MongoCollection {
     public func renameCollectionTo(newName : String) throws{
         var bsonError = bson_error_t()
         mongoc_collection_rename(self.collectionRAW, client.databaseName, newName, false, &bsonError)
-        if bsonError.code.mongoError != MongoError.NoError {
-            
-            print(errorMessageToString(&bsonError.message))
-            throw bsonError.code.mongoError
+        if bsonError.error.isError {
+            throw bsonError.error
         }
     }
     
@@ -92,12 +88,9 @@ public class MongoCollection {
             }
             outputDocuments.append(nextDocument)
         }
-
-        if cursor.lastError.code.mongoError != MongoError.NoError {
-            var errorMessage = cursor.lastError.message
-            print(errorMessageToString(&errorMessage))
-
-            throw cursor.lastError.code.mongoError
+        
+        if cursor.lastError.isError {
+            throw cursor.lastError
         }
 
         return outputDocuments
@@ -151,11 +144,8 @@ public class MongoCollection {
         var error = bson_error_t()
         let success = mongoc_collection_update(self.collectionRAW, updateFlags, &queryBSON, &documentBSON, nil, &error)
 
-        if error.code.mongoError != MongoError.NoError {
-            
-            print(errorMessageToString(&error.message))
-
-            throw error.code.mongoError
+        if error.error.isError {
+            throw error.error
         }
 
         return success
@@ -180,8 +170,8 @@ public class MongoCollection {
         var error = bson_error_t()
         let success = mongoc_collection_remove(self.collectionRAW, removeFlags, &queryBSON, nil, &error)
 
-        if error.code.mongoError != MongoError.NoError {
-            throw error.code.mongoError
+        if error.error.isError {
+            throw error.error
         }
 
         return success
@@ -197,11 +187,10 @@ public class MongoCollection {
         
         mongoc_collection_command_simple(self.collectionRAW, &commandRAW, nil, &reply, &error)
 
-        if error.code.mongoError != MongoError.NoError {
-            print(errorMessageToString(&error.message))
-            throw error.code.mongoError
+        if error.error.isError {
+            throw error.error
         }
-        
+
         return try MongoBSONDecoder(BSON: &reply).result.data
 //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
     }

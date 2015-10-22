@@ -8,68 +8,65 @@
 
 import Foundation
 
-public enum MongoError: ErrorType {
+public struct MongoError: ErrorType, CustomStringConvertible {
+
+    public let description: String
+    public let code: Int
+    public var domain: Int // default is 10101 for SwiftMongoDB
+
+    public var isError: Bool {
+        return self.code != 0
+    }
+
+
+    public init(description: String, code: Int, domain: Int = 10101) {
+        self.description = description
+        self.code = code
+        self.domain = domain
+    }
+
+    init(error: bson_error_t) {
+
+        var messageRAW = error.message
+        let message = mongocErrorMessageToString(&messageRAW)
+
+        let code = Int(error.code)
+        let domain = Int(error.domain)
+
+        self.init(description: message, code: code, domain: domain)
+    }
+
+    // TODO: - Turn this into an enum
+    // Error code model:
+    // 1000-1099 General
+    // 1100-1199 BSON
+    // TBD
+
+    // General
+    public static let UnknownError = MongoError(description: "An unknown error occurred.", code: 1001)
 
     // BSON
-    
-    case TypeNotSupported
-    case CorruptDocument
+    public static let CorruptDocument = MongoError(description: "The given document is corrupt.", code: 1101)
 
-    // Client
-    case NoServersFound
-    case ConnectionToHostFailed
-    case ConnectionNotEstablished
-    case FailedToReadBytes
-
-    /// Collection
-    // Query
-    case NoDocumentsMatched
-    // Insert
-    case DuplicateObjectID
-    
-    // Documents
-    case MisplacedOrMissingOID
-    
-    // General
-    case NoError
-    case UnknownErrorOccurred
 }
 
-internal func codeToMongoError(code: UInt32) -> MongoError {
-    
-    switch code {
-
-    case 0: return MongoError.NoError
-        
-    case 4: return MongoError.FailedToReadBytes
-    
-    case 5: return MongoError.ConnectionToHostFailed
-        
-    case 18: return MongoError.CorruptDocument
-        
-    case 11000: return MongoError.DuplicateObjectID
-        
-    case 13053: return MongoError.NoServersFound
-
-    default:
-        return MongoError.UnknownErrorOccurred
+extension bson_error_t {
+    var error: MongoError {
+        return MongoError(error: self)
     }
 }
 
-internal func errorMessageToString(inout error: _mongoc_error_message) -> String {
+func mongocErrorMessageToString(inout error: _mongoc_error_message) -> String {
     return withUnsafePointer(&error) {
         String.fromCString(UnsafePointer($0))!
     }
 }
 
-// just to be less verbose - kind of silly to extend an integer, however :)
-extension UInt32 {
-    internal var mongoError: MongoError {
-        return codeToMongoError(self)
-    }
-}
 
-// should migrate to using these codes instead of raw ints
+
+
+// List of errors for future reference:
+
 //public struct mongoc_error_domain_t : RawRepresentable {
 //    public init(_ rawValue: UInt32)
 //    public init(rawValue: UInt32)
