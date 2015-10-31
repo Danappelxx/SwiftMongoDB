@@ -9,7 +9,6 @@
 
 import Quick
 import Nimble
-import SwiftyJSON
 @testable import SwiftMongoDB
 
 class SwiftMongoDBSpec: QuickSpec {
