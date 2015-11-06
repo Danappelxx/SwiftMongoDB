@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import bson
 
 class MongoBSONEncoder {
 

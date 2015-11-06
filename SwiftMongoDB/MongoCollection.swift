@@ -6,6 +6,8 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
+import mongoc
+
 public class MongoCollection {
 
     public let client: MongoClient

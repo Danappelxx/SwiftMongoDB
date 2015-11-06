@@ -6,6 +6,8 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
+import bson
+
 public class MongoDocument {
 
     let BSONRAW: _bson_ptr_mutable = bson_new()

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import mongoc
 
 public typealias DocumentData = [String : AnyObject]
 

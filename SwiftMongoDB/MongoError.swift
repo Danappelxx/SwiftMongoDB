@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import bson
 
 public struct MongoError: ErrorType, CustomStringConvertible {
 
