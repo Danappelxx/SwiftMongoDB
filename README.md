@@ -1,4 +1,6 @@
 # SwiftMongoDB [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
+[![Join the chat at https://gitter.im/Danappelxx/SwiftMongoDB](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Danappelxx/SwiftMongoDB?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 A Swifter way to work with MongoDB in Swift. Wraps around the [MongoDB C Driver 1.2.0](http://api.mongodb.org/c/1.2.0/) (supports MongoDB version 2.4 and later).
 
 # Setup
