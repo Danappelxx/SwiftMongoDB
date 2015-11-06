@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "mongoc.h"
+#import <mongoc/mongoc.h>
 
 //! Project version number for SwiftMongoDB.
 FOUNDATION_EXPORT double SwiftMongoDBVersionNumber;

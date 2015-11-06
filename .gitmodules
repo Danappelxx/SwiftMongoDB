@@ -4,3 +4,9 @@
 [submodule "Carthage/Checkouts/Nimble"]
 	path = Carthage/Checkouts/Nimble
 	url = https://github.com/Quick/Nimble.git
+[submodule "Carthage/Checkouts/libbson-xcode"]
+	path = Carthage/Checkouts/libbson-xcode
+	url = https://github.com/Danappelxx/libbson-xcode.git
+[submodule "Carthage/Checkouts/libmongoc-xcode"]
+	path = Carthage/Checkouts/libmongoc-xcode
+	url = https://github.com/Danappelxx/libmongoc-xcode.git
