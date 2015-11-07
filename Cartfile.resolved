@@ -1,4 +1,4 @@
-github "Quick/Nimble" "c2aafa5da886f4e44ee29b4faaaa20fdac8a9369"
-github "Quick/Quick" "5fff1989f54b73f9d51725727e04aafb9557b41e"
+github "Quick/Nimble" "v3.0.0"
+github "Quick/Quick" "v0.8.0"
 github "Danappelxx/libbson-xcode" "086e63a440d626325a07abce2a73bdd402fbca18"
 github "Danappelxx/libmongoc-xcode" "a0068396c4530e56bd852c9942401b70ef4b04dd"

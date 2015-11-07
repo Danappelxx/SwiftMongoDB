@@ -3,12 +3,10 @@ osx_image: xcode7.2b1
 xcode_project: SwiftMongoDB.xcodeproj
 xcode_scheme: SwiftMongoDB-OSX
 before_install:
-    - brew update
-    - brew install tree carthage
+    - curl -OlL "https://github.com/Carthage/Carthage/releases/download/0.10/Carthage.pkg"
+    - sudo installer -pkg "Carthage.pkg" -target /
+    - rm "Carthage.pkg"
 install:
-    - set -o pipefail && carthage bootstrap --verbose --platform macosx,ios | xcpretty -c
-    - tree
-    - cat Cartfile
+    - carthage bootstrap --no-build
 script:
-    - set -o pipefail && xcodebuild -project SwiftMongoDB.xcodeproj -scheme SwiftMongoDB-OSX test -sdk macosx | xcpretty -c
-    - set -o pipefail && carthage build --platform macosx,ios --no-skip-current --verbose | xcpretty -c
+    - set -o pipefail && xcodebuild -verbose -project SwiftMongoDB.xcodeproj -scheme SwiftMongoDB-OSX -sdk macosx build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c
