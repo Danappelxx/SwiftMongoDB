@@ -9,6 +9,8 @@
 
 import Quick
 import Nimble
+import bson
+import mongoc
 @testable import SwiftMongoDB
 
 class SwiftMongoDBSpec: QuickSpec {
@@ -16,7 +18,6 @@ class SwiftMongoDBSpec: QuickSpec {
     override func spec() {
         
         // This suite assumes that the mongodb process is running
-        
         let client = try! MongoClient(host: "localhost", port: 27017, database: "test")
         
         let collection = MongoCollection(collectionName: "subjects", client: client)
@@ -43,6 +44,12 @@ class SwiftMongoDBSpec: QuickSpec {
                 let databases = client.getDatabaseNames()
                 
                 expect(databases.contains("test")).to(beTrue())
+            }
+            
+            it("can properly identify the default database") {
+                let defaultDatabase = client.getDefaultDatabaseName()
+                
+                expect(defaultDatabase).toNot(equal(""))
             }
             
             it("can list the collections") {
