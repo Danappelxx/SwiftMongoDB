@@ -4,9 +4,11 @@ xcode_project: SwiftMongoDB.xcodeproj
 xcode_scheme: SwiftMongoDB-OSX
 before_install:
     - brew update
-    - brew install carthage
+    - brew install tree carthage
 install:
     - set -o pipefail && carthage bootstrap --verbose --platform macosx,ios | xcpretty -c
+    - tree
+    - cat Cartfile
 script:
     - set -o pipefail && xcodebuild -project SwiftMongoDB.xcodeproj -scheme SwiftMongoDB-OSX test -sdk macosx | xcpretty -c
     - set -o pipefail && carthage build --platform macosx,ios --no-skip-current --verbose | xcpretty -c
