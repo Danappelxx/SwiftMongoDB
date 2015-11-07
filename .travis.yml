@@ -6,7 +6,7 @@ before_install:
     - brew update
     - brew install carthage
 install:
-    - carthage bootstrap --verbose
+    - carthage bootstrap --verbose --platform macosx,ios | xcpretty -c
 script:
     - xcodebuild -project SwiftMongoDB.xcodeproj -scheme SwiftMongoDB-OSX test -sdk macosx | xcpretty -c
-    - carthage build --no-skip-current
+    - carthage build --platform macosx,ios --no-skip-current --verbose | xcpretty -c
