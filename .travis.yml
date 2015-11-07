@@ -4,7 +4,6 @@ xcode_project: SwiftMongoDB.xcodeproj
 xcode_scheme: SwiftMongoDB-OSX
 before_install:
     - brew update
-    - brew upgrade xctool
     - brew install carthage
 install:
     - carthage bootstrap --verbose
