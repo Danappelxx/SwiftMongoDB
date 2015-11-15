@@ -241,6 +241,9 @@ You should start by taking a look at the current issues and see if there's anyth
 
 # Changelog
 ## 0.2
+### 0.2.1
+Set up proper dependency management through Carthage, among other fixes.
+
 ### 0.2.0
 Migrate to MongoDB C Driver 1.2.0 from 0.8, comes with a complete rewrite
 
@@ -249,7 +252,7 @@ Migrate to MongoDB C Driver 1.2.0 from 0.8, comes with a complete rewrite
 Migrate to Swift 2 error handling model
 
 ### 0.1.0
-Add documentation, clean up a lot of code, add examples for schemas using inheritence, protocols, and protocol extensions.
+Add documentation, clean up a lot of code, add examples for schemas using inheritance, protocols, and protocol extensions.
 
 ## 0.0
 ### 0.0.9
