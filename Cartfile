@@ -1,1 +1,2 @@
-github "Danappelxx/libmongoc-xcode" "master"
+github "Danappelxx/libmongoc-xcode"
+github "Danappelxx/libbson-xcode"
