@@ -241,6 +241,9 @@ You should start by taking a look at the current issues and see if there's anyth
 
 # Changelog
 ## 0.2
+### 0.2.2
+Update dependencies.
+
 ### 0.2.1
 Set up proper dependency management through Carthage, among other fixes.
 
