@@ -241,6 +241,9 @@ You should start by taking a look at the current issues and see if there's anyth
 
 # Changelog
 ## 0.2
+### 0.2.3
+Update dependencies, fix a few bugs.
+
 ### 0.2.2
 Update dependencies.
 
