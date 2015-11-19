@@ -1,4 +1,4 @@
 github "Quick/Nimble" "v3.0.0"
 github "Quick/Quick" "v0.8.0"
-github "Danappelxx/libbson-xcode" "1.1.11"
+github "Danappelxx/libbson-xcode" "1.2.1"
 github "Danappelxx/libmongoc-xcode" "1.2.1"
