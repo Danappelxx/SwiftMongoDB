@@ -67,71 +67,97 @@ class SwiftMongoDBSpec: QuickSpec {
                 try! collection.remove(DocumentData())
             }
             
-            it("inserts a document successfully") {
-                
-                let resultBefore = try! collection.find().count
-                
-                try! collection.insert(document)
-                
-                let resultAfter = try! collection.find().count
-                
-                expect(resultAfter - resultBefore == 1).to(beTrue())
-                
+            describe("insert method") {
+
+                it("inserts a document successfully") {
+
+                    let resultBefore = try! collection.find().count
+
+                    try! collection.insert(document)
+
+                    let resultAfter = try! collection.find().count
+
+                    expect(resultAfter - resultBefore == 1).to(beTrue())
+
+                }
             }
             
-            // needs to query for specific id, then insert document with said id, then query again
-            it("queries for documents successfully") {
+            describe("find method") {
+                // needs to query for specific id, then insert document with said id, then query again
+                it("queries for documents successfully") {
+
+                    let objId = ["$oid":"55ef8ab5bb6a9b5717de15e9"]
+
+                    let resultBefore = try! collection.find(["_id":objId]).count
+
+                    var doc2 = document.data
+                    doc2["_id"] = objId
+
+                    try! collection.insert(doc2)
+
+                    let resultAfter = try! collection.find(["_id":objId]).count
+
+                    expect(resultAfter - resultBefore == 1).to(beTrue())
+                }
                 
-                let objId = ["$oid":"55ef8ab5bb6a9b5717de15e9"]
-                
-                let resultBefore = try! collection.find(["_id":objId]).count
-                
-                var doc2 = document.data
-                doc2["_id"] = objId
-                
-                try! collection.insert(doc2, containsObjectId: true)
-                
-                let resultAfter = try! collection.find(["_id":objId]).count
-                
-                expect(resultAfter - resultBefore == 1).to(beTrue())
+                it("properly applies the limit flag") {
+
+                    var data = document.data
+                    data["_id"] = nil // to not have duplicate keys
+
+                    // insert 10 times
+                    for _ in 0..<10 {
+                        try! collection.insert(data)
+                    }
+
+                    let count = try! collection.find(limit: 3).count
+
+                    expect(count == 3).to(beTrue())
+                }
             }
             
-            it("updates documents successfully") {
-                
-                try! collection.insert(document)
-                
-                let resultBefore = try! collection.find(document.data)[0]
-                
-                // run it through the encoder & decoder process to give it fair grounds
-                var resultBeforeDataRAW = bson_t()
-                try! MongoBSONEncoder(data: resultBefore.data).copyTo(&resultBeforeDataRAW)
-                let resultBeforeData = try! MongoBSONDecoder(BSON: &resultBeforeDataRAW).result.data
-                
-                let newData = [
-                    "_id" : document.data["_id"]!,
-                    "hey" : "there"
-                ]
-                
-                try! collection.update(document.data, newValue: newData)
-                
-                let resultAfter = try! collection.find(newData)[0]
-                
-                let newMatchesOld = resultBeforeData == resultAfter.data
-                let newMatchesNew = resultAfter.data == newData
-                expect(!newMatchesOld && newMatchesNew).to(beTrue())
+            describe("update method") {
+
+                it("updates documents successfully") {
+
+                    try! collection.insert(document)
+
+                    let resultBefore = try! collection.find(document.data)[0]
+
+                    // run it through the encoder & decoder process to give it fair grounds
+                    var resultBeforeDataRAW = bson_t()
+                    try! MongoBSONEncoder(data: resultBefore.data).copyTo(&resultBeforeDataRAW)
+                    let resultBeforeData = try! MongoBSONDecoder(BSON: &resultBeforeDataRAW).result.data
+
+                    let newData = [
+                        "_id" : document.data["_id"]!,
+                        "hey" : "there"
+                    ]
+
+                    try! collection.update(document.data, newValue: newData)
+
+                    let resultAfter = try! collection.find(newData)[0]
+
+                    let newMatchesOld = resultBeforeData == resultAfter.data
+                    let newMatchesNew = resultAfter.data == newData
+                    expect(!newMatchesOld && newMatchesNew).to(beTrue())
+                }
             }
             
-            it("removes documents successfully") {
-                
-                try! collection.insert(document)
-                
-                let countBefore = try! collection.find().count
-                
-                try! collection.remove(document.data)
-                
-                let countAfter = try! collection.find().count
-                
-                expect(countBefore - countAfter == 1).to(beTrue())
+            describe("remove method") {
+
+                it("removes documents successfully") {
+
+                    try! collection.insert(document)
+
+                    let countBefore = try! collection.find().count
+
+                    try! collection.remove(document.data)
+
+                    let countAfter = try! collection.find().count
+
+                    expect(countBefore - countAfter == 1).to(beTrue())
+                }
             }
         }
         

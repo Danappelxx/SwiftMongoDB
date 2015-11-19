@@ -59,7 +59,7 @@ public class MongoCollection {
         }
     }
     
-    public func insert(document: DocumentData, containsObjectId: Bool = false, flags: InsertFlags = InsertFlags.None) throws {
+    public func insert(document: DocumentData, flags: InsertFlags = InsertFlags.None) throws {
 
         try self.insert(MongoDocument(data: document), flags: flags)
     }
@@ -80,7 +80,7 @@ public class MongoCollection {
 
 
         // standard options - should be customizable later on
-        let cursor = self.cursor(operation: .Find, query: &queryBSON, options: (queryFlags: flags.rawFlag, skip: skip, limit: skip, batchSize: skip))
+        let cursor = self.cursor(operation: .Find, query: &queryBSON, options: (queryFlags: flags.rawFlag, skip: skip, limit: limit, batchSize: batchSize))
 
         var outputDocuments = [MongoDocument]()
 
