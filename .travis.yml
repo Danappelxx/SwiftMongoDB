@@ -11,4 +11,4 @@ install:
 services:
   - mongodb
 script:
-    - set -o pipefail && xcodebuild -verbose -project SwiftMongoDB.xcodeproj -scheme SwiftMongoDB-OSX -sdk macosx build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c
+    - xctool -project SwiftMongoDB.xcodeproj -scheme SwiftMongoDB-OSX clean build test -sdk macosx CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
