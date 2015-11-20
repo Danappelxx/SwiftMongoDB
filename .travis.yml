@@ -8,10 +8,9 @@ before_install:
     - rm "Carthage.pkg"
 install:
     - carthage bootstrap --no-build
-services:
-  - mongodb
 before_script:
-  - sleep 15 # wait for mongodb to startup
+    - mongod
+    - sleep 5 # wait for mongodb to startup
 script:
     - xctool -project SwiftMongoDB.xcodeproj -scheme SwiftMongoDB-OSX clean build test -sdk macosx CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 after_success:
