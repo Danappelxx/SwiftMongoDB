@@ -10,8 +10,8 @@ before_install:
 install:
     - carthage bootstrap --no-build
 before_script:
-    - mongod
-    - sleep 5 # wait for mongodb to startup
+    - mkdir /tmp/data
+    - mongod --dbpath /tmp/data --bind_ip 127.0.0.1 &> /dev/null &
 script:
     - xctool -project SwiftMongoDB.xcodeproj -scheme SwiftMongoDB-OSX clean build test -sdk macosx CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 after_success:
