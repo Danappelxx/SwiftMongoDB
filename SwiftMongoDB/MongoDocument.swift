@@ -13,11 +13,12 @@ public class MongoDocument {
     let BSONRAW: _bson_ptr_mutable = bson_new()
     
     public var JSONString: String? {
-        return JSON(self.data).rawString()
-    }
-    
-    public var JSONValue: JSON {
-        return JSON(self.data)
+        
+        guard let data = try? NSJSONSerialization.dataWithJSONObject(self.data, options: .PrettyPrinted) else {
+            return nil
+        }
+
+        return String(data: data, encoding: NSUTF8StringEncoding)
     }
 
     public var dataWithoutObjectId: DocumentData {
@@ -54,7 +55,7 @@ public class MongoDocument {
 
     convenience public init(JSON: String, withObjectId objectId: String) throws {
 
-        guard let data = JSON.parseJSONDocumentData else {
+        guard let data = try JSON.parseJSONDocumentData() else {
             throw MongoError.CorruptDocument
         }
 
@@ -63,7 +64,7 @@ public class MongoDocument {
     
     convenience public init(JSON: String) throws {
 
-        guard let data = JSON.parseJSONDocumentData else {
+        guard let data = try JSON.parseJSONDocumentData() else {
             throw MongoError.CorruptDocument
         }
 
@@ -106,19 +107,6 @@ public class MongoDocument {
         oidStrRAW.destroy()
 
         return oidStr as! String
-    }
-    
-    public func getObjectFromKey(key : String) -> AnyObject? {
-        return self.data[key]
-    }
-    
-    public func getKeys() -> [String]{
-        var keys = [String]()
-        for (key, _ ) in self.JSONValue {
-            keys.append(key)
-        }
-        keys = keys.sort(<)
-        return keys
     }
     
     deinit {

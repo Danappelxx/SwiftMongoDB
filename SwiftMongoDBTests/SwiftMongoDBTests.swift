@@ -171,13 +171,18 @@ class SwiftMongoDBSpec: QuickSpec {
                 var encodedDataRAW = bson_t()
                 try! MongoBSONEncoder(data: document.data).copyTo(&encodedDataRAW)
                 
-                let encodedData = MongoBSONDecoder.BSONToJSON(&encodedDataRAW)!.parseJSON!
-                let encodedDataJSON = JSON(encodedData).rawString()!
                 
-                let decodedData = JSON(document.data).rawString()!.parseJSON!
-                let decodedDataJSON = JSON(decodedData).rawString()!
-                
-                expect(encodedDataJSON == decodedDataJSON).to(beTrue())
+                do {
+                    let encodedData = try MongoBSONDecoder.BSONToJSON(&encodedDataRAW)!.parseJSON()
+                    let encodedDataJSON = try documentDataToJSONString(encodedData as! DocumentData)
+
+                    let decodedData = try documentDataToJSONString(document.data)?.parseJSON()
+                    let decodedDataJSON = try documentDataToJSONString(decodedData as! DocumentData)
+
+                    expect(encodedDataJSON == decodedDataJSON).to(beTrue())
+                } catch {
+                    fail()
+                }
             }
             
             it("decodes BSON correctly") {
@@ -217,13 +222,13 @@ class SwiftMongoDBSpec: QuickSpec {
                 
                 it("works with JSON") {
                     
-                    let docBefore = try! MongoDocument(JSON: JSON(document.data).rawString()!).JSONString!
+                    let docBefore = try! MongoDocument(JSON: try! documentDataToJSONString(document.data)!).JSONString!
                     
                     var docRAW = bson_t()
                     try! MongoBSONEncoder(JSON: docBefore).copyTo(&docRAW)
                     let docAfter = try! MongoBSONDecoder(BSON: &docRAW).resultJSON!
                     
-                    expect(docBefore.parseJSONDocumentData! == docAfter.parseJSONDocumentData!).to(beTrue())
+                    expect((try! docBefore.parseJSONDocumentData()!) == (try! docAfter.parseJSONDocumentData()!)).to(beTrue())
                 }
                 
                 it("works with MongoObject schemas") {

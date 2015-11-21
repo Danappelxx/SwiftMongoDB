@@ -18,7 +18,14 @@ class MongoBSONEncoder {
     init(JSON: String) throws {
         
         self.BSONRAW = bson_new()
-        self.data = JSON.parseJSONDocumentData!
+        
+        do {
+            self.data = try JSON.parseJSONDocumentData()!
+        } catch {
+            self.data = [:]
+            throw error
+        }
+
 
         let JSONDataRAW = NSString(string: JSON).UTF8String
         
@@ -32,11 +39,10 @@ class MongoBSONEncoder {
     
     convenience init(data: DocumentData) throws {
 
-        guard let JSONData = JSON(data).rawString() else {
-            throw MongoError.CorruptDocument
-        }
+        let jsonData = try NSJSONSerialization.dataWithJSONObject(data, options: .PrettyPrinted)
+        let jsonString = String(data: jsonData, encoding: NSUTF8StringEncoding)
 
-        try self.init(JSON: JSONData)
+        try self.init(JSON: jsonString!)
     }
 
     deinit {
@@ -105,17 +111,8 @@ class MongoBSONDecoder {
     static private func decode(BSON: _bson_ptr_immutable) throws -> DocumentData {
 
         let JSONString = String(self.BSONToJSON(BSON)!)
-
-        // this is broken up into pieces for readability
-        // turn string into NSData
-        guard let JSONDataRAW = JSONString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) else {
-
-            throw MongoError.CorruptDocument
-
-        }
-
-        // init JSON from NSData, get dictionary object from it
-        guard let JSONData = JSON(data: JSONDataRAW).dictionaryObject else {
+        
+        guard let JSONData = try JSONString.parseJSONDocumentData() else {
             throw MongoError.CorruptDocument
         }
 

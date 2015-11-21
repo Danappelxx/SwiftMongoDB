@@ -35,21 +35,22 @@ extension Int {
 
 extension String {
     
-    var toJSON: JSON {
-        guard let data = self.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) else {
-            return nil
-        }
+    func parseJSON() throws -> AnyObject {
+        let data = self.dataUsingEncoding(NSUTF8StringEncoding)!
+        let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: [])
         
-        return JSON(data: data)
+        return decoded
     }
     
-    var parseJSON: AnyObject? {
-        return self.toJSON.object
+    func parseJSONDocumentData() throws -> DocumentData? {
+        return try parseJSON() as? DocumentData
     }
+}
+
+func documentDataToJSONString(document: DocumentData) throws -> String? {
     
-    var parseJSONDocumentData: DocumentData? {
-        return self.toJSON.dictionaryObject
-    }
+    let data = try NSJSONSerialization.dataWithJSONObject(document, options: .PrettyPrinted)
+    return String(data: data, encoding: NSUTF8StringEncoding)
 }
 
 public enum QueryFlags {
