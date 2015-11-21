@@ -20,6 +20,8 @@
 		375F5F0F1B7E65DF007EA172 /* SwiftMongoDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 375F5F0E1B7E65DF007EA172 /* SwiftMongoDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		375F5F161B7E65E0007EA172 /* SwiftMongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375F5F0B1B7E65DF007EA172 /* SwiftMongoDB.framework */; };
 		375F5F1B1B7E65E0007EA172 /* SwiftMongoDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F5F1A1B7E65E0007EA172 /* SwiftMongoDBTests.swift */; };
+		378D7A991C01092500A864B0 /* bson.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6BFE1BF059CE0082AE18 /* bson.framework */; };
+		378D7A9C1C01093400A864B0 /* bson.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6BFE1BF059CE0082AE18 /* bson.framework */; };
 		37A17EDB1BEC524E00827E76 /* SwiftMongoDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 375F5F0E1B7E65DF007EA172 /* SwiftMongoDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37BC6BF51BF059A90082AE18 /* mongoc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6BEC1BF059040082AE18 /* mongoc.framework */; };
 		37BC6BF61BF059AB0082AE18 /* mongoc.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37BC6BEC1BF059040082AE18 /* mongoc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -45,7 +47,21 @@
 			containerPortal = 375F5F021B7E65DF007EA172 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 375F5F0A1B7E65DF007EA172;
-			remoteInfo = swiftMongoDB;
+			remoteInfo = SwiftMongoDB;
+		};
+		378D7A881C01091A00A864B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37BC6BF81BF059CE0082AE18 /* bson.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3738CEDE1BEAB7B800938057;
+			remoteInfo = "bson-osx";
+		};
+		378D7A9A1C01092E00A864B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37BC6BF81BF059CE0082AE18 /* bson.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3738CE881BEAB61700938057;
+			remoteInfo = "bson-ios";
 		};
 		37BC6BEB1BF059040082AE18 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -273,6 +289,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				378D7A991C01092500A864B0 /* bson.framework in Frameworks */,
 				37BC6BF51BF059A90082AE18 /* mongoc.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,6 +308,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				378D7A9C1C01093400A864B0 /* bson.framework in Frameworks */,
 				37BC6C041BF05A1E0082AE18 /* mongoc.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,8 +355,7 @@
 				37D8EB531B96A8B700D87177 /* Declarations.swift */,
 				375F5F101B7E65DF007EA172 /* Info.plist */,
 			);
-			name = SwiftMongoDB;
-			path = swiftMongoDB;
+			path = SwiftMongoDB;
 			sourceTree = "<group>";
 		};
 		375F5F191B7E65E0007EA172 /* SwiftMongoDBTests */ = {
@@ -347,8 +364,7 @@
 				375F5F1A1B7E65E0007EA172 /* SwiftMongoDBTests.swift */,
 				375F5F1C1B7E65E0007EA172 /* Info.plist */,
 			);
-			name = SwiftMongoDBTests;
-			path = swiftMongoDBTests;
+			path = SwiftMongoDBTests;
 			sourceTree = "<group>";
 		};
 		37BC6BE71BF059040082AE18 /* Products */ = {
@@ -433,10 +449,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				378D7A891C01091A00A864B0 /* PBXTargetDependency */,
 				37BC6BF01BF059150082AE18 /* PBXTargetDependency */,
 			);
 			name = "SwiftMongoDB-OSX";
-			productName = swiftMongoDB;
+			productName = SwiftMongoDB;
 			productReference = 375F5F0B1B7E65DF007EA172 /* SwiftMongoDB.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -457,7 +474,7 @@
 				375F5F181B7E65E0007EA172 /* PBXTargetDependency */,
 			);
 			name = SwiftMongoDBTests;
-			productName = swiftMongoDBTests;
+			productName = SwiftMongoDBTests;
 			productReference = 375F5F151B7E65E0007EA172 /* SwiftMongoDBTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -474,6 +491,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				378D7A9B1C01092E00A864B0 /* PBXTargetDependency */,
 				37BC6C3B1BF05AC30082AE18 /* PBXTargetDependency */,
 			);
 			name = "SwiftMongoDB-iOS";
@@ -748,6 +766,16 @@
 			target = 375F5F0A1B7E65DF007EA172 /* SwiftMongoDB-OSX */;
 			targetProxy = 375F5F171B7E65E0007EA172 /* PBXContainerItemProxy */;
 		};
+		378D7A891C01091A00A864B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "bson-osx";
+			targetProxy = 378D7A881C01091A00A864B0 /* PBXContainerItemProxy */;
+		};
+		378D7A9B1C01092E00A864B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "bson-ios";
+			targetProxy = 378D7A9A1C01092E00A864B0 /* PBXContainerItemProxy */;
+		};
 		37BC6BF01BF059150082AE18 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "mongoc-osx";
@@ -835,12 +863,13 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = swiftMongoDB/Info.plist;
+				INFOPLIST_FILE = SwiftMongoDB/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.swiftMongoDB;
+				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDB;
 				PRODUCT_NAME = SwiftMongoDB;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -855,9 +884,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = swiftMongoDBTests/Info.plist;
+				INFOPLIST_FILE = SwiftMongoDBTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.swiftMongoDBTests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDBTests;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)Tests";
 				PRODUCT_NAME = "${TARGET_NAME}";
 			};
@@ -927,12 +956,13 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = swiftMongoDB/Info.plist;
+				INFOPLIST_FILE = SwiftMongoDB/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.swiftMongoDB;
+				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDB;
 				PRODUCT_NAME = SwiftMongoDB;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -947,9 +977,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = swiftMongoDBTests/Info.plist;
+				INFOPLIST_FILE = SwiftMongoDBTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.swiftMongoDBTests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDBTests;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)Tests";
 				PRODUCT_NAME = "${TARGET_NAME}";
 			};
@@ -968,7 +998,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SwiftMongoDB/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDB;
 				PRODUCT_NAME = SwiftMongoDB;
@@ -994,7 +1024,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SwiftMongoDB/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDB;
