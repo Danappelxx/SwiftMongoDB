@@ -10,15 +10,10 @@ import bson
 
 public class MongoDocument {
 
-    let BSONRAW: _bson_ptr_mutable = bson_new()
+    let bson: bson_t
     
-    public var JSONString: String? {
-        
-        guard let data = try? NSJSONSerialization.dataWithJSONObject(self.data, options: .PrettyPrinted) else {
-            return nil
-        }
-
-        return String(data: data, encoding: NSUTF8StringEncoding)
+    public var JSON: String? {
+        return try? data.toJSON()
     }
 
     public var dataWithoutObjectId: DocumentData {
@@ -35,31 +30,17 @@ public class MongoDocument {
         return self.data["_id"]?["$oid"] as? String
     }
 
-    private var documentData = DocumentData()
-    
-    private func initBSON() {
-        try! MongoBSONEncoder(data: self.data).copyTo(self.BSONRAW)
-    }
+    private let documentData: DocumentData
 
     public init(let data: DocumentData) throws {
         self.documentData = data
-        self.initBSON()
-    }
-
-    convenience public init(var data: DocumentData, withObjectId objectId: String) throws {
-
-        data["_id"] = ["$oid" : objectId]
         
-        try self.init(data: data)
-    }
-
-    convenience public init(JSON: String, withObjectId objectId: String) throws {
-
-        guard let data = try JSON.parseJSONDocumentData() else {
-            throw MongoError.CorruptDocument
+        do {
+            self.bson = try MongoBSON(data: data).bson
+        } catch {
+            self.bson = bson_t()
+            throw error
         }
-
-        try self.init(data: data, withObjectId: objectId)
     }
     
     convenience public init(JSON: String) throws {
@@ -71,15 +52,8 @@ public class MongoDocument {
         try self.init(data: data)
     }
     
-    convenience public init(withSchemaObject object: MongoObject, withObjectID objectId: String) throws {
-
-        let data = object.properties()
-        
-        try self.init(data: data, withObjectId: objectId)
-    }
-    
     convenience public init(withSchemaObject object: MongoObject) throws {
-        
+
         let data = object.properties()
         
         try self.init(data: data)
@@ -110,7 +84,7 @@ public class MongoDocument {
     }
     
     deinit {
-        self.BSONRAW.destroy()
+//        self.BSONRAW.destroy()
     }
 }
 

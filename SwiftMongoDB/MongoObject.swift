@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 /**
 *  A protocol that allows documents to be described in an Object Orientated way.
 */

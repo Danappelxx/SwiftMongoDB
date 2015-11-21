@@ -51,7 +51,7 @@ public struct MongoError: ErrorType, CustomStringConvertible {
 
 }
 
-extension bson_error_t {
+public extension bson_error_t {
     var error: MongoError {
         return MongoError(error: self)
     }

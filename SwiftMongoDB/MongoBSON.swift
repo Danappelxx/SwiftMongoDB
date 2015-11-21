@@ -6,116 +6,103 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-import Foundation
 import bson
 
-class MongoBSONEncoder {
-
-    let BSONRAW: _bson_ptr_mutable
-
+class MongoBSON {
+    
+    var _bson: bson_t
+    let json: String
     let data: DocumentData
+    var bson: bson_t {
+        return bson_copy(&_bson).memory // for safety
+    }
 
-    init(JSON: String) throws {
-        
-        self.BSONRAW = bson_new()
-        
+    init(bson: bson_t) throws {
+
+        self._bson = bson
+
         do {
-            self.data = try JSON.parseJSONDocumentData()!
+            self.json = try MongoBSON.bsonToJson(bson)
         } catch {
+            self.json = ""
             self.data = [:]
             throw error
         }
 
-
-        let JSONDataRAW = NSString(string: JSON).UTF8String
-        
-        var error = bson_error_t()
-        bson_init_from_json(self.BSONRAW, JSONDataRAW, JSON.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), &error)
-        
-        if error.error.isError {
-            throw error.error
+        do {
+            self.data = try json.parseJSONDocumentData()!
+        } catch {
+            self.data = [:]
+            throw error
         }
     }
-    
-    convenience init(data: DocumentData) throws {
 
-        let jsonData = try NSJSONSerialization.dataWithJSONObject(data, options: .PrettyPrinted)
-        let jsonString = String(data: jsonData, encoding: NSUTF8StringEncoding)
+    init(json: String) throws {
 
-        try self.init(JSON: jsonString!)
+        self.json = json
+
+        do {
+            self.data = try self.json.parseJSONDocumentData()!
+        } catch {
+            self.data = [:]
+            self._bson = bson_t()
+            throw error
+        }
+
+        do {
+            self._bson = try MongoBSON.jsonToBson(json)
+        } catch {
+            self._bson = bson_t()
+            throw error
+        }
     }
 
-    deinit {
-        bson_destroy(self.BSONRAW)
-    }
-    
-    func copyTo(destination: _bson_ptr_mutable) {
-        bson_copy_to(self.BSONRAW, destination)
-    }
+    init(data: DocumentData) throws {
 
-    static func generateObjectId() -> String {
+        self.data = data
+
+        do {
+            self.json = try data.toJSON()
+        } catch {
+            self.json = ""
+            self._bson = bson_t()
+            throw error
+        }
         
-        let oid = UnsafeMutablePointer<bson_oid_t>.alloc(1)
-        
-        bson_oid_init(oid, bson_context_get_default())
-
-        let oidStr = self.getStringFromOid(oid)
-
-        oid.dealloc(1)
-
-        return oidStr
-    }
-    
-    private static func getStringFromOid(oid: UnsafeMutablePointer<bson_oid_t>) -> String {
-
-        let oidStrRAW = UnsafeMutablePointer<Int8>.alloc(100)
-
-        bson_oid_to_string(oid, oidStrRAW)
-
-        let oidStr = NSString(UTF8String: oidStrRAW)
-
-        oidStrRAW.dealloc(100)
-
-        return String(oidStr!)
-    }
-}
-
-class MongoBSONDecoder {
-
-    let BSONRAW: _bson_ptr_immutable
-
-    // result should be read only
-    var result: MongoDocument {
-        return try! MongoDocument(data: self.resultData)
+        do {
+            self._bson = try MongoBSON.jsonToBson(json)
+        } catch {
+            self._bson = bson_t()
+            throw error
+        }
     }
 
-    private var resultData: DocumentData
-    var resultJSON: String? {
-        return MongoBSONDecoder.BSONToJSON(self.BSONRAW)
-    }
+    static func bsonToJson(bson: bson_t) throws -> String {
 
-    static func BSONToJSON(BSON: _bson_ptr_immutable) -> String? {
-        let json = String(UTF8String: bson_as_json(BSON, nil))
+        var bson = bson
+        let jsonRaw = bson_as_json(&bson, nil)
 
-        return json
-    }
-
-    init(BSON: _bson_ptr_immutable) throws {
-        self.BSONRAW = BSON
-
-        self.resultData = DocumentData()
-
-        self.resultData = try MongoBSONDecoder.decode(BSON)
-    }
-
-    static private func decode(BSON: _bson_ptr_immutable) throws -> DocumentData {
-
-        let JSONString = String(self.BSONToJSON(BSON)!)
-        
-        guard let JSONData = try JSONString.parseJSONDocumentData() else {
+        if jsonRaw == nil {
             throw MongoError.CorruptDocument
         }
 
-        return JSONData
+        return String(UTF8String: jsonRaw)!
+    }
+
+    static func jsonToBson(json: String) throws -> bson_t {
+
+        var error = bson_error_t()
+        let bson = bson_new_from_json(json, json.nulTerminatedUTF8.count, &error)
+
+        if error.error.isError {
+            throw error.error
+        }
+
+        return bson.memory
+    }
+    
+    func copyTo(out: _bson_ptr_mutable) {
+        var bson = self.bson
+        bson_copy_to(&bson, out)
     }
 }

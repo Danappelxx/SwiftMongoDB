@@ -11,101 +11,59 @@ import mongoc
 
 public class MongoCursor {
 
-    let cursorRAW: _mongoc_cursor
-    let collection: MongoCollection
+    let cursor: _mongoc_cursor
     
     // this is way too ugly
     init(collection: MongoCollection, operation: MongoCursorOperation, query: _bson_ptr_mutable, options: (queryFlags: mongoc_query_flags_t, skip: Int, limit: Int, batchSize: Int)) {
-
-        self.collection = collection
         
         switch operation {
 
         case .Find:
-            self.cursorRAW = mongoc_collection_find(collection.collectionRAW, options.queryFlags, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, query, nil, nil)
-            break
+            self.cursor = mongoc_collection_find(collection.collectionRAW, options.queryFlags, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, query, nil, nil)
         }
-        
-        var outputDocumentBSONTemp = bson_t()
-        self.outputDocumentBSON = bsonToPointer(&outputDocumentBSONTemp)
     }
 
-    private func bsonToPointer(inout BSON: bson_t) -> _bson_ptr_immutable {
-        
-        return withUnsafePointer(&BSON, { (BSONPTR) -> _bson_ptr_immutable in
-            return BSONPTR
-        })
-    }
-    
-    
-    private var outputDocumentBSON: _bson_ptr_immutable = nil
+    private var bson = bson_t()
 
     var nextDocument: MongoDocument? {
+        guard let data = nextData else { return nil }
+        return try? MongoDocument(data: data)
+    }
 
-        if let documentData = self.nextDocumentData {
-            return try! MongoDocument(data: documentData)
-        }
+    var nextJson: String? {
+        return try? MongoBSON.bsonToJson(bson)
+    }
+    
+    var nextData: DocumentData? {
+        return try? MongoBSON(bson: bson).data
+    }
 
-        return nil
-    }
-    
-    var nextDocumentJSON: String {
-        let rawJSON = bson_as_json(self.outputDocumentBSON, nil)
-        let NSJSON = NSString(UTF8String: rawJSON)
-        return String(NSJSON)
-    }
-    
-    var nextDocumentBSON: _bson_ptr_immutable {
-        return self.outputDocumentBSON
-    }
-    
-    var nextDocumentData: DocumentData? {
-        
-        do {
-            return try MongoBSONDecoder(BSON: self.nextDocumentBSON).result.data
-        } catch {
-            return nil
-        }
-    }
-    
     var nextIsOK: Bool {
-        return mongoc_cursor_next(self.cursorRAW, &self.outputDocumentBSON)
+
+        var bsonPtr = withUnsafePointer(&bson) { $0 }
+
+        let isOk = mongoc_cursor_next(cursor, &bsonPtr)
+
+        if isOk != false {
+            self.bson = bsonPtr.memory
+        }
+
+        bsonPtr = nil
+
+        return isOk
     }
 
     var lastError: MongoError {
         var error = bson_error_t()
-        mongoc_cursor_error(self.cursorRAW, &error)
+        mongoc_cursor_error(self.cursor, &error)
         return error.error
     }
 
     deinit {
-        self.outputDocumentBSON = nil
-        mongoc_cursor_destroy(self.cursorRAW)
+        mongoc_cursor_destroy(self.cursor)
     }
 }
 
 enum MongoCursorOperation {
     case Find
-}
-
-struct MongoOperationOptions {
-
-    var operation: MongoCursorOperation?
-    var queryFlags: mongoc_query_flags_t = MONGOC_QUERY_NONE
-    var skip: Int?
-    private var skipUInt32: UInt32 {
-        return UInt32(skip!)
-    }
-    var limit: Int?
-    private var limitUInt32: UInt32 {
-        return UInt32(limit!)
-    }
-    var batchSize: Int?
-    private var batchSizeUInt32: UInt32 {
-        return UInt32(batchSize!)
-    }
-
-    var query: _bson_ptr_mutable?
-//    var fields: _bson_ptr_immutable?
-//    var readPrefs: _mongoc_read_prefs?
 }

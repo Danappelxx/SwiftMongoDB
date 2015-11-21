@@ -50,10 +50,12 @@ public class MongoCollection {
         case .ContinueOnError: insertFlags = MONGOC_INSERT_CONTINUE_ON_ERROR
         }
 
+        var bson = try MongoBSON(data: document.data).bson
+        
         var bsonError = bson_error_t()
 
-        mongoc_collection_insert(self.collectionRAW, insertFlags, document.BSONRAW, nil, &bsonError)
-
+        mongoc_collection_insert(self.collectionRAW, insertFlags, &bson, nil, &bsonError)
+        
         if bsonError.error.isError {
             throw bsonError.error
         }
@@ -74,13 +76,10 @@ public class MongoCollection {
     
     public func find(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
 
-        var queryBSON = bson_t()
-        try! MongoBSONEncoder(data: query).copyTo(&queryBSON)
-
-
+        var query = try MongoBSON(data: query).bson
 
         // standard options - should be customizable later on
-        let cursor = self.cursor(operation: .Find, query: &queryBSON, options: (queryFlags: flags.rawFlag, skip: skip, limit: limit, batchSize: batchSize))
+        let cursor = self.cursor(operation: .Find, query: &query, options: (queryFlags: flags.rawFlag, skip: skip, limit: limit, batchSize: batchSize))
 
         var outputDocuments = [MongoDocument]()
 
@@ -100,12 +99,12 @@ public class MongoCollection {
     
     public func findOne(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> MongoDocument? {
         
-        let queryBSON = try! MongoBSONEncoder(data: query).BSONRAW
+        var query = try MongoBSON(data: query).bson
         
         let queryFlags: mongoc_query_flags_t = flags.rawFlag
         
         // standard options - should be customizable later on
-        let cursor = self.cursor(operation: .Find, query: queryBSON, options: (queryFlags: queryFlags, skip: skip, limit: skip, batchSize: skip))
+        let cursor = self.cursor(operation: .Find, query: &query, options: (queryFlags: queryFlags, skip: skip, limit: skip, batchSize: skip))
         
         if cursor.nextIsOK {
             
@@ -137,14 +136,12 @@ public class MongoCollection {
 
         let updateFlags: mongoc_update_flags_t = flags.rawFlag
 
-        var queryBSON = bson_t()
-        try MongoBSONEncoder(data: query).copyTo(&queryBSON)
+        var query = try MongoBSON(data: query).bson
 
-        var documentBSON = bson_t()
-        try MongoBSONEncoder(data: newValue).copyTo(&documentBSON)
+        var document = try MongoBSON(data: newValue).bson
 
         var error = bson_error_t()
-        let success = mongoc_collection_update(self.collectionRAW, updateFlags, &queryBSON, &documentBSON, nil, &error)
+        let success = mongoc_collection_update(self.collectionRAW, updateFlags, &query, &document, nil, &error)
 
         if error.error.isError {
             throw error.error
@@ -166,11 +163,10 @@ public class MongoCollection {
         case .SingleRemove: removeFlags = MONGOC_REMOVE_SINGLE_REMOVE; break
         }
 
-        var queryBSON = bson_t()
-        try! MongoBSONEncoder(data: query).copyTo(&queryBSON)
+        var query = try MongoBSON(data: query).bson
 
         var error = bson_error_t()
-        let success = mongoc_collection_remove(self.collectionRAW, removeFlags, &queryBSON, nil, &error)
+        let success = mongoc_collection_remove(self.collectionRAW, removeFlags, &query, nil, &error)
 
         if error.error.isError {
             throw error.error
@@ -181,19 +177,18 @@ public class MongoCollection {
     
     public func performBasicCollectionCommand(command: DocumentData) throws -> DocumentData {
         
-        var commandRAW = bson_t()
-        try MongoBSONEncoder(data: command).copyTo(&commandRAW)
+        var command = try MongoBSON(data: command).bson
         
         var reply = bson_t()
         var error = bson_error_t()
         
-        mongoc_collection_command_simple(self.collectionRAW, &commandRAW, nil, &reply, &error)
+        mongoc_collection_command_simple(self.collectionRAW, &command, nil, &reply, &error)
 
         if error.error.isError {
             throw error.error
         }
 
-        return try MongoBSONDecoder(BSON: &reply).result.data
+        return try MongoBSON(bson: reply).data
 //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
     }
 }

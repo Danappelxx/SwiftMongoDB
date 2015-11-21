@@ -84,12 +84,12 @@ public class MongoClient {
      - throws: Any errors it encounters while connecting to the database.
      */
     public func checkConnection() throws {
-        var commandRAW = bson_t()
-        try MongoBSONEncoder(data: ["ping" : 1]).copyTo(&commandRAW)
+
+        var command = try MongoBSON(data: ["ping" : 1]).bson
 
         var error = bson_error_t()
 
-        mongoc_database_command_simple(self.databaseRAW, &commandRAW, nil, nil, &error)
+        mongoc_database_command_simple(self.databaseRAW, &command, nil, nil, &error)
 
         if error.error.isError {
             throw error.error
@@ -153,45 +153,43 @@ public class MongoClient {
     
     public func performBasicClientCommand(command: DocumentData) throws -> DocumentData {
 
-        var commandRAW = bson_t()
-        try MongoBSONEncoder(data: command).copyTo(&commandRAW)
+        var command = try MongoBSON(data: command).bson
 
         var reply = bson_t()
         var error = bson_error_t()
-        
-        mongoc_client_command_simple(self.clientRAW, self.databaseNameInternal, &commandRAW, nil, &reply, &error)
+
+        mongoc_client_command_simple(self.clientRAW, self.databaseNameInternal, &command, nil, &reply, &error)
 
         if error.error.isError {
             throw error.error
         }
 
-        return try MongoBSONDecoder(BSON: &reply).result.data
+        return try MongoBSON(bson: reply).data
         //        mongoc_client_command_simple(client: COpaquePointer, db_name: UnsafePointer<Int8>, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
     }
     
-    public func performBasicClientCommand(JSONString : String) throws -> DocumentData {
-        return try performBasicClientCommand(MongoBSONEncoder(JSON: JSONString).data)
+    public func performBasicClientCommand(json : String) throws -> DocumentData {
+        return try performBasicClientCommand(try json.parseJSONDocumentData()!)
     }
     
     public func performBasicDatabaseCommand(command: DocumentData) throws -> DocumentData {
-        
-        var commandRAW = bson_t()
-        try MongoBSONEncoder(data: command).copyTo(&commandRAW)
-        
+
+        var command = try MongoBSON(data: command).bson
+
         var reply = bson_t()
         var error = bson_error_t()
-        
-        mongoc_database_command_simple(self.databaseRAW, &commandRAW, nil, &reply, &error)
+
+        mongoc_database_command_simple(self.databaseRAW, &command, nil, &reply, &error)
 
         if error.error.isError {
             throw error.error
         }
-        
-        return try MongoBSONDecoder(BSON: &reply).result.data
+
+        return try MongoBSON(bson: reply).data
         //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
     }
     
-    public func performBasicDatabaseCommand(JSONString : String) throws -> DocumentData {
-        return try performBasicDatabaseCommand(MongoBSONEncoder(JSON: JSONString).data)
+    public func performBasicDatabaseCommand(json : String) throws -> DocumentData {
+        return try performBasicDatabaseCommand(try json.parseJSONDocumentData()!)
     }
 }
