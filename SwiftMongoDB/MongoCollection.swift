@@ -13,28 +13,21 @@ public class MongoCollection {
     public let client: MongoClient
     public let collectionName: String
 
-    let clientRAW: _mongoc_client
-    let collectionRAW: _mongoc_collection
+    let clientRaw: _mongoc_client
+    let collectionRaw: _mongoc_collection
 
     public init(collectionName: String, client: MongoClient) {
 
         self.client = client
-        self.clientRAW = client.clientRAW
+        self.clientRaw = client.clientRaw
 
         self.collectionName = collectionName
 
-        self.collectionRAW = mongoc_client_get_collection(self.clientRAW, self.client.databaseName, self.collectionName)
-
+        self.collectionRaw = mongoc_client_get_collection(self.clientRaw, self.client.databaseName, self.collectionName)
     }
 
     deinit {
-        mongoc_collection_destroy(self.collectionRAW)
-    }
-
-    private func cursor(operation operation: MongoCursorOperation, query: _bson_ptr_mutable, options: (queryFlags: mongoc_query_flags_t, skip: Int, limit: Int, batchSize: Int)) -> MongoCursor {
-
-        // ugh so ugly
-        return MongoCursor(collection: self, operation: operation, query: query, options: (queryFlags: options.queryFlags, skip: options.skip, limit: options.limit, batchSize: options.batchSize))
+        mongoc_collection_destroy(self.collectionRaw)
     }
 
     public enum InsertFlags {
@@ -54,7 +47,7 @@ public class MongoCollection {
         
         var bsonError = bson_error_t()
 
-        mongoc_collection_insert(self.collectionRAW, insertFlags, &bson, nil, &bsonError)
+        mongoc_collection_insert(self.collectionRaw, insertFlags, &bson, nil, &bsonError)
         
         if bsonError.error.isError {
             throw bsonError.error
@@ -68,7 +61,7 @@ public class MongoCollection {
     
     public func renameCollectionTo(newName : String) throws{
         var bsonError = bson_error_t()
-        mongoc_collection_rename(self.collectionRAW, client.databaseName, newName, false, &bsonError)
+        mongoc_collection_rename(self.collectionRaw, client.databaseName, newName, false, &bsonError)
         if bsonError.error.isError {
             throw bsonError.error
         }
@@ -79,69 +72,46 @@ public class MongoCollection {
         var query = try MongoBSON(data: query).bson
 
         // standard options - should be customizable later on
-        let cursor = self.cursor(operation: .Find, query: &query, options: (queryFlags: flags.rawFlag, skip: skip, limit: limit, batchSize: batchSize))
+        let cursor = MongoCursor(
+            collection: self,
+            operation: .Find,
+            query: &query,
+            options: (
+                queryFlags: flags.rawFlag,
+                skip: skip,
+                limit: limit,
+                batchSize: batchSize
+            )
+        )
 
-        var outputDocuments = [MongoDocument]()
+        let documents = try cursor.getDocuments()
 
-        while cursor.nextIsOK {
-            guard let nextDocument = cursor.nextDocument else {
-                throw MongoError.CorruptDocument
-            }
-            outputDocuments.append(nextDocument)
-        }
-        
         if cursor.lastError.isError {
             throw cursor.lastError
         }
 
-        return outputDocuments
+        return documents
     }
     
-    public func findOne(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> MongoDocument? {
-        
-        var query = try MongoBSON(data: query).bson
-        
-        let queryFlags: mongoc_query_flags_t = flags.rawFlag
-        
-        // standard options - should be customizable later on
-        let cursor = self.cursor(operation: .Find, query: &query, options: (queryFlags: queryFlags, skip: skip, limit: skip, batchSize: skip))
-        
-        if cursor.nextIsOK {
-            
-            guard let nextDocument = cursor.nextDocument else {
-                throw MongoError.CorruptDocument
-            }
-            
-            return nextDocument
-        }
-        
-        return nil
-    }
+    public func findOne(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, batchSize: Int = 0) throws -> MongoDocument? {
 
-    public enum UpdateFlags {
-        case None
-        case Upsert
-        case MultiUpdate
+        let doc = try find(query, flags: flags, skip: skip, limit: 1, batchSize: batchSize)
 
-        internal var rawFlag: mongoc_update_flags_t {
-            switch self {
-            case .None: return MONGOC_UPDATE_NONE
-            case .Upsert: return MONGOC_UPDATE_UPSERT
-            case .MultiUpdate: return MONGOC_UPDATE_MULTI_UPDATE
-            }
+        if doc.count == 0 {
+            return nil
+        } else {
+            return doc[0]
         }
     }
 
     public func update(query: DocumentData = DocumentData(), newValue: DocumentData, flags: UpdateFlags = UpdateFlags.None) throws -> Bool {
-
-        let updateFlags: mongoc_update_flags_t = flags.rawFlag
 
         var query = try MongoBSON(data: query).bson
 
         var document = try MongoBSON(data: newValue).bson
 
         var error = bson_error_t()
-        let success = mongoc_collection_update(self.collectionRAW, updateFlags, &query, &document, nil, &error)
+        let success = mongoc_collection_update(self.collectionRaw, flags.rawFlag, &query, &document, nil, &error)
 
         if error.error.isError {
             throw error.error
@@ -150,23 +120,13 @@ public class MongoCollection {
         return success
     }
 
-    public enum RemoveFlags {
-        case None
-        case SingleRemove
-    }
 
     public func remove(query: DocumentData = DocumentData(), flags: RemoveFlags = RemoveFlags.None) throws -> Bool {
-
-        let removeFlags: mongoc_remove_flags_t
-        switch flags {
-        case .None: removeFlags = MONGOC_REMOVE_NONE; break
-        case .SingleRemove: removeFlags = MONGOC_REMOVE_SINGLE_REMOVE; break
-        }
 
         var query = try MongoBSON(data: query).bson
 
         var error = bson_error_t()
-        let success = mongoc_collection_remove(self.collectionRAW, removeFlags, &query, nil, &error)
+        let success = mongoc_collection_remove(self.collectionRaw, flags.rawFlag, &query, nil, &error)
 
         if error.error.isError {
             throw error.error
@@ -182,7 +142,7 @@ public class MongoCollection {
         var reply = bson_t()
         var error = bson_error_t()
         
-        mongoc_collection_command_simple(self.collectionRAW, &command, nil, &reply, &error)
+        mongoc_collection_command_simple(self.collectionRaw, &command, nil, &reply, &error)
 
         if error.error.isError {
             throw error.error
