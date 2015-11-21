@@ -20,7 +20,7 @@ script:
         -scheme SwiftMongoDB-OSX
         -sdk macosx
         clean build test
-        -enableCodeCoverage
+        -enableCodeCoverage YES
         CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
         | xcpretty -c
 after_success:
