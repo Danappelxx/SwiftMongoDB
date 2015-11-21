@@ -38,13 +38,14 @@ public class MongoCursor {
         return try? MongoBSON(bson: bson).data
     }
 
+    /// Advances the cursor to the next document and returns whether it was successful.
     var nextIsOK: Bool {
 
         var bsonPtr = withUnsafePointer(&bson) { $0 }
 
         let isOk = mongoc_cursor_next(cursor, &bsonPtr)
 
-        if isOk != false {
+        if isOk {
             self.bson = bsonPtr.memory
         }
 
