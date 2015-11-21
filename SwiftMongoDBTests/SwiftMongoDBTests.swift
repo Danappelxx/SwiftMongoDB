@@ -44,7 +44,7 @@ class SwiftMongoDBSpec: QuickSpec {
             it("can list the databases") {
                 let databases = client.getDatabaseNames()
                 
-                expect(databases.count > 0).to(beTrue())
+                expect(databases.count).to(beGreaterThan(0))
             }
 
             // disabling to pass tests - known issue
@@ -79,7 +79,7 @@ class SwiftMongoDBSpec: QuickSpec {
 
                     let resultAfter = try! collection.find().count
 
-                    expect(resultAfter - resultBefore == 1).to(beTrue())
+                    expect(resultAfter - resultBefore).to(equal(1))
 
                 }
             }
@@ -99,7 +99,7 @@ class SwiftMongoDBSpec: QuickSpec {
 
                     let resultAfter = try! collection.find(["_id":objId]).count
 
-                    expect(resultAfter - resultBefore == 1).to(beTrue())
+                    expect(resultAfter - resultBefore).to(equal(1))
                 }
                 
                 it("properly applies the limit flag") {
@@ -114,7 +114,7 @@ class SwiftMongoDBSpec: QuickSpec {
 
                     let count = try! collection.find(limit: 3).count
 
-                    expect(count == 3).to(beTrue())
+                    expect(count).to(equal(3))
                 }
             }
             
@@ -157,7 +157,7 @@ class SwiftMongoDBSpec: QuickSpec {
 
                     let countAfter = try! collection.find().count
 
-                    expect(countBefore - countAfter == 1).to(beTrue())
+                    expect(countBefore - countAfter).to(equal(1))
                 }
             }
         }
@@ -176,7 +176,7 @@ class SwiftMongoDBSpec: QuickSpec {
                     let decodedData = try document.data.toJSON().parseJSONDocumentData()!
                     let decodedDataJSON = try decodedData.toJSON()
 
-                    expect(encodedDataJSON == decodedDataJSON).to(beTrue())
+                    expect(encodedDataJSON).to(equal(decodedDataJSON))
                 } catch {
                     print(error)
                     fail()
@@ -194,13 +194,14 @@ class SwiftMongoDBSpec: QuickSpec {
         describe("The MongoDB commands") {
             
             it("performs collection commands correctly") {
-                //                { collStats: "collection" , scale : 1024, verbose: true }
                 
                 let command: DocumentData = [
-                    "collStats" : collection.collectionName,
+                    "ping" : 1,
                 ]
                 
-                try! collection.performBasicCollectionCommand(command)
+                let data = try? collection.performBasicCollectionCommand(command)
+                
+                expect(data).toNot(beNil())
             }
         }
         
@@ -250,11 +251,6 @@ class SwiftMongoDBSpec: QuickSpec {
                     expect(testObject.properties() == documentFromObject.dataWithoutObjectId).to(beTrue())
                 }
             }
-            
-            
-        }
-        
-        describe("The Mongo objects") {
             
             
         }
