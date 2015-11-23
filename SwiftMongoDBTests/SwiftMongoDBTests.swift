@@ -252,7 +252,45 @@ class SwiftMongoDBSpec: QuickSpec {
                 }
             }
             
+        }
+        
+        describe("The sequence function for Swift pointers") {
             
+            it("works with numbers") {
+                
+                var a: Int8 = 1
+                var b: Int8 = 2
+                
+                withUnsafeMutablePointers(&a, &b) { f, s in
+                    
+                    let ptr = UnsafeMutablePointer<UnsafeMutablePointer<Int8>>.alloc(3)
+                    
+                    ptr.advancedBy(0).memory = f
+                    ptr.advancedBy(1).memory = s
+                    ptr.advancedBy(2).memory = nil // null-terminated
+                    
+                    let ints = sequence(ptr)
+                        .map {
+                            Int($0.memory)
+                        }
+                    
+                    expect(ints).to(equal([1, 2]))
+                }
+            }
+            
+            it("works with mongoc strings") {
+                
+
+                let namesRaw = mongoc_client_get_database_names(client.clientRaw, nil)
+                
+                let names = sequence(namesRaw)
+                    .map { (cStr: UnsafeMutablePointer<Int8>) -> String? in
+                        return String(UTF8String: cStr)
+                    }
+                    .flatMap { $0 }
+                
+                expect(names.contains("test")).to(beTrue())
+            }
         }
     }
 }

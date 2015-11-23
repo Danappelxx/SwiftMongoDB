@@ -108,20 +108,13 @@ public class MongoClient {
 
     public func getDatabaseNames() -> [String] {
         var error = bson_error_t()
-        let namesRAW = mongoc_client_get_database_names(self.clientRaw, &error)
+        let namesRaw = mongoc_client_get_database_names(self.clientRaw, &error)
 
-        var names = [String]()
-
-        var i: Int
-        for (i = 0; namesRAW.advancedBy(i).memory != nil; i++) {
-            let nameRawCur = namesRAW.advancedBy(i)
-
-            let currName = NSString(UTF8String: nameRawCur.memory)!
-
-            names.append(currName as String)
-        }
-        
-        namesRAW.dealloc(i)
+        let names = sequence(namesRaw)
+            .map { (cStr: UnsafeMutablePointer<Int8>) -> String? in
+                return String(UTF8String: cStr)
+            }
+            .flatMap { $0 }
 
         return names
     }
@@ -131,25 +124,18 @@ public class MongoClient {
         let database = mongoc_client_get_database(self.clientRaw, database)
         
         var error = bson_error_t()
-        let namesRAW = mongoc_database_get_collection_names(database, &error)
+        let namesRaw = mongoc_database_get_collection_names(database, &error)
         
-        var names = [String]()
-        
-        var i: Int
-        for (i = 0; namesRAW.advancedBy(i).memory != nil; i++) {
-            let nameRawCur = namesRAW.advancedBy(i)
-            
-            let currName = NSString(UTF8String: nameRawCur.memory)!
-            
-            names.append(currName as String)
-        }
-        
-        namesRAW.dealloc(i)
+        let names = sequence(namesRaw)
+            .map { (cStr: UnsafeMutablePointer<Int8>) -> String? in
+                return String(UTF8String: cStr)
+            }
+            .flatMap { $0 }
         
         return names
         
     }
-    
+        
     public func getDefaultDatabaseName() -> String {
         let databaseNameRAW = mongoc_database_get_name(self.clientRaw)
         let databaseName = String(UTF8String: databaseNameRAW)
