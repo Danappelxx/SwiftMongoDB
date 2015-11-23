@@ -18,6 +18,9 @@ $ carthage bootstrap
 
 This gives you a built `SwiftMongoDB.framework` in `Carthage/Build/Mac`. For instructions on how to use it, refer to the [Carthage README](https://github.com/Carthage/Carthage) You can now proceed to read through the tutorial.
 
+# Example
+There is an example application [here](https://github.com/Danappelxx/MongoDBExplorer). It's probably better to read the rest of the README first, though.
+
 # Tutorial
 This example assumes that you have setup the project and have MongoDB running.
 
