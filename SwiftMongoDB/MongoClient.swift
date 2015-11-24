@@ -110,7 +110,7 @@ public class MongoClient {
         var error = bson_error_t()
         let namesRaw = mongoc_client_get_database_names(self.clientRaw, &error)
 
-        let names = sequence(namesRaw)
+        let names = namesRaw.sequence()!
             .map { (cStr: UnsafeMutablePointer<Int8>) -> String? in
                 return String(UTF8String: cStr)
             }
@@ -126,12 +126,12 @@ public class MongoClient {
         var error = bson_error_t()
         let namesRaw = mongoc_database_get_collection_names(database, &error)
         
-        let names = sequence(namesRaw)
+        let names = namesRaw.sequence()!
             .map { (cStr: UnsafeMutablePointer<Int8>) -> String? in
                 return String(UTF8String: cStr)
             }
             .flatMap { $0 }
-        
+
         return names
         
     }

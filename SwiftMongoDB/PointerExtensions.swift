@@ -6,48 +6,49 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-// cannot be generic due to Swift compiler constraints
-class UnsafeMutablePointerGenerator: GeneratorType {
+// TODO: Make this more generic
+struct UnsafeMutablePointerSequence {
 
     typealias Pointer = UnsafeMutablePointer<Element>
     typealias Element = UnsafeMutablePointer<Int8>
-    
-    let pointer: Pointer
-    var index: Int
 
-    var element: Element? {
-        
-        if self.pointer.advancedBy(index).memory == nil {
+    var pointer: Pointer
+}
+
+extension UnsafeMutablePointerSequence: SequenceType {
+    func generate() -> UnsafeMutablePointerSequence {
+        return UnsafeMutablePointerSequence(pointer: pointer)
+    }
+}
+extension UnsafeMutablePointerSequence: GeneratorType {
+    mutating func next() -> Element? {
+        defer { pointer = pointer.advancedBy(1) }
+
+        if pointer.memory == nil {
             return nil
         }
-        
-        return self.pointer.advancedBy(index).memory
-    }
 
-    init(pointer: Pointer) {
-        self.index = 0
-        self.pointer = pointer
-    }
-
-    func next() -> Element? {
-        defer { index++ }
-        return element
+        return pointer.memory
     }
 }
 
-class UnsafeMutablePointerSequence: SequenceType {
+
+protocol UnsafeMutablePointerType {}
+extension UnsafeMutablePointer: UnsafeMutablePointerType {}
 
 
-    let pointer: UnsafeMutablePointerGenerator.Pointer
-    init(pointer: UnsafeMutablePointerGenerator.Pointer) {
-        self.pointer = pointer
+// constrains memory memory to UnsafeMutablePointer
+// ie: UnsafeMutablePointer<UnsafeMutablePointer<T>>
+extension UnsafeMutablePointer where Memory: UnsafeMutablePointerType {
+    func sequence() -> UnsafeMutablePointerSequence? {
+
+        switch memory {
+        case is UnsafeMutablePointer<Int8>:
+            let ptr = UnsafeMutablePointer<UnsafeMutablePointer<Int8>>(self)
+            return UnsafeMutablePointerSequence(pointer: ptr)
+
+        default:
+            return nil
+        }
     }
-
-    func generate() -> UnsafeMutablePointerGenerator {
-        return UnsafeMutablePointerGenerator(pointer: pointer)
-    }
-}
-
-func sequence(pointer: UnsafeMutablePointerGenerator.Pointer) -> UnsafeMutablePointerSequence {
-    return UnsafeMutablePointerSequence(pointer: pointer)
 }

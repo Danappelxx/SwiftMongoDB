@@ -254,7 +254,7 @@ class SwiftMongoDBSpec: QuickSpec {
             
         }
         
-        describe("The sequence function for Swift pointers") {
+        describe("Sequence extension for pointers") {
             
             it("works with numbers") {
                 
@@ -269,7 +269,7 @@ class SwiftMongoDBSpec: QuickSpec {
                     ptr.advancedBy(1).memory = s
                     ptr.advancedBy(2).memory = nil // null-terminated
                     
-                    let ints = sequence(ptr)
+                    let ints = ptr.sequence()!
                         .map {
                             Int($0.memory)
                         }
@@ -280,16 +280,26 @@ class SwiftMongoDBSpec: QuickSpec {
             
             it("works with mongoc strings") {
                 
-
                 let namesRaw = mongoc_client_get_database_names(client.clientRaw, nil)
                 
-                let names = sequence(namesRaw)
+                let names = namesRaw.sequence()!
                     .map { (cStr: UnsafeMutablePointer<Int8>) -> String? in
                         return String(UTF8String: cStr)
                     }
                     .flatMap { $0 }
                 
                 expect(names.contains("test")).to(beTrue())
+            }
+            
+            it("does not work with non-integer types") {
+                var dict = ["hello":"world"]
+
+                withUnsafeMutablePointer(&dict) { dictPtr in
+                    let ptr = UnsafeMutablePointer<UnsafeMutablePointer<[String:String]>>.alloc(1)
+                    ptr.memory = dictPtr
+
+                    expect(ptr.sequence()).to(beNil())
+                }
             }
         }
     }
