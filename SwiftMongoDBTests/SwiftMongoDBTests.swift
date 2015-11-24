@@ -18,9 +18,9 @@ class SwiftMongoDBSpec: QuickSpec {
     override func spec() {
         
         // This suite assumes that the mongodb process is running
-        let client = try! MongoClient(host: "localhost", port: 27017, database: "test")
-        
-        let collection = MongoCollection(collectionName: "test", client: client)
+        let client = try! MongoClient(host: "localhost", port: 27017)
+        let database = MongoDatabase(client: client, name: "test")
+        let collection = MongoCollection(name: "test", database: database)
         
         let document = try! MongoDocument(data: [
             "string" : "string",
@@ -42,25 +42,20 @@ class SwiftMongoDBSpec: QuickSpec {
         describe("The MongoDB client") {
             
             it("can list the databases") {
-                let databases = client.getDatabaseNames()
+                let databases = try! client.getDatabaseNames()
                 
                 expect(databases.count).to(beGreaterThan(0))
             }
-
-            // disabling to pass tests - known issue
-            //it("can properly identify the default database") {
-            //    let defaultDatabase = client.getDefaultDatabaseName()
-            //
-            //    expect(defaultDatabase).toNot(equal(""))
-            //}
+        }
+        
+        describe("The MongoDB database") {
             
             it("can list the collections") {
                 
-                let collections = client.getCollectionNamesInDatabase("test")
+                let collections = try! database.getCollectionNames()
                 
                 expect(collections.contains("test")).to(beTrue())
             }
-            
         }
         
         describe("The MongoDB collection") {

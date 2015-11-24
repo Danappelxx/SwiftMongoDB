@@ -6,8 +6,6 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-import Foundation
-
 /**
 *  A protocol that allows documents to be described in an Object Orientated way.
 */

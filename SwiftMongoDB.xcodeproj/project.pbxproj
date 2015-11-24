@@ -35,6 +35,8 @@
 		37BC6C411BF05B020082AE18 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37BC6C151BF05A500082AE18 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37BC6C421BF05B1C0082AE18 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6C291BF05A640082AE18 /* Quick.framework */; };
 		37BC6C431BF05B1E0082AE18 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37BC6C291BF05A640082AE18 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		37D3C5F81C03E9A4009CC80D /* MongoDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3C5F71C03E9A4009CC80D /* MongoDatabase.swift */; };
+		37D3C5F91C03E9A4009CC80D /* MongoDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3C5F71C03E9A4009CC80D /* MongoDatabase.swift */; };
 		37D8EB541B96A8B700D87177 /* Declarations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D8EB531B96A8B700D87177 /* Declarations.swift */; };
 		37D8EB561B96AB4500D87177 /* MongoWriteConcern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D8EB551B96AB4500D87177 /* MongoWriteConcern.swift */; };
 		37FD38951B86BD3700ADB9BA /* MongoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FD38941B86BD3700ADB9BA /* MongoClient.swift */; };
@@ -279,6 +281,7 @@
 		37BC6BF81BF059CE0082AE18 /* bson.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = bson.xcodeproj; path = "Carthage/Checkouts/libbson-xcode/bson.xcodeproj"; sourceTree = "<group>"; };
 		37BC6C071BF05A500082AE18 /* Nimble.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nimble.xcodeproj; path = Carthage/Checkouts/Nimble/Nimble.xcodeproj; sourceTree = "<group>"; };
 		37BC6C1C1BF05A630082AE18 /* Quick.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Quick.xcodeproj; path = Carthage/Checkouts/Quick/Quick.xcodeproj; sourceTree = "<group>"; };
+		37D3C5F71C03E9A4009CC80D /* MongoDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MongoDatabase.swift; sourceTree = "<group>"; };
 		37D8EB531B96A8B700D87177 /* Declarations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Declarations.swift; sourceTree = "<group>"; };
 		37D8EB551B96AB4500D87177 /* MongoWriteConcern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MongoWriteConcern.swift; sourceTree = "<group>"; };
 		37E98D781C00470D00BD1CDC /* SwiftMongoDB.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SwiftMongoDB.playground; sourceTree = "<group>"; };
@@ -351,6 +354,7 @@
 			children = (
 				375F5F0E1B7E65DF007EA172 /* SwiftMongoDB.h */,
 				37FD38941B86BD3700ADB9BA /* MongoClient.swift */,
+				37D3C5F71C03E9A4009CC80D /* MongoDatabase.swift */,
 				37FD38961B86BD4000ADB9BA /* MongoCollection.swift */,
 				37B383861C0115650036CD62 /* MongoCollectionFlags.swift */,
 				37FD38981B86BD4800ADB9BA /* MongoCursor.swift */,
@@ -737,6 +741,7 @@
 				37D8EB561B96AB4500D87177 /* MongoWriteConcern.swift in Sources */,
 				37FD38A11B86C36A00ADB9BA /* MongoError.swift in Sources */,
 				37B383871C0115650036CD62 /* MongoCollectionFlags.swift in Sources */,
+				37D3C5F81C03E9A4009CC80D /* MongoDatabase.swift in Sources */,
 				37FD38951B86BD3700ADB9BA /* MongoClient.swift in Sources */,
 				3738B3741B917CB500CC9023 /* MongoObject.swift in Sources */,
 				3750D7D51C02D02F00594371 /* PointerExtensions.swift in Sources */,
@@ -763,6 +768,7 @@
 				3731D3DE1BEC3FC400D2988C /* MongoCollection.swift in Sources */,
 				3731D3E31BEC3FC400D2988C /* MongoBSON.swift in Sources */,
 				37B383881C0115650036CD62 /* MongoCollectionFlags.swift in Sources */,
+				37D3C5F91C03E9A4009CC80D /* MongoDatabase.swift in Sources */,
 				3731D3E41BEC3FC400D2988C /* MongoError.swift in Sources */,
 				3731D3E11BEC3FC400D2988C /* MongoWriteConcern.swift in Sources */,
 				3750D7D61C02D02F00594371 /* PointerExtensions.swift in Sources */,

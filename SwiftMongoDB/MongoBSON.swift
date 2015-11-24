@@ -10,7 +10,7 @@ import bson
 
 class MongoBSON {
     
-    var _bson: bson_t
+    private var _bson: bson_t
     let json: String
     let data: DocumentData
     var bson: bson_t {
@@ -94,9 +94,7 @@ class MongoBSON {
         var error = bson_error_t()
         let bson = bson_new_from_json(json, json.nulTerminatedUTF8.count, &error)
 
-        if error.error.isError {
-            throw error.error
-        }
+        try error.throwIfError()
 
         return bson.memory
     }

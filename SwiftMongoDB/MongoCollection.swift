@@ -10,21 +10,23 @@ import mongoc
 
 public class MongoCollection {
 
-    public let client: MongoClient
-    public let collectionName: String
+    public let name: String
+    public let databaseName: String
 
-    let clientRaw: _mongoc_client
     let collectionRaw: _mongoc_collection
 
-    public init(collectionName: String, client: MongoClient) {
+    convenience public init(name: String, database: MongoDatabase) {
 
-        self.client = client
-        self.clientRaw = client.clientRaw
-
-        self.collectionName = collectionName
-
-        self.collectionRaw = mongoc_client_get_collection(self.clientRaw, self.client.databaseName, self.collectionName)
+        let ptr = mongoc_database_get_collection(database.databaseRaw, name)
+        self.init(name: name, databaseName: database.name, ptr: ptr)
     }
+    
+    init(name: String, databaseName: String, ptr: _mongoc_collection) {
+        self.name = name
+        self.databaseName = databaseName
+        self.collectionRaw = ptr
+    }
+    
 
     deinit {
         mongoc_collection_destroy(self.collectionRaw)
@@ -49,9 +51,7 @@ public class MongoCollection {
 
         mongoc_collection_insert(self.collectionRaw, insertFlags, &bson, nil, &bsonError)
         
-        if bsonError.error.isError {
-            throw bsonError.error
-        }
+        try bsonError.throwIfError()
     }
     
     public func insert(document: DocumentData, flags: InsertFlags = InsertFlags.None) throws {
@@ -61,10 +61,9 @@ public class MongoCollection {
     
     public func renameCollectionTo(newName : String) throws{
         var bsonError = bson_error_t()
-        mongoc_collection_rename(self.collectionRaw, client.databaseName, newName, false, &bsonError)
-        if bsonError.error.isError {
-            throw bsonError.error
-        }
+        mongoc_collection_rename(self.collectionRaw, databaseName, newName, false, &bsonError)
+        
+        try bsonError.throwIfError()
     }
     
     public func find(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
@@ -113,9 +112,7 @@ public class MongoCollection {
         var error = bson_error_t()
         let success = mongoc_collection_update(self.collectionRaw, flags.rawFlag, &query, &document, nil, &error)
 
-        if error.error.isError {
-            throw error.error
-        }
+        try error.throwIfError()
 
         return success
     }
@@ -128,9 +125,7 @@ public class MongoCollection {
         var error = bson_error_t()
         let success = mongoc_collection_remove(self.collectionRaw, flags.rawFlag, &query, nil, &error)
 
-        if error.error.isError {
-            throw error.error
-        }
+        try error.throwIfError()
 
         return success
     }
@@ -144,9 +139,7 @@ public class MongoCollection {
         
         mongoc_collection_command_simple(self.collectionRaw, &command, nil, &reply, &error)
 
-        if error.error.isError {
-            throw error.error
-        }
+        try error.throwIfError()
 
         return try MongoBSON(bson: reply).data
 //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)

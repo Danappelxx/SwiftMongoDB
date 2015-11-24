@@ -6,7 +6,6 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-import Foundation
 import mongoc
 
 public class MongoCursor {
@@ -18,6 +17,10 @@ public class MongoCursor {
     }
 
     let cursor: _mongoc_cursor
+    
+    init(cursor: _mongoc_cursor) {
+        self.cursor = cursor
+    }
     
     // this is way too ugly
     init(collection: MongoCollection, operation: MongoCursorOperation, query: _bson_ptr_mutable, options: MongoCursorOptions) {

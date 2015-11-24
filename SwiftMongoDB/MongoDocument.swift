@@ -76,11 +76,11 @@ public class MongoDocument {
 
         bson_oid_to_string(&oidRAW, oidStrRAW)
         
-        let oidStr = NSString(UTF8String: oidStrRAW)
+        let oidStr = String(UTF8String: oidStrRAW)
         
         oidStrRAW.destroy()
 
-        return oidStr as! String
+        return oidStr!
     }
     
     deinit {
@@ -88,6 +88,7 @@ public class MongoDocument {
     }
 }
 
+import Foundation
 public func == (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
     
     return (lhs.data as! [String : NSObject]) == (rhs.data as! [String : NSObject])

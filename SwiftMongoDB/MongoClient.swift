@@ -6,30 +6,18 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-import Foundation
 import mongoc
 
 public class MongoClient {
 
     public let clientURI: String
-    public var databaseName: String {
-        return self.databaseNameInternal
-    }
-    private var databaseNameInternal = String()
-    
-    private var databaseRaw: _mongoc_database {
-        return mongoc_client_get_database(self.clientRaw, self.databaseName)
-    }
-
 
     public let port: Int
     public let host: String
 
     let clientRaw: _mongoc_client
 
-
-
-    public init(host: String, port: Int, database: String? = nil) throws {
+    public init(host: String, port: Int) throws {
 
         self.clientURI = "mongodb://\(host):\(port)"
 
@@ -39,12 +27,6 @@ public class MongoClient {
         mongoc_init()
 
         self.clientRaw = mongoc_client_new(self.clientURI)
-        
-        if database == nil {
-            self.databaseNameInternal = self.getDefaultDatabaseName()
-        } else {
-            self.databaseNameInternal = database!
-        }
         
         try checkConnection()
     }
@@ -62,14 +44,13 @@ public class MongoClient {
     
     // authenticated connection - required specific database and specific database for authentication
     public init(host: String, port: Int, database: String, authenticationDatabase: String, usernameAndPassword: (username: String, password: String)) throws {
-    
+        
         let userAndPass = "\(usernameAndPassword.username):\(usernameAndPassword.password)@"
         
         self.clientURI = "mongodb://\(userAndPass)\(host):\(port)/\(database)?authSource=\(authenticationDatabase)"
         
         self.host = host
         self.port = port
-        self.databaseNameInternal = database
         
         mongoc_init()
         
@@ -84,32 +65,20 @@ public class MongoClient {
      - throws: Any errors it encounters while connecting to the database.
      */
     public func checkConnection() throws {
-
-        var command = try MongoBSON(data: ["ping" : 1]).bson
-
-        var error = bson_error_t()
-
-        mongoc_database_command_simple(self.databaseRaw, &command, nil, nil, &error)
-
-        if error.error.isError {
-            throw error.error
-        }
+        try performBasicClientCommand(["ping":1], databaseName: "local")
     }
-    
-    public func setDatabaseName(name: String) {
-        self.databaseNameInternal = name
-    }
-    
+
     deinit {
         mongoc_client_destroy(self.clientRaw)
         mongoc_cleanup()
     }
 
 
-    public func getDatabaseNames() -> [String] {
+    public func getDatabaseNames() throws -> [String] {
         var error = bson_error_t()
         let namesRaw = mongoc_client_get_database_names(self.clientRaw, &error)
 
+        try error.throwIfError()
         let names = namesRaw.sequence()!
             .map { (cStr: UnsafeMutablePointer<Int8>) -> String? in
                 return String(UTF8String: cStr)
@@ -119,69 +88,52 @@ public class MongoClient {
         return names
     }
     
-    public func getCollectionNamesInDatabase(database: String) -> [String] {
-        
-        let database = mongoc_client_get_database(self.clientRaw, database)
-        
-        var error = bson_error_t()
-        let namesRaw = mongoc_database_get_collection_names(database, &error)
-        
-        let names = namesRaw.sequence()!
-            .map { (cStr: UnsafeMutablePointer<Int8>) -> String? in
-                return String(UTF8String: cStr)
-            }
-            .flatMap { $0 }
-
-        return names
-        
-    }
-        
-    public func getDefaultDatabaseName() -> String {
-        let databaseNameRAW = mongoc_database_get_name(self.clientRaw)
-        let databaseName = String(UTF8String: databaseNameRAW)
-
-        return databaseName!
-    }
-    
-    public func performBasicClientCommand(command: DocumentData) throws -> DocumentData {
+    public func performBasicClientCommand(command: DocumentData, databaseName: String) throws -> DocumentData {
 
         var command = try MongoBSON(data: command).bson
 
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_client_command_simple(self.clientRaw, self.databaseNameInternal, &command, nil, &reply, &error)
+        mongoc_client_command_simple(self.clientRaw, databaseName, &command, nil, &reply, &error)
 
-        if error.error.isError {
-            throw error.error
-        }
+        try error.throwIfError()
 
         return try MongoBSON(bson: reply).data
-        //        mongoc_client_command_simple(client: COpaquePointer, db_name: UnsafePointer<Int8>, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
-    }
-    
-    public func performBasicClientCommand(json : String) throws -> DocumentData {
-        return try performBasicClientCommand(try json.parseJSONDocumentData()!)
-    }
-    
-    public func performBasicDatabaseCommand(command: DocumentData) throws -> DocumentData {
-
-        var command = try MongoBSON(data: command).bson
-
-        var reply = bson_t()
-        var error = bson_error_t()
-
-        mongoc_database_command_simple(self.databaseRaw, &command, nil, &reply, &error)
-
-        if error.error.isError {
-            throw error.error
-        }
-
-        return try MongoBSON(bson: reply).data
-        //        mongoc_collection_command_simple(collection: COpaquePointer, command: UnsafePointer<bson_t>, read_prefs: COpaquePointer, reply: UnsafeMutablePointer<bson_t>, error: UnsafeMutablePointer<bson_error_t>)
-    }
-    
-    public func performBasicDatabaseCommand(json : String) throws -> DocumentData {
-        return try performBasicDatabaseCommand(try json.parseJSONDocumentData()!)
     }
 }
+
+
+// todo:
+
+//mongoc_cursor_t               *mongoc_client_command              (mongoc_client_t              *client,
+//    const char                   *db_name,
+//    mongoc_query_flags_t          flags,
+//    uint32_t                      skip,
+//    uint32_t                      limit,
+//    uint32_t                      batch_size,
+//    const bson_t                 *query,
+//    const bson_t                 *fields,
+//    const mongoc_read_prefs_t    *read_prefs);
+//mongoc_gridfs_t               *mongoc_client_get_gridfs           (mongoc_client_t              *client,
+//    const char                   *db,
+//    const char                   *prefix,
+//    bson_error_t                 *error);
+//mongoc_cursor_t               *mongoc_client_find_databases       (mongoc_client_t              *client,
+//    bson_error_t                 *error);
+//bool                           mongoc_client_get_server_status    (mongoc_client_t              *client,
+//    mongoc_read_prefs_t          *read_prefs,
+//    bson_t                       *reply,
+//    bson_error_t                 *error);
+//int32_t                        mongoc_client_get_max_message_size (mongoc_client_t              *client) BSON_GNUC_DEPRECATED;
+//int32_t                        mongoc_client_get_max_bson_size    (mongoc_client_t              *client) BSON_GNUC_DEPRECATED;
+//const mongoc_write_concern_t  *mongoc_client_get_write_concern    (const mongoc_client_t        *client);
+//void                           mongoc_client_set_write_concern    (mongoc_client_t              *client,
+//    const mongoc_write_concern_t *write_concern);
+//const mongoc_read_prefs_t     *mongoc_client_get_read_prefs       (const mongoc_client_t        *client);
+//void                           mongoc_client_set_read_prefs       (mongoc_client_t              *client,
+//    const mongoc_read_prefs_t    *read_prefs);
+//#ifdef MONGOC_ENABLE_SSL
+//void                           mongoc_client_set_ssl_opts         (mongoc_client_t              *client,
+//const mongoc_ssl_opt_t       *opts);
+//#endif

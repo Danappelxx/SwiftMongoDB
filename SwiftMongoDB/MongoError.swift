@@ -6,7 +6,6 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-import Foundation
 import bson
 
 public struct MongoError: ErrorType, CustomStringConvertible {
@@ -54,6 +53,12 @@ public struct MongoError: ErrorType, CustomStringConvertible {
 public extension bson_error_t {
     var error: MongoError {
         return MongoError(error: self)
+    }
+    
+    func throwIfError() throws {
+        if self.error.isError {
+            throw self.error
+        }
     }
 }
 
