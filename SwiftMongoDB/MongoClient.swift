@@ -101,39 +101,57 @@ public class MongoClient {
 
         return try MongoBSON(bson: reply).data
     }
+
+    public func performClientCommand(query: DocumentData, database: MongoDatabase, fields: [String], flags: QueryFlags, options: QueryOptions) throws -> MongoCursor {
+
+        var query = try MongoBSON(data: query).bson
+        var fields = try MongoBSON(json: fields.toJSON()).bson
+
+        let cursor = mongoc_client_command(clientRaw, database.name, flags.rawFlag, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, &query, &fields, nil)
+
+        return MongoCursor(cursor: cursor)
+    }
+
+    public func getDatabasesCursor() throws -> MongoCursor {
+
+        var error = bson_error_t()
+
+        let cursor = mongoc_client_find_databases(clientRaw, &error)
+
+        try error.throwIfError()
+
+        return MongoCursor(cursor: cursor)
+    }
+
+    public func getServerStatus() throws -> DocumentData {
+
+        var reply = bson_t()
+        var error = bson_error_t()
+
+        mongoc_client_get_server_status(clientRaw, nil, &reply, &error)
+
+        try error.throwIfError()
+
+        return try MongoBSON(bson: reply).data
+    }
+    
+    //    public func getReadPrefs() throws /* -> _mongoc_read_prefs */ {
+    //
+    //    }
+    //
+    //    public func setReadPrefs(/*readPrefs: _mongoc_read_prefs*/) throws {
+    //
+    //    }
+    //
+    //    public func getWriteConcern() throws /* _mongoc_write_concern */ {
+    //
+    //    }
+    //
+    //    public func setWriteConcern(/*writeConcern: _mongoc_write_concern*/) throws {
+    //        
+    //    }
 }
 
 
 // todo:
-
-//mongoc_cursor_t               *mongoc_client_command              (mongoc_client_t              *client,
-//    const char                   *db_name,
-//    mongoc_query_flags_t          flags,
-//    uint32_t                      skip,
-//    uint32_t                      limit,
-//    uint32_t                      batch_size,
-//    const bson_t                 *query,
-//    const bson_t                 *fields,
-//    const mongoc_read_prefs_t    *read_prefs);
-//mongoc_gridfs_t               *mongoc_client_get_gridfs           (mongoc_client_t              *client,
-//    const char                   *db,
-//    const char                   *prefix,
-//    bson_error_t                 *error);
-//mongoc_cursor_t               *mongoc_client_find_databases       (mongoc_client_t              *client,
-//    bson_error_t                 *error);
-//bool                           mongoc_client_get_server_status    (mongoc_client_t              *client,
-//    mongoc_read_prefs_t          *read_prefs,
-//    bson_t                       *reply,
-//    bson_error_t                 *error);
-//int32_t                        mongoc_client_get_max_message_size (mongoc_client_t              *client) BSON_GNUC_DEPRECATED;
-//int32_t                        mongoc_client_get_max_bson_size    (mongoc_client_t              *client) BSON_GNUC_DEPRECATED;
-//const mongoc_write_concern_t  *mongoc_client_get_write_concern    (const mongoc_client_t        *client);
-//void                           mongoc_client_set_write_concern    (mongoc_client_t              *client,
-//    const mongoc_write_concern_t *write_concern);
-//const mongoc_read_prefs_t     *mongoc_client_get_read_prefs       (const mongoc_client_t        *client);
-//void                           mongoc_client_set_read_prefs       (mongoc_client_t              *client,
-//    const mongoc_read_prefs_t    *read_prefs);
-//#ifdef MONGOC_ENABLE_SSL
-//void                           mongoc_client_set_ssl_opts         (mongoc_client_t              *client,
-//const mongoc_ssl_opt_t       *opts);
-//#endif
+// void mongoc_client_set_ssl_opts  (mongoc_client_t *client, const mongoc_ssl_opt_t *opts);
