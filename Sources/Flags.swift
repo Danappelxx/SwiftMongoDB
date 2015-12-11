@@ -6,7 +6,7 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-import mongoc
+import CMongoC
 
 public typealias QueryOptions = (skip: Int, limit: Int, batchSize: Int)
 
@@ -19,10 +19,10 @@ public enum QueryFlags {
     case AwaitData
     case Exhaust
     case Partial
-    
+
     internal var rawFlag: mongoc_query_flags_t {
         switch self {
-            
+
         case .None: return MONGOC_QUERY_NONE
         case .TailableCursor: return MONGOC_QUERY_TAILABLE_CURSOR
         case .SlaveOK: return MONGOC_QUERY_SLAVE_OK
@@ -31,7 +31,7 @@ public enum QueryFlags {
         case .AwaitData: return MONGOC_QUERY_AWAIT_DATA
         case .Exhaust: return MONGOC_QUERY_EXHAUST
         case .Partial: return MONGOC_QUERY_PARTIAL
-            
+
         }
     }
 }
@@ -40,7 +40,7 @@ public enum QueryFlags {
 public enum InsertFlags {
     case None
     case ContinueOnError
-    
+
     internal var rawFlag: mongoc_insert_flags_t {
         switch self {
         case .None: return MONGOC_INSERT_NONE
@@ -53,7 +53,7 @@ public enum UpdateFlags {
     case None
     case Upsert
     case MultiUpdate
-    
+
     internal var rawFlag: mongoc_update_flags_t {
         switch self {
         case .None: return MONGOC_UPDATE_NONE
@@ -66,7 +66,7 @@ public enum UpdateFlags {
 public enum RemoveFlags {
     case None
     case SingleRemove
-    
+
     internal var rawFlag: mongoc_remove_flags_t {
         switch self {
         case .None: return MONGOC_REMOVE_NONE

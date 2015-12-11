@@ -6,7 +6,7 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-import mongoc
+import CMongoC
 
 public class MongoCursor {
 
@@ -17,14 +17,14 @@ public class MongoCursor {
     }
 
     let cursor: _mongoc_cursor
-    
+
     init(cursor: _mongoc_cursor) {
         self.cursor = cursor
     }
-    
+
     // this is way too ugly
     init(collection: MongoCollection, operation: MongoCursorOperation, query: _bson_ptr_mutable, options: MongoCursorOptions) {
-        
+
         switch operation {
 
         case .Find:
@@ -54,7 +54,7 @@ public class MongoCursor {
     var nextJson: String? {
         return try? MongoBSON.bsonToJson(nextBson)
     }
-    
+
     var nextData: DocumentData? {
         return try? MongoBSON(bson: nextBson).data
     }
@@ -78,7 +78,7 @@ public class MongoCursor {
         mongoc_cursor_error(self.cursor, &error)
         return error.error
     }
-    
+
     func getDocumentsJson() throws -> [String] {
 
         var documents = [String]()
@@ -90,10 +90,10 @@ public class MongoCursor {
 
             documents.append(nextJson)
         }
-        
+
         return documents
     }
-    
+
     func getDocumentsData() throws -> [DocumentData] {
 
         let documentsOptional = try getDocumentsJson()
@@ -109,7 +109,7 @@ public class MongoCursor {
 
         return documents
     }
-    
+
     func getDocuments() throws -> [MongoDocument] {
 
         let documents = try getDocumentsData()

@@ -6,10 +6,10 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-import bson
+import CMongoC
 
 class MongoBSON {
-    
+
     private var _bson: bson_t
     let json: String
     let data: DocumentData
@@ -68,7 +68,7 @@ class MongoBSON {
             self._bson = bson_t()
             throw error
         }
-        
+
         do {
             self._bson = try MongoBSON.jsonToBson(json)
         } catch {
@@ -98,7 +98,7 @@ class MongoBSON {
 
         return bson.memory
     }
-    
+
     func copyTo(out: _bson_ptr_mutable) {
         var bson = self.bson
         bson_copy_to(&bson, out)

@@ -6,7 +6,7 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-import mongoc
+import CMongoC
 
 public class MongoClient {
 
@@ -27,10 +27,10 @@ public class MongoClient {
         mongoc_init()
 
         self.clientRaw = mongoc_client_new(self.clientURI)
-        
+
         try checkConnection()
     }
-    
+
     // authenticated connection - required specific database
     public convenience init(host: String, port: Int, database: String, usernameAndPassword: (username: String, password: String)) throws {
         try self.init(
@@ -41,21 +41,21 @@ public class MongoClient {
             usernameAndPassword: usernameAndPassword
         )
     }
-    
+
     // authenticated connection - required specific database and specific database for authentication
     public init(host: String, port: Int, database: String, authenticationDatabase: String, usernameAndPassword: (username: String, password: String)) throws {
-        
+
         let userAndPass = "\(usernameAndPassword.username):\(usernameAndPassword.password)@"
-        
+
         self.clientURI = "mongodb://\(userAndPass)\(host):\(port)/\(database)?authSource=\(authenticationDatabase)"
-        
+
         self.host = host
         self.port = port
-        
+
         mongoc_init()
-        
+
         self.clientRaw = mongoc_client_new(self.clientURI)
-        
+
         try checkConnection()
     }
 
@@ -87,7 +87,7 @@ public class MongoClient {
 
         return names
     }
-    
+
     public func performBasicClientCommand(command: DocumentData, databaseName: String) throws -> DocumentData {
 
         var command = try MongoBSON(data: command).bson
@@ -134,7 +134,7 @@ public class MongoClient {
 
         return try MongoBSON(bson: reply).data
     }
-    
+
     //    public func getReadPrefs() throws /* -> _mongoc_read_prefs */ {
     //
     //    }
@@ -148,7 +148,7 @@ public class MongoClient {
     //    }
     //
     //    public func setWriteConcern(/*writeConcern: _mongoc_write_concern*/) throws {
-    //        
+    //
     //    }
 }
 
