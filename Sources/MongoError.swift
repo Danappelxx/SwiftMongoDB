@@ -12,7 +12,7 @@ public struct MongoError: ErrorType, CustomStringConvertible {
 
     public let description: String
     public let code: Int
-    public var domain: Int // default is 10101 for SwiftMongoDB
+    public let domain: Int // default is 10101 for SwiftMongoDB
 
     public var isError: Bool {
         return self.code != 0
@@ -20,7 +20,12 @@ public struct MongoError: ErrorType, CustomStringConvertible {
 
 
     public init(description: String, code: Int, domain: Int = 10101) {
+        #if os(Linux)
+        self.description = ""
+        print(description)
+        #else
         self.description = description
+        #endif
         self.code = code
         self.domain = domain
     }
@@ -28,7 +33,11 @@ public struct MongoError: ErrorType, CustomStringConvertible {
     init(error: bson_error_t) {
 
         var messageRAW = error.message
-        let message = mongocErrorMessageToString(&messageRAW)
+        var message = mongocErrorMessageToString(&messageRAW)
+        #if os(Linux)
+        print(message)
+        message = ""
+        #endif
 
         let code = Int(error.code)
         let domain = Int(error.domain)
