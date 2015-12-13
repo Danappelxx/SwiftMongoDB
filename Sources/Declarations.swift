@@ -31,31 +31,16 @@ extension Int {
     }
 }
 
-import Foundation
+import SwiftFoundation
 extension String {
 
     func parseJSON() throws -> AnyObject {
-        let data = self.dataUsingEncoding(NSUTF8StringEncoding)!
-        let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: [])
-
-        return decoded
+    
+        let jsonValue = try JSON.Value(string: self)
+        return jsonValue as! AnyObject
     }
 
     func parseJSONDocumentData() throws -> DocumentData? {
         return try parseJSON() as? DocumentData
-    }
-}
-
-extension Dictionary where Key: StringLiteralConvertible {
-    func toJSON() throws -> String {
-        let data = try NSJSONSerialization.dataWithJSONObject(self as! AnyObject, options: .PrettyPrinted)
-        return String(data: data, encoding: NSUTF8StringEncoding)!
-    }
-}
-
-extension Array {
-    func toJSON() throws -> String {
-        let data = try NSJSONSerialization.dataWithJSONObject(self as! AnyObject, options: .PrettyPrinted)
-        return String(data: data, encoding: NSUTF8StringEncoding)!
     }
 }

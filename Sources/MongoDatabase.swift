@@ -47,7 +47,7 @@ public class MongoDatabase {
 
         var error = bson_error_t()
 
-        var rolesRaw = try MongoBSON(json: roles.toJSON()).bson
+        var rolesRaw = try MongoBSON(json: roles.toJSON().toString()).bson
         var customDataRaw = try MongoBSON(data: customData).bson
 
         let successful = mongoc_database_add_user(databaseRaw, username, password, &rolesRaw, &customDataRaw, &error)
@@ -60,7 +60,7 @@ public class MongoDatabase {
     public func command(command: DocumentData, flags: QueryFlags = .None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0, fields: [String] = []) throws -> MongoCursor {
 
         var commandRaw = try MongoBSON(data: command).bson
-        var fieldsRaw = try MongoBSON(json: fields.toJSON()).bson
+        var fieldsRaw = try MongoBSON(json: fields.toJSON().toString()).bson
 
         let cursorRaw = mongoc_database_command(databaseRaw, flags.rawFlag, skip.UInt32Value, limit.UInt32Value, batchSize.UInt32Value, &commandRaw, &fieldsRaw, nil)
 

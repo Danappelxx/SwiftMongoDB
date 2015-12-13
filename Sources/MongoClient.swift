@@ -105,7 +105,7 @@ public class MongoClient {
     public func performClientCommand(query: DocumentData, database: MongoDatabase, fields: [String], flags: QueryFlags, options: QueryOptions) throws -> MongoCursor {
 
         var query = try MongoBSON(data: query).bson
-        var fields = try MongoBSON(json: fields.toJSON()).bson
+        var fields = try MongoBSON(json: fields.toJSON().toString()).bson
 
         let cursor = mongoc_client_command(clientRaw, database.name, flags.rawFlag, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, &query, &fields, nil)
 

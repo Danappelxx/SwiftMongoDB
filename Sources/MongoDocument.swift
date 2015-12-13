@@ -7,13 +7,20 @@
 //
 
 import CMongoC
+import SwiftFoundation
 
 public class MongoDocument {
 
     let bson: bson_t
 
     public var JSON: String? {
-        return try? data.toJSON()
+        var jsonObject = SwiftFoundation.JSON.Object()
+        for (key, value) in data {
+            let jsonValue = (value as! JSONEncodable).toJSON()
+            jsonObject[key] = jsonValue
+        }
+
+        return try? SwiftFoundation.JSON.Value.Object(jsonObject).toString()
     }
 
     public var dataWithoutObjectId: DocumentData {

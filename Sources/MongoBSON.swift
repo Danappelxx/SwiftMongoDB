@@ -7,6 +7,7 @@
 //
 
 import CMongoC
+import SwiftFoundation
 
 class MongoBSON {
 
@@ -62,7 +63,14 @@ class MongoBSON {
         self.data = data
 
         do {
-            self.json = try data.toJSON()
+            var jsonObject = JSON.Object()
+            for (key, value) in data {
+                let jsonValue = (value as! JSONEncodable).toJSON()
+                jsonObject[key] = jsonValue
+            }
+            
+            self.json = try JSON.Value.Object(jsonObject).toString()
+            
         } catch {
             self.json = ""
             self._bson = bson_t()
