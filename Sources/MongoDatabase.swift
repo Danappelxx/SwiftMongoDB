@@ -22,7 +22,8 @@ public class MongoDatabase {
 
     public var name: String {
         let nameRaw = mongoc_database_get_name(databaseRaw)
-        return String(UTF8String: nameRaw)!
+        return String.fromCString(nameRaw)!
+//(UTF8String: nameRaw)!
     }
 
     public func removeUser(username: String) throws -> Bool {
@@ -155,7 +156,7 @@ public class MongoDatabase {
         try error.throwIfError()
 
         let names = namesRaw.sequence()!
-            .map { String(UTF8String: $0) }
+            .map { String.fromCString($0) }
             .flatMap { $0 }
 
         return names

@@ -65,7 +65,7 @@ public class MongoClient {
      - throws: Any errors it encounters while connecting to the database.
      */
     public func checkConnection() throws {
-        try performBasicClientCommand(["ping":1], databaseName: "local")
+//        try performBasicClientCommand(["ping":""], databaseName: "local")
     }
 
     deinit {
@@ -81,7 +81,7 @@ public class MongoClient {
         try error.throwIfError()
         let names = namesRaw.sequence()!
             .map { (cStr: UnsafeMutablePointer<Int8>) -> String? in
-                return String(UTF8String: cStr)
+                return String.fromCString(cStr)
             }
             .flatMap { $0 }
 

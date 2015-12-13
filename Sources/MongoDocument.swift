@@ -34,7 +34,8 @@ public class MongoDocument {
     }
 
     public var id: String? {
-        return self.data["_id"]?["$oid"] as? String
+        return nil
+//        return self.data["_id"]?["$oid"] as? String
     }
 
     private let documentData: DocumentData
@@ -83,7 +84,8 @@ public class MongoDocument {
 
         bson_oid_to_string(&oidRAW, oidStrRAW)
 
-        let oidStr = String(UTF8String: oidStrRAW)
+        let oidStr = String.fromCString(oidStrRAW)
+        //let oidStr = String.fromCString(UTF8String: oidStrRAW)
 
         oidStrRAW.destroy()
 
@@ -95,6 +97,7 @@ public class MongoDocument {
     }
 }
 
+/*
 import Foundation
 public func == (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
 
@@ -135,3 +138,4 @@ public func == (lhs: DocumentData, rhs: DocumentData) -> Bool {
 
     return true
 }
+*/

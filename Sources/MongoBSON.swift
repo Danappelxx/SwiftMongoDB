@@ -94,7 +94,7 @@ class MongoBSON {
             throw MongoError.CorruptDocument
         }
 
-        return String(UTF8String: jsonRaw)!
+        return String.fromCString(jsonRaw)!
     }
 
     static func jsonToBson(json: String) throws -> bson_t {
