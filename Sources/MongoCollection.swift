@@ -6,7 +6,11 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
+#if os(Linux)
 import CMongoC
+#else
+import mongoc
+#endif
 
 public class MongoCollection {
 

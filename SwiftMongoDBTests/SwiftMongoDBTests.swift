@@ -11,6 +11,7 @@ import Quick
 import Nimble
 import bson
 import mongoc
+import SwiftFoundation
 @testable import SwiftMongoDB
 
 class SwiftMongoDBSpec: QuickSpec {
@@ -166,10 +167,9 @@ class SwiftMongoDBSpec: QuickSpec {
                 
                 do {
                     let encodedData = try MongoBSON(bson: encodedDataRaw).data
-                    let encodedDataJSON = try encodedData.toJSON()
+                    let encodedDataJSON = try documentDataToJSON(encodedData)
 
-                    let decodedData = try document.data.toJSON().parseJSONDocumentData()!
-                    let decodedDataJSON = try decodedData.toJSON()
+                    let decodedDataJSON = try documentDataToJSON(document.data)
 
                     expect(encodedDataJSON).to(equal(decodedDataJSON))
                 } catch {
@@ -216,7 +216,7 @@ class SwiftMongoDBSpec: QuickSpec {
                 
                 it("works with JSON") {
 
-                    let docBefore = try! MongoDocument(JSON: try! document.data.toJSON())
+                    let docBefore = try! MongoDocument(JSON: try! documentDataToJSON(document.data))
                     let docBeforeJson = docBefore.JSON!
 
                     let docRaw = try! MongoBSON(json: docBeforeJson).bson
@@ -298,4 +298,56 @@ class SwiftMongoDBSpec: QuickSpec {
             }
         }
     }
+}
+
+// For MongoDocuments to be properly testable
+public func == (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
+    
+    return (lhs.data as! [String : NSObject]) == (rhs.data as! [String : NSObject])
+}
+
+public func != (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
+    return !(lhs == rhs)
+}
+
+public func != (lhs: DocumentData, rhs: DocumentData) -> Bool {
+    return !(lhs == rhs)
+}
+
+public func == (lhs: DocumentData, rhs: DocumentData) -> Bool {
+    
+    // if they're of different sizes
+    if lhs.count != rhs.count {
+        return false
+    }
+    
+    
+    // only need to check from one side because they're the same size - if something doesn't match then they aren't equal.
+    // check that rhs contains all of lhs
+    for (lhkey, lhvalue) in lhs {
+        
+        let lhval = lhvalue as! NSObject
+        
+        // casting into nsobject
+        if let rhval = rhs[lhkey] as? NSObject {
+            
+            // if they're not the same, return false
+            if rhval != lhval {
+                return false
+            }
+        }
+    }
+    
+    return true
+}
+
+
+func documentDataToJSON(data: DocumentData) throws -> String {
+    var jsonObject = JSON.Object()
+    for (key, value) in data {
+        let jsonValue = (value as! JSONEncodable).toJSON()
+        jsonObject[key] = jsonValue
+    }
+    
+    return try JSON.Value.Object(jsonObject).toString()
 }

@@ -10,3 +10,6 @@
 [submodule "Carthage/Checkouts/libmongoc-xcode"]
 	path = Carthage/Checkouts/libmongoc-xcode
 	url = https://github.com/Danappelxx/libmongoc-xcode.git
+[submodule "Carthage/Checkouts/SwiftFoundation"]
+	path = Carthage/Checkouts/SwiftFoundation
+	url = https://github.com/PureSwift/SwiftFoundation.git

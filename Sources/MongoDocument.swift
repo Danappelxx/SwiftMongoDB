@@ -6,7 +6,12 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
+#if os(Linux)
 import CMongoC
+#else
+import mongoc
+#endif
+
 import SwiftFoundation
 
 public class MongoDocument {
@@ -14,13 +19,9 @@ public class MongoDocument {
     let bson: bson_t
 
     public var JSON: String? {
-        var jsonObject = SwiftFoundation.JSON.Object()
-        for (key, value) in data {
-            let jsonValue = (value as! JSONEncodable).toJSON()
-            jsonObject[key] = jsonValue
-        }
-
-        return try? SwiftFoundation.JSON.Value.Object(jsonObject).toString()
+        
+        guard let json = anyObjectToJSON(data) else { return nil }
+        return try? json.toString()
     }
 
     public var dataWithoutObjectId: DocumentData {

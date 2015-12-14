@@ -15,12 +15,7 @@ struct UnsafeMutablePointerSequence {
     var pointer: Pointer
 }
 
-extension UnsafeMutablePointerSequence: SequenceType {
-    func generate() -> UnsafeMutablePointerSequence {
-        return UnsafeMutablePointerSequence(pointer: pointer)
-    }
-}
-extension UnsafeMutablePointerSequence: GeneratorType {
+extension UnsafeMutablePointerSequence: GeneratorType, SequenceType {
     mutating func next() -> Element? {
         defer { pointer = pointer.advancedBy(1) }
 

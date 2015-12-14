@@ -6,7 +6,12 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
+#if os(Linux)
 import CMongoC
+#else
+import mongoc
+#endif
+
 import SwiftFoundation
 
 class MongoBSON {
@@ -63,13 +68,11 @@ class MongoBSON {
         self.data = data
 
         do {
-            var jsonObject = JSON.Object()
-            for (key, value) in data {
-                let jsonValue = (value as! JSONEncodable).toJSON()
-                jsonObject[key] = jsonValue
+            guard let json = anyObjectToJSON(data) else {
+                throw MongoError.CorruptDocument
             }
             
-            self.json = try JSON.Value.Object(jsonObject).toString()
+            self.json = try json.toString()
             
         } catch {
             self.json = ""

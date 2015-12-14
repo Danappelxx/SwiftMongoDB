@@ -6,7 +6,12 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
+#if os(Linux)
 import CMongoC
+#else
+import mongoc
+#endif
+
 
 public typealias DocumentData = [String : AnyObject]
 
@@ -42,5 +47,49 @@ extension String {
 
     func parseJSONDocumentData() throws -> DocumentData? {
         return try parseJSON() as? DocumentData
+    }
+}
+
+func anyObjectToJSON(value: AnyObject) -> JSON.Value? {
+
+    switch value {
+    case let value as String:
+        return (value as JSONEncodable).toJSON()
+    case let value as Int:
+        return (value as JSONEncodable).toJSON()
+    case let value as Double:
+        return (value as JSONEncodable).toJSON()
+    case let value as Bool:
+        return (value as JSONEncodable).toJSON()
+
+    case let value as Array<AnyObject>:
+        let val = value
+            .map {
+                anyObjectToJSON($0)
+            }
+
+        let count1 = val.count
+        let jsonVal = val.flatMap { $0 }
+        let count2 = jsonVal.count
+
+        guard count1 == count2 else { return nil }
+
+        return JSON.Value.Array(jsonVal)
+
+    case let value as DocumentData:
+        let val = value
+            .map { key, val in
+                return (key, anyObjectToJSON(val))
+            }
+            .reduce(Dictionary<String, JSON.Value>()) { dict, pair in
+                var dict = dict
+                dict[pair.0] = pair.1
+                return dict
+            }
+
+        return JSON.Value.Object(val)
+
+    default:
+        return nil
     }
 }
