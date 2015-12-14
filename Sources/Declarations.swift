@@ -13,7 +13,7 @@ import mongoc
 #endif
 
 
-public typealias DocumentData = [String : AnyObject]
+public typealias DocumentData = [String : Any]
 
 typealias _mongoc_client = COpaquePointer
 typealias _mongoc_database = COpaquePointer
@@ -39,10 +39,10 @@ extension Int {
 import SwiftFoundation
 extension String {
 
-    func parseJSON() throws -> AnyObject {
+    func parseJSON() throws -> Any {
     
         let jsonValue = try JSON.Value(string: self)
-        return jsonValue as! AnyObject
+        return jsonValue as Any
     }
 
     func parseJSONDocumentData() throws -> DocumentData? {
@@ -50,7 +50,21 @@ extension String {
     }
 }
 
-func anyObjectToJSON(value: AnyObject) -> JSON.Value? {
+func documentDataToJSON(value: DocumentData) -> JSON.Value? {
+    let val = value
+        .map { key, val in
+            return (key, anyToJSON(val))
+        }
+        .reduce(Dictionary<String, JSON.Value>()) { dict, pair in
+            var dict = dict
+            dict[pair.0] = pair.1
+            return dict
+        }
+    
+    return JSON.Value.Object(val)
+}
+
+func anyToJSON(value: Any) -> JSON.Value? {
 
     switch value {
     case let value as String:
@@ -62,10 +76,10 @@ func anyObjectToJSON(value: AnyObject) -> JSON.Value? {
     case let value as Bool:
         return (value as JSONEncodable).toJSON()
 
-    case let value as Array<AnyObject>:
+    case let value as Array<Any>:
         let val = value
             .map {
-                anyObjectToJSON($0)
+                anyToJSON($0)
             }
 
         let count1 = val.count
@@ -77,17 +91,7 @@ func anyObjectToJSON(value: AnyObject) -> JSON.Value? {
         return JSON.Value.Array(jsonVal)
 
     case let value as DocumentData:
-        let val = value
-            .map { key, val in
-                return (key, anyObjectToJSON(val))
-            }
-            .reduce(Dictionary<String, JSON.Value>()) { dict, pair in
-                var dict = dict
-                dict[pair.0] = pair.1
-                return dict
-            }
-
-        return JSON.Value.Object(val)
+        return documentDataToJSON(value)
 
     default:
         return nil

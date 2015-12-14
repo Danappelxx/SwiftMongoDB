@@ -37,9 +37,7 @@ public extension MongoObject {
 
                 if label.characters[label.startIndex] != "_" {
                 
-                    if let value = child.value as? AnyObject {
-                        children[label] = value
-                    }
+                    children[label] = child.value as Any
                 }
             }
         }

@@ -167,9 +167,9 @@ class SwiftMongoDBSpec: QuickSpec {
                 
                 do {
                     let encodedData = try MongoBSON(bson: encodedDataRaw).data
-                    let encodedDataJSON = try documentDataToJSON(encodedData)
+                    let encodedDataJSON = try documentDataToJSON(encodedData)!.toString()
 
-                    let decodedDataJSON = try documentDataToJSON(document.data)
+                    let decodedDataJSON = try documentDataToJSON(document.data)!.toString()
 
                     expect(encodedDataJSON).to(equal(decodedDataJSON))
                 } catch {
@@ -216,7 +216,7 @@ class SwiftMongoDBSpec: QuickSpec {
                 
                 it("works with JSON") {
 
-                    let docBefore = try! MongoDocument(JSON: try! documentDataToJSON(document.data))
+                    let docBefore = try! MongoDocument(JSON: try! documentDataToJSON(document.data)!.toString())
                     let docBeforeJson = docBefore.JSON!
 
                     let docRaw = try! MongoBSON(json: docBeforeJson).bson
@@ -339,15 +339,4 @@ public func == (lhs: DocumentData, rhs: DocumentData) -> Bool {
     }
     
     return true
-}
-
-
-func documentDataToJSON(data: DocumentData) throws -> String {
-    var jsonObject = JSON.Object()
-    for (key, value) in data {
-        let jsonValue = (value as! JSONEncodable).toJSON()
-        jsonObject[key] = jsonValue
-    }
-    
-    return try JSON.Value.Object(jsonObject).toString()
 }

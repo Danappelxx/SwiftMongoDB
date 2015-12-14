@@ -20,7 +20,7 @@ public class MongoDocument {
 
     public var JSON: String? {
         
-        guard let json = anyObjectToJSON(data) else { return nil }
+        guard let json = documentDataToJSON(data) else { return nil }
         return try? json.toString()
     }
 

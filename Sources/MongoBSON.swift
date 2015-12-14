@@ -68,7 +68,7 @@ class MongoBSON {
         self.data = data
 
         do {
-            guard let json = anyObjectToJSON(data) else {
+            guard let json = documentDataToJSON(data) else {
                 throw MongoError.CorruptDocument
             }
             
