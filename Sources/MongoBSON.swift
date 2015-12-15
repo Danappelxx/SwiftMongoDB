@@ -12,12 +12,10 @@ import CMongoC
 import mongoc
 #endif
 
-import SwiftFoundation
-
 class MongoBSON {
 
     private var _bson: bson_t
-    let json: String
+    internal private(set) var json: String
     let data: DocumentData
     var bson: bson_t {
         return bson_copy(&_bson).memory // for safety
@@ -36,7 +34,7 @@ class MongoBSON {
         }
 
         do {
-            self.data = try json.parseJSONDocumentData()!
+            self.data = try json.parseJSONDocumentData()
         } catch {
             self.data = [:]
             throw error
@@ -48,7 +46,7 @@ class MongoBSON {
         self.json = json
 
         do {
-            self.data = try self.json.parseJSONDocumentData()!
+            self.data = try json.parseJSONDocumentData()
         } catch {
             self.data = [:]
             self._bson = bson_t()
@@ -68,21 +66,11 @@ class MongoBSON {
         self.data = data
 
         do {
-            guard let json = documentDataToJSON(data) else {
-                throw MongoError.CorruptDocument
-            }
-            
-            self.json = try json.toString()
-            
-        } catch {
-            self.json = ""
-            self._bson = bson_t()
-            throw error
-        }
-
-        do {
+            guard let json = JSON.from(data)?.description else { throw MongoError.CorruptDocument }
+            self.json = json
             self._bson = try MongoBSON.jsonToBson(json)
         } catch {
+            self.json = ""
             self._bson = bson_t()
             throw error
         }

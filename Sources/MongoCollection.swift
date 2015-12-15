@@ -155,8 +155,10 @@ public class MongoCollection {
 
     public func performCommand(command: DocumentData, flags: QueryFlags, options: QueryOptions, fields: [String]) throws -> MongoCursor {
 
+        let fieldsJSON = JSON.from(fields.map { JSON.from($0) } ).description
+        
         var command = try MongoBSON(data: command).bson
-        var fields = try MongoBSON(json: fields.toJSON().toString()).bson
+        var fields = try MongoBSON(json: fieldsJSON).bson
 
         let cursor = mongoc_collection_command(collectionRaw, flags.rawFlag, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, &command, &fields, nil)
 

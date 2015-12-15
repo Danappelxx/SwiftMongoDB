@@ -12,7 +12,6 @@ import CMongoC
 import mongoc
 #endif
 
-
 public class MongoCursor {
 
     typealias MongoCursorOptions = (queryFlags: mongoc_query_flags_t, skip: Int, limit: Int, batchSize: Int)
@@ -101,15 +100,19 @@ public class MongoCursor {
 
     func getDocumentsData() throws -> [DocumentData] {
 
-        let documentsOptional = try getDocumentsJson()
-            .map { try $0.parseJSONDocumentData() }
 
-        let documents = try documentsOptional
+        let documents = try getDocumentsJson()
+            .map {
+                try JSONParser.parse($0)
+            }
+            .map {
+                $0.dictionaryValue
+            }
             .map { doc -> DocumentData in
                 guard let doc = doc else {
                     throw MongoError.CorruptDocument
                 }
-                return doc
+                return jsonDictToDocumentData(doc)
             }
 
         return documents
@@ -118,8 +121,10 @@ public class MongoCursor {
     func getDocuments() throws -> [MongoDocument] {
 
         let documents = try getDocumentsData()
+        
+        let documents1 = try documents
             .map { try MongoDocument(data: $0) }
 
-        return documents
+        return documents1
     }
 }

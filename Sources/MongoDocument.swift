@@ -12,16 +12,12 @@ import CMongoC
 import mongoc
 #endif
 
-import SwiftFoundation
-
 public class MongoDocument {
 
     let bson: bson_t
 
-    public var JSON: String? {
-        
-        guard let json = documentDataToJSON(data) else { return nil }
-        return try? json.toString()
+    public var JSONString: String? {
+        return JSON.from(data)?.description
     }
 
     public var dataWithoutObjectId: DocumentData {
@@ -52,11 +48,9 @@ public class MongoDocument {
         }
     }
 
-    convenience public init(JSON: String) throws {
+    convenience public init(JSONString: String) throws {
 
-        guard let data = try JSON.parseJSONDocumentData() else {
-            throw MongoError.CorruptDocument
-        }
+        let data = try JSONString.parseJSONDocumentData()
 
         try self.init(data: data)
     }
@@ -97,46 +91,3 @@ public class MongoDocument {
 //        self.BSONRAW.destroy()
     }
 }
-
-/*
-import Foundation
-public func == (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
-
-    return (lhs.data as! [String : NSObject]) == (rhs.data as! [String : NSObject])
-}
-
-public func != (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
-    return !(lhs == rhs)
-}
-
-public func != (lhs: DocumentData, rhs: DocumentData) -> Bool {
-    return !(lhs == rhs)
-}
-
-public func == (lhs: DocumentData, rhs: DocumentData) -> Bool {
-
-    // if they're of different sizes
-    if lhs.count != rhs.count {
-        return false
-    }
-
-
-    // only need to check from one side because they're the same size - if something doesn't match then they aren't equal.
-    // check that rhs contains all of lhs
-    for (lhkey, lhvalue) in lhs {
-
-        let lhval = lhvalue as! NSObject
-
-        // casting into nsobject
-        if let rhval = rhs[lhkey] as? NSObject {
-
-            // if they're not the same, return false
-            if rhval != lhval {
-                return false
-            }
-        }
-    }
-
-    return true
-}
-*/

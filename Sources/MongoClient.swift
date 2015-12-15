@@ -69,7 +69,7 @@ public class MongoClient {
      - throws: Any errors it encounters while connecting to the database.
      */
     public func checkConnection() throws {
-//        try performBasicClientCommand(["ping":""], databaseName: "local")
+        try performBasicClientCommand(["ping":1], databaseName: "local")
     }
 
     deinit {
@@ -108,8 +108,10 @@ public class MongoClient {
 
     public func performClientCommand(query: DocumentData, database: MongoDatabase, fields: [String], flags: QueryFlags, options: QueryOptions) throws -> MongoCursor {
 
+        let fieldsJSON = JSON.from(fields.map { JSON.from($0) } ).description
+        
         var query = try MongoBSON(data: query).bson
-        var fields = try MongoBSON(json: fields.toJSON().toString()).bson
+        var fields = try MongoBSON(json: fieldsJSON ).bson
 
         let cursor = mongoc_client_command(clientRaw, database.name, flags.rawFlag, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, &query, &fields, nil)
 

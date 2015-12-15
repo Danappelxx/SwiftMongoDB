@@ -12,8 +12,7 @@ import CMongoC
 import mongoc
 #endif
 
-
-public typealias DocumentData = [String : Any]
+public typealias DocumentData = [String:Any]
 
 typealias _mongoc_client = COpaquePointer
 typealias _mongoc_database = COpaquePointer
@@ -36,64 +35,25 @@ extension Int {
     }
 }
 
-import SwiftFoundation
 extension String {
-
-    func parseJSON() throws -> Any {
     
-        let jsonValue = try JSON.Value(string: self)
-        return jsonValue as Any
+    func parseJSON() throws -> JSON {
+        return try JSONParser.parse(self)
     }
-
-    func parseJSONDocumentData() throws -> DocumentData? {
-        return try parseJSON() as? DocumentData
+    
+    func parseJSONDocumentData() throws -> DocumentData {
+        let json = try parseJSON()
+        guard let dict = json.dictionaryValue else { throw MongoError.CorruptDocument }
+        
+        return jsonDictToDocumentData(dict)
     }
+    
 }
 
-func documentDataToJSON(value: DocumentData) -> JSON.Value? {
-    let val = value
-        .map { key, val in
-            return (key, anyToJSON(val))
-        }
-        .reduce(Dictionary<String, JSON.Value>()) { dict, pair in
-            var dict = dict
-            dict[pair.0] = pair.1
-            return dict
-        }
-    
-    return JSON.Value.Object(val)
-}
-
-func anyToJSON(value: Any) -> JSON.Value? {
-
-    switch value {
-    case let value as String:
-        return (value as JSONEncodable).toJSON()
-    case let value as Int:
-        return (value as JSONEncodable).toJSON()
-    case let value as Double:
-        return (value as JSONEncodable).toJSON()
-    case let value as Bool:
-        return (value as JSONEncodable).toJSON()
-
-    case let value as Array<Any>:
-        let val = value
-            .map {
-                anyToJSON($0)
-            }
-
-        let count1 = val.count
-        let jsonVal = val.flatMap { $0 }
-        let count2 = jsonVal.count
-
-        guard count1 == count2 else { return nil }
-
-        return JSON.Value.Array(jsonVal)
-
-    case let value as DocumentData:
-        return documentDataToJSON(value)
-
-    default:
-        return nil
+func jsonDictToDocumentData(dict: [String:JSON]) -> DocumentData {
+    var data = DocumentData()
+    for key in dict.keys {
+        data[key] = dict[key] as Any
     }
+    return data
 }

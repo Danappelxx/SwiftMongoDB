@@ -36,8 +36,8 @@ public extension MongoObject {
             if let label = child.label {
 
                 if label.characters[label.startIndex] != "_" {
-                
-                    children[label] = child.value as Any
+                    let val = child.value as! JSON.Value
+                    children[label] = val
                 }
             }
         }

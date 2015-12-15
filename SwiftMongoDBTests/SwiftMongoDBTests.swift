@@ -11,7 +11,6 @@ import Quick
 import Nimble
 import bson
 import mongoc
-import SwiftFoundation
 @testable import SwiftMongoDB
 
 class SwiftMongoDBSpec: QuickSpec {
@@ -27,14 +26,16 @@ class SwiftMongoDBSpec: QuickSpec {
             "string" : "string",
             "bool" : true,
             "number" : 123,
-            "numbers" : [1,2,3],
+            "numbers" : [1, 2, 3],
             "dictionary" : [
-                "key" : "value"
+                "key" : "value",
+                "nested" : [
+                    "dictionary" : true
+                ],
             ],
-            // this is cheating but whatevs
             "_id" : [
                 "$oid" : "55ea18cb1baf6a0fdb2191c2"
-            ],
+            ]
         ])
         
         try! collection.insert([:])
@@ -125,8 +126,8 @@ class SwiftMongoDBSpec: QuickSpec {
                     // run it through the encoder & decoder process to give it fair grounds
                     let resultBeforeDataRaw = try! MongoBSON(data: resultBefore.data).bson
                     let resultBeforeData = try! MongoBSON(bson: resultBeforeDataRaw).data
-
-                    let newData = [
+                    
+                    let newData: DocumentData = [
                         "_id" : document.data["_id"]!,
                         "hey" : "there"
                     ]
@@ -167,9 +168,9 @@ class SwiftMongoDBSpec: QuickSpec {
                 
                 do {
                     let encodedData = try MongoBSON(bson: encodedDataRaw).data
-                    let encodedDataJSON = try documentDataToJSON(encodedData)!.toString()
+                    let encodedDataJSON = JSON.from(encodedData)!.description
 
-                    let decodedDataJSON = try documentDataToJSON(document.data)!.toString()
+                    let decodedDataJSON = JSON.from(document.data)!.description
 
                     expect(encodedDataJSON).to(equal(decodedDataJSON))
                 } catch {
@@ -216,19 +217,19 @@ class SwiftMongoDBSpec: QuickSpec {
                 
                 it("works with JSON") {
 
-                    let docBefore = try! MongoDocument(JSON: try! documentDataToJSON(document.data)!.toString())
-                    let docBeforeJson = docBefore.JSON!
+                    let docBefore = try! MongoDocument(JSONString: JSON.from(document.data)!.description)
+                    let docBeforeJson = docBefore.JSONString!
 
                     let docRaw = try! MongoBSON(json: docBeforeJson).bson
                     
                     let docAfterJson = try! MongoBSON(bson: docRaw).json
                     
-                    let docBeforeParsed = try! docBeforeJson.parseJSONDocumentData()!
-                    let docAfterParsed = try! docAfterJson.parseJSONDocumentData()!
+                    let docBeforeParsed = try! docBeforeJson.parseJSONDocumentData()
+                    let docAfterParsed = try! docAfterJson.parseJSONDocumentData()
                     
                     expect(docBeforeParsed == docAfterParsed).to(beTrue())
                 }
-                
+//
                 it("works with MongoObject schemas") {
                     
                     struct TestObject: MongoObject {
@@ -300,7 +301,8 @@ class SwiftMongoDBSpec: QuickSpec {
     }
 }
 
-// For MongoDocuments to be properly testable
+
+import Foundation
 public func == (lhs: MongoDocument, rhs: MongoDocument) -> Bool {
     
     return (lhs.data as! [String : NSObject]) == (rhs.data as! [String : NSObject])
