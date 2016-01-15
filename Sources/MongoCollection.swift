@@ -11,6 +11,8 @@ import CMongoC
 #else
 import mongoc
 #endif
+import SwiftFoundation
+import BinaryJSON
 
 public class MongoCollection {
 
@@ -38,8 +40,7 @@ public class MongoCollection {
 
     public func insert(document: MongoDocument, flags: InsertFlags = InsertFlags.None) throws {
 
-        var document = try MongoBSON(data: document.data).bson
-
+        var document = document.bson
         var error = bson_error_t()
 
         mongoc_collection_insert(self.collectionRaw, flags.rawFlag, &document, nil, &error)
@@ -61,7 +62,7 @@ public class MongoCollection {
 
     public func find(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
 
-        var query = try MongoBSON(data: query).bson
+        var query = try MongoDocument(data: query).bson
 
         // standard options - should be customizable later on
         let cursor = MongoCursor(
@@ -98,9 +99,9 @@ public class MongoCollection {
 
     public func update(query: DocumentData = DocumentData(), newValue: DocumentData, flags: UpdateFlags = UpdateFlags.None) throws -> Bool {
 
-        var query = try MongoBSON(data: query).bson
+        var query = try MongoDocument(data: query).bson
 
-        var document = try MongoBSON(data: newValue).bson
+        var document = try MongoDocument(data: newValue).bson
 
         var error = bson_error_t()
         let success = mongoc_collection_update(self.collectionRaw, flags.rawFlag, &query, &document, nil, &error)
@@ -113,7 +114,7 @@ public class MongoCollection {
 
     public func remove(query: DocumentData = DocumentData(), flags: RemoveFlags = RemoveFlags.None) throws -> Bool {
 
-        var query = try MongoBSON(data: query).bson
+        var query = try MongoDocument(data: query).bson
 
         var error = bson_error_t()
         let success = mongoc_collection_remove(self.collectionRaw, flags.rawFlag, &query, nil, &error)
@@ -125,7 +126,7 @@ public class MongoCollection {
 
     public func save(document: DocumentData) throws -> Bool {
 
-        var document = try MongoBSON(data: document).bson
+        var document = try MongoDocument(data: document).bson
         var error = bson_error_t()
 
         let success = mongoc_collection_save(collectionRaw, &document, nil, &error)
@@ -137,7 +138,7 @@ public class MongoCollection {
 
     public func performBasicCollectionCommand(command: DocumentData) throws -> DocumentData {
 
-        var command = try MongoBSON(data: command).bson
+        var command = try MongoDocument(data: command).bson
 
         var reply = bson_t()
         var error = bson_error_t()
@@ -146,28 +147,31 @@ public class MongoCollection {
 
         try error.throwIfError()
 
-        return try MongoBSON(bson: reply).data
+        guard let res = BSON.documentFromUnsafePointer(&reply) else {
+            throw MongoError.CorruptDocument
+        }
+        return res
     }
 
     public func destroy() {
         mongoc_collection_destroy(collectionRaw)
     }
 
-    public func performCommand(command: DocumentData, flags: QueryFlags, options: QueryOptions, fields: [String]) throws -> MongoCursor {
-
-        let fieldsJSON = JSON.from(fields.map { JSON.from($0) } ).description
-        
-        var command = try MongoBSON(data: command).bson
-        var fields = try MongoBSON(json: fieldsJSON).bson
-
-        let cursor = mongoc_collection_command(collectionRaw, flags.rawFlag, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, &command, &fields, nil)
-
-        return MongoCursor(cursor: cursor)
-    }
+//    public func performCommand(command: DocumentData, flags: QueryFlags, options: QueryOptions, fields: [String]) throws -> MongoCursor {
+//
+//        guard let fieldsJSON = fields.toJSON()?.toString() else { throw MongoError.InvalidData }
+//        
+//        var command = try MongoBSON(data: command).bson
+//        var fields = try MongoBSON(json: fieldsJSON).bson
+//
+//        let cursor = mongoc_collection_command(collectionRaw, flags.rawFlag, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, &command, &fields, nil)
+//
+//        return MongoCursor(cursor: cursor)
+//    }
 
     public func count(query: DocumentData, flags: QueryFlags, skip: Int, limit: Int) throws -> Int {
 
-        var query = try MongoBSON(data: query).bson
+        var query = try MongoDocument(data: query).bson
 
         var error = bson_error_t()
 
@@ -200,7 +204,7 @@ public class MongoCollection {
 
     public func stats(options: DocumentData) throws -> DocumentData {
 
-        var options = try MongoBSON(data: options).bson
+        var options = try MongoDocument(data: options).bson
 
         var reply = bson_t()
         var error = bson_error_t()
@@ -209,11 +213,14 @@ public class MongoCollection {
 
         try error.throwIfError()
 
-        return try MongoBSON(bson: reply).data
+        guard let res = BSON.documentFromUnsafePointer(&reply) else {
+            throw MongoError.CorruptDocument
+        }
+        return res
     }
 
     public func validate(options: DocumentData) throws -> DocumentData {
-        var options = try MongoBSON(data: options).bson
+        var options = try MongoDocument(data: options).bson
 
         var reply = bson_t()
         var error = bson_error_t()
@@ -222,7 +229,10 @@ public class MongoCollection {
 
         try error.throwIfError()
 
-        return try MongoBSON(bson: reply).data
+        guard let res = BSON.documentFromUnsafePointer(&reply) else {
+            throw MongoError.CorruptDocument
+        }
+        return res
     }
 
     // TODO

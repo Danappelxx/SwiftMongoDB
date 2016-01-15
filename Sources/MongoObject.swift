@@ -6,6 +6,8 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
+// Ignoring this for now...
+/*
 /**
 *  A protocol that allows documents to be described in an Object Orientated way.
 */
@@ -44,3 +46,4 @@ public extension MongoObject {
         return children
     }
 }
+*/

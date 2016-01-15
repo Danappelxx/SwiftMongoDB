@@ -11,8 +11,10 @@ import CMongoC
 #else
 import mongoc
 #endif
+import SwiftFoundation
+import BinaryJSON
 
-public typealias DocumentData = [String:Any]
+public typealias DocumentData = BSON.Document
 
 typealias _mongoc_client = COpaquePointer
 typealias _mongoc_database = COpaquePointer
@@ -35,25 +37,27 @@ extension Int {
     }
 }
 
-extension String {
-    
-    func parseJSON() throws -> JSON {
-        return try JSONParser.parse(self)
-    }
-    
-    func parseJSONDocumentData() throws -> DocumentData {
-        let json = try parseJSON()
-        guard let dict = json.dictionaryValue else { throw MongoError.CorruptDocument }
-        
-        return jsonDictToDocumentData(dict)
-    }
-    
-}
+//func jsonDictToDocumentData(dict: [String:JSON]) -> DocumentData {
+//    var data = DocumentData()
+//    for key in dict.keys {
+//        data[key] = dict[key] as Any
+//    }
+//    return data
+//}
 
-func jsonDictToDocumentData(dict: [String:JSON]) -> DocumentData {
-    var data = DocumentData()
-    for key in dict.keys {
-        data[key] = dict[key] as Any
-    }
-    return data
-}
+//func JSONObjectToDocumentData(object: JSON.Object) -> DocumentData {
+//    
+//    return object
+//        .reduce(DocumentData()) { dict, pair in
+//            var dict = dict
+//            dict[pair.0] = pair.1 as Any
+//            return dict
+//        }
+//}
+//
+//extension String {    
+//    func parseDocumentData() throws -> DocumentData {
+//        guard let obj = self.toJSON()?.objectValue else { throw MongoError.InvalidJSON }
+//        return JSONObjectToDocumentData(obj)
+//    }
+//}

@@ -11,7 +11,7 @@ import CMongoC
 #else
 import mongoc
 #endif
-
+import BinaryJSON
 
 public class MongoDatabase {
 
@@ -49,35 +49,35 @@ public class MongoDatabase {
         return successful
     }
 
-    public func addUser(username username: String, password: String, roles: [String], customData: DocumentData) throws -> Bool {
+//    public func addUser(username username: String, password: String, roles: [String], customData: DocumentData) throws -> Bool {
+//
+//        guard let rolesJSON = roles.toJSON()?.toString() else { throw MongoError.InvalidData }
+//
+//        var error = bson_error_t()
+//
+//        var rolesRaw = try MongoBSON(json: rolesJSON).bson
+//        var customDataRaw = try MongoBSON(data: customData).bson
+//
+//        let successful = mongoc_database_add_user(databaseRaw, username, password, &rolesRaw, &customDataRaw, &error)
+//
+//        try error.throwIfError()
+//
+//        return successful
+//    }
 
-        let rolesJSON = JSON.from(roles.map { JSON.from($0) } ).description
-
-        var error = bson_error_t()
-
-        var rolesRaw = try MongoBSON(json: rolesJSON).bson
-        var customDataRaw = try MongoBSON(data: customData).bson
-
-        let successful = mongoc_database_add_user(databaseRaw, username, password, &rolesRaw, &customDataRaw, &error)
-
-        try error.throwIfError()
-
-        return successful
-    }
-
-    public func command(command: DocumentData, flags: QueryFlags = .None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0, fields: [String] = []) throws -> MongoCursor {
-
-        let fieldsJSON = JSON.from(fields.map { JSON.from($0) } ).description
-
-        var commandRaw = try MongoBSON(data: command).bson
-        var fieldsRaw = try MongoBSON(json: fieldsJSON).bson
-
-        let cursorRaw = mongoc_database_command(databaseRaw, flags.rawFlag, skip.UInt32Value, limit.UInt32Value, batchSize.UInt32Value, &commandRaw, &fieldsRaw, nil)
-
-        let cursor = MongoCursor(cursor: cursorRaw)
-
-        return cursor
-    }
+//    public func command(command: DocumentData, flags: QueryFlags = .None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0, fields: [String] = []) throws -> MongoCursor {
+//
+//        guard let fieldsJSON = fields.toJSON()?.toString() else { throw MongoError.InvalidData }
+//
+//        var commandRaw = try MongoBSON(data: command).bson
+//        var fieldsRaw = try MongoBSON(json: fieldsJSON).bson
+//
+//        let cursorRaw = mongoc_database_command(databaseRaw, flags.rawFlag, skip.UInt32Value, limit.UInt32Value, batchSize.UInt32Value, &commandRaw, &fieldsRaw, nil)
+//
+//        let cursor = MongoCursor(cursor: cursorRaw)
+//
+//        return cursor
+//    }
 
     public func drop() throws -> Bool {
 
@@ -105,7 +105,7 @@ public class MongoDatabase {
 
         var error = bson_error_t()
 
-        var optionsRaw = try MongoBSON(data: options).bson
+        var optionsRaw = try MongoDocument(data: options).bson
 
         let collectionRaw = mongoc_database_create_collection(databaseRaw, name, &optionsRaw, &error)
 
@@ -135,7 +135,7 @@ public class MongoDatabase {
     public func findCollections(filter filter: DocumentData) throws -> MongoCursor {
 
         var error = bson_error_t()
-        var filterRaw = try MongoBSON(data: filter).bson
+        var filterRaw = try MongoDocument(data: filter).bson
 
         let cursorRaw = mongoc_database_find_collections(databaseRaw, &filterRaw, &error)
 
@@ -173,7 +173,7 @@ public class MongoDatabase {
 
     public func performBasicDatabaseCommand(command: DocumentData) throws -> DocumentData {
 
-        var command = try MongoBSON(data: command).bson
+        var command = try MongoDocument(data: command).bson
 
         var reply = bson_t()
         var error = bson_error_t()
@@ -182,7 +182,10 @@ public class MongoDatabase {
 
         try error.throwIfError()
 
-        return try MongoBSON(bson: reply).data
+        guard let res = BSON.documentFromUnsafePointer(&reply) else {
+            throw MongoError.CorruptDocument
+        }
+        return res
     }
 
 

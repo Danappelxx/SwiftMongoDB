@@ -58,9 +58,12 @@ public struct MongoError: ErrorType, CustomStringConvertible {
 
     // General
     public static let UnknownError = MongoError(description: "An unknown error occurred.", code: 1001)
+    public static let InvalidJSON = MongoError(description: "The given JSON string is invalid.", code: 1003)
+    public static let InvalidData = MongoError(description: "Converting the given data to JSON failed.", code: 1004)
 
     // BSON
     public static let CorruptDocument = MongoError(description: "The given document is corrupt.", code: 1101)
+    
 
 }
 

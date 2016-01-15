@@ -9,14 +9,12 @@
 /* Begin PBXBuildFile section */
 		375F5F161B7E65E0007EA172 /* SwiftMongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375F5F0B1B7E65DF007EA172 /* SwiftMongoDB.framework */; };
 		375F5F1B1B7E65E0007EA172 /* SwiftMongoDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F5F1A1B7E65E0007EA172 /* SwiftMongoDBTests.swift */; };
-		378D7A991C01092500A864B0 /* bson.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6BFE1BF059CE0082AE18 /* bson.framework */; };
-		378D7A9C1C01093400A864B0 /* bson.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6BFE1BF059CE0082AE18 /* bson.framework */; };
+		3774E36A1C2C9EC300D8C280 /* BinaryJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3774E3211C2C9BEE00D8C280 /* BinaryJSON.framework */; };
+		3774E36E1C2CAAB600D8C280 /* libbson-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3774E36D1C2CAAB600D8C280 /* libbson-1.0.0.dylib */; };
 		37AD2A021C1EA6F200A4D3C3 /* Declarations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29F21C1EA6F200A4D3C3 /* Declarations.swift */; };
 		37AD2A031C1EA6F200A4D3C3 /* Declarations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29F21C1EA6F200A4D3C3 /* Declarations.swift */; };
 		37AD2A041C1EA6F200A4D3C3 /* Flags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29F31C1EA6F200A4D3C3 /* Flags.swift */; };
 		37AD2A051C1EA6F200A4D3C3 /* Flags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29F31C1EA6F200A4D3C3 /* Flags.swift */; };
-		37AD2A0A1C1EA6F200A4D3C3 /* MongoBSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29F61C1EA6F200A4D3C3 /* MongoBSON.swift */; };
-		37AD2A0B1C1EA6F200A4D3C3 /* MongoBSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29F61C1EA6F200A4D3C3 /* MongoBSON.swift */; };
 		37AD2A0C1C1EA6F200A4D3C3 /* MongoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29F71C1EA6F200A4D3C3 /* MongoClient.swift */; };
 		37AD2A0D1C1EA6F200A4D3C3 /* MongoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29F71C1EA6F200A4D3C3 /* MongoClient.swift */; };
 		37AD2A0E1C1EA6F200A4D3C3 /* MongoCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29F81C1EA6F200A4D3C3 /* MongoCollection.swift */; };
@@ -35,16 +33,13 @@
 		37AD2A1B1C1EA6F200A4D3C3 /* MongoWriteConcern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29FE1C1EA6F200A4D3C3 /* MongoWriteConcern.swift */; };
 		37AD2A1C1C1EA6F200A4D3C3 /* PointerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29FF1C1EA6F200A4D3C3 /* PointerExtensions.swift */; };
 		37AD2A1D1C1EA6F200A4D3C3 /* PointerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD29FF1C1EA6F200A4D3C3 /* PointerExtensions.swift */; };
-		37BC6BF51BF059A90082AE18 /* mongoc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6BEC1BF059040082AE18 /* mongoc.framework */; };
 		37BC6BF61BF059AB0082AE18 /* mongoc.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37BC6BEC1BF059040082AE18 /* mongoc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		37BC6C041BF05A1E0082AE18 /* mongoc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6BEC1BF059040082AE18 /* mongoc.framework */; };
 		37BC6C061BF05A200082AE18 /* mongoc.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37BC6BEE1BF059040082AE18 /* mongoc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37BC6C401BF05AFE0082AE18 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6C151BF05A500082AE18 /* Nimble.framework */; };
 		37BC6C411BF05B020082AE18 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37BC6C151BF05A500082AE18 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37BC6C421BF05B1C0082AE18 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BC6C291BF05A640082AE18 /* Quick.framework */; };
 		37BC6C431BF05B1E0082AE18 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37BC6C291BF05A640082AE18 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		37FD75211C2009220084516F /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FD75201C2009220084516F /* JSON.swift */; };
-		37FD75221C2009220084516F /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FD75201C2009220084516F /* JSON.swift */; };
+		37DA3F421C2CAEF3007CB129 /* libbson-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3774E36D1C2CAAB600D8C280 /* libbson-1.0.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,12 +50,26 @@
 			remoteGlobalIDString = 375F5F0A1B7E65DF007EA172;
 			remoteInfo = SwiftMongoDB;
 		};
-		378D7A881C01091A00A864B0 /* PBXContainerItemProxy */ = {
+		3774E3201C2C9BEE00D8C280 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 37BC6BF81BF059CE0082AE18 /* bson.xcodeproj */;
+			containerPortal = 3774E31B1C2C9BEE00D8C280 /* BinaryJSON.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6ED88B4E1C1E226A00DF07E3;
+			remoteInfo = "BinaryJSON OS X";
+		};
+		3774E3221C2C9BEE00D8C280 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3774E31B1C2C9BEE00D8C280 /* BinaryJSON.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6ED88B581C1E226A00DF07E3;
+			remoteInfo = BinaryJSONTests;
+		};
+		3774E3681C2C9DA000D8C280 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3774E31B1C2C9BEE00D8C280 /* BinaryJSON.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 3738CEDE1BEAB7B800938057;
-			remoteInfo = "bson-osx";
+			remoteGlobalIDString = 6ED88B4D1C1E226A00DF07E3;
+			remoteInfo = "BinaryJSON OS X";
 		};
 		378D7A9A1C01092E00A864B0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -75,6 +84,55 @@
 			proxyType = 1;
 			remoteGlobalIDString = 37320EC11BEB468B00442388;
 			remoteInfo = "mongoc-osx";
+		};
+		37BA98C71C27448D00E3E27F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6E30BA0D1B40F543009B1B49;
+			remoteInfo = "SwiftFoundation OS X";
+		};
+		37BA98C91C27448D00E3E27F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6E30BA171B40F543009B1B49;
+			remoteInfo = "SwiftFoundationTests OS X";
+		};
+		37BA98CB1C27448D00E3E27F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1AE78F6C1B96774100CDEF17;
+			remoteInfo = "SwiftFoundation iOS";
+		};
+		37BA98CD1C27448D00E3E27F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6E08F8571BBE7B8800548B1E;
+			remoteInfo = "SwiftFoundationTests iOS";
+		};
+		37BA98CF1C27448D00E3E27F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1AE78FC41B96774300CDEF17;
+			remoteInfo = "SwiftFoundation WatchOS";
+		};
+		37BA98D11C27449900E3E27F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6E30BA0C1B40F543009B1B49;
+			remoteInfo = "SwiftFoundation OS X";
+		};
+		37BA98D31C27449E00E3E27F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AE78F161B96774100CDEF17;
+			remoteInfo = "SwiftFoundation iOS";
 		};
 		37BC6BEB1BF059040082AE18 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -272,10 +330,11 @@
 		375F5F1A1B7E65E0007EA172 /* SwiftMongoDBTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMongoDBTests.swift; sourceTree = "<group>"; };
 		375F5F1C1B7E65E0007EA172 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		377186621BE5710D0050E666 /* SwiftMongoDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftMongoDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3774E31B1C2C9BEE00D8C280 /* BinaryJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BinaryJSON.xcodeproj; path = Carthage/Checkouts/BinaryJSON/Xcode/BinaryJSON.xcodeproj; sourceTree = "<group>"; };
+		3774E36D1C2CAAB600D8C280 /* libbson-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libbson-1.0.0.dylib"; path = "../Carthage/Checkouts/BinaryJSON/Xcode/libbson-1.0.0.dylib"; sourceTree = "<group>"; };
 		37AD29F21C1EA6F200A4D3C3 /* Declarations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Declarations.swift; path = Sources/Declarations.swift; sourceTree = SOURCE_ROOT; };
 		37AD29F31C1EA6F200A4D3C3 /* Flags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Flags.swift; path = Sources/Flags.swift; sourceTree = SOURCE_ROOT; };
 		37AD29F41C1EA6F200A4D3C3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Sources/Info.plist; sourceTree = SOURCE_ROOT; };
-		37AD29F61C1EA6F200A4D3C3 /* MongoBSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MongoBSON.swift; path = Sources/MongoBSON.swift; sourceTree = SOURCE_ROOT; };
 		37AD29F71C1EA6F200A4D3C3 /* MongoClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MongoClient.swift; path = Sources/MongoClient.swift; sourceTree = SOURCE_ROOT; };
 		37AD29F81C1EA6F200A4D3C3 /* MongoCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MongoCollection.swift; path = Sources/MongoCollection.swift; sourceTree = SOURCE_ROOT; };
 		37AD29F91C1EA6F200A4D3C3 /* MongoCursor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MongoCursor.swift; path = Sources/MongoCursor.swift; sourceTree = SOURCE_ROOT; };
@@ -285,12 +344,12 @@
 		37AD29FD1C1EA6F200A4D3C3 /* MongoObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MongoObject.swift; path = Sources/MongoObject.swift; sourceTree = SOURCE_ROOT; };
 		37AD29FE1C1EA6F200A4D3C3 /* MongoWriteConcern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MongoWriteConcern.swift; path = Sources/MongoWriteConcern.swift; sourceTree = SOURCE_ROOT; };
 		37AD29FF1C1EA6F200A4D3C3 /* PointerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PointerExtensions.swift; path = Sources/PointerExtensions.swift; sourceTree = SOURCE_ROOT; };
+		37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftFoundation.xcodeproj; path = Carthage/Checkouts/SwiftFoundation/Xcode/SwiftFoundation.xcodeproj; sourceTree = "<group>"; };
 		37BC6BE61BF059040082AE18 /* mongoc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mongoc.xcodeproj; path = "Carthage/Checkouts/libmongoc-xcode/mongoc.xcodeproj"; sourceTree = "<group>"; };
 		37BC6BF81BF059CE0082AE18 /* bson.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = bson.xcodeproj; path = "Carthage/Checkouts/libbson-xcode/bson.xcodeproj"; sourceTree = "<group>"; };
 		37BC6C071BF05A500082AE18 /* Nimble.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nimble.xcodeproj; path = Carthage/Checkouts/Nimble/Nimble.xcodeproj; sourceTree = "<group>"; };
 		37BC6C1C1BF05A630082AE18 /* Quick.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Quick.xcodeproj; path = Carthage/Checkouts/Quick/Quick.xcodeproj; sourceTree = "<group>"; };
 		37E98D781C00470D00BD1CDC /* SwiftMongoDB.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SwiftMongoDB.playground; sourceTree = "<group>"; };
-		37FD75201C2009220084516F /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSON.swift; path = Sources/JSON.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -298,8 +357,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				378D7A991C01092500A864B0 /* bson.framework in Frameworks */,
-				37BC6BF51BF059A90082AE18 /* mongoc.framework in Frameworks */,
+				3774E36E1C2CAAB600D8C280 /* libbson-1.0.0.dylib in Frameworks */,
+				3774E36A1C2C9EC300D8C280 /* BinaryJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +366,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37DA3F421C2CAEF3007CB129 /* libbson-1.0.0.dylib in Frameworks */,
 				375F5F161B7E65E0007EA172 /* SwiftMongoDB.framework in Frameworks */,
 				37BC6C401BF05AFE0082AE18 /* Nimble.framework in Frameworks */,
 				37BC6C421BF05B1C0082AE18 /* Quick.framework in Frameworks */,
@@ -317,8 +377,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				378D7A9C1C01093400A864B0 /* bson.framework in Frameworks */,
-				37BC6C041BF05A1E0082AE18 /* mongoc.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +394,8 @@
 				37BC6C071BF05A500082AE18 /* Nimble.xcodeproj */,
 				37BC6BF81BF059CE0082AE18 /* bson.xcodeproj */,
 				37BC6BE61BF059040082AE18 /* mongoc.xcodeproj */,
+				37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */,
+				3774E31B1C2C9BEE00D8C280 /* BinaryJSON.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -352,18 +412,17 @@
 		375F5F0D1B7E65DF007EA172 /* SwiftMongoDB */ = {
 			isa = PBXGroup;
 			children = (
+				3774E36D1C2CAAB600D8C280 /* libbson-1.0.0.dylib */,
 				37AD29F71C1EA6F200A4D3C3 /* MongoClient.swift */,
 				37AD29FA1C1EA6F200A4D3C3 /* MongoDatabase.swift */,
 				37AD29F81C1EA6F200A4D3C3 /* MongoCollection.swift */,
 				37AD29F91C1EA6F200A4D3C3 /* MongoCursor.swift */,
 				37AD29FB1C1EA6F200A4D3C3 /* MongoDocument.swift */,
-				37AD29F61C1EA6F200A4D3C3 /* MongoBSON.swift */,
 				37AD29FC1C1EA6F200A4D3C3 /* MongoError.swift */,
 				37AD29FD1C1EA6F200A4D3C3 /* MongoObject.swift */,
 				37AD29FE1C1EA6F200A4D3C3 /* MongoWriteConcern.swift */,
 				37AD29FF1C1EA6F200A4D3C3 /* PointerExtensions.swift */,
 				37AD29F21C1EA6F200A4D3C3 /* Declarations.swift */,
-				37FD75201C2009220084516F /* JSON.swift */,
 				37AD29F31C1EA6F200A4D3C3 /* Flags.swift */,
 				37AD29F41C1EA6F200A4D3C3 /* Info.plist */,
 			);
@@ -377,6 +436,27 @@
 				375F5F1C1B7E65E0007EA172 /* Info.plist */,
 			);
 			path = SwiftMongoDBTests;
+			sourceTree = "<group>";
+		};
+		3774E31C1C2C9BEE00D8C280 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3774E3211C2C9BEE00D8C280 /* BinaryJSON.framework */,
+				3774E3231C2C9BEE00D8C280 /* BinaryJSONTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		37BA98C01C27448D00E3E27F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				37BA98C81C27448D00E3E27F /* SwiftFoundation.framework */,
+				37BA98CA1C27448D00E3E27F /* SwiftFoundationTests.xctest */,
+				37BA98CC1C27448D00E3E27F /* SwiftFoundation.framework */,
+				37BA98CE1C27448D00E3E27F /* SwiftFoundationTests.xctest */,
+				37BA98D01C27448D00E3E27F /* SwiftFoundation.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		37BC6BE71BF059040082AE18 /* Products */ = {
@@ -459,8 +539,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				3774E3691C2C9DA000D8C280 /* PBXTargetDependency */,
+				37BA98D21C27449900E3E27F /* PBXTargetDependency */,
 				37AD2A1F1C1EA77200A4D3C3 /* PBXTargetDependency */,
-				378D7A891C01091A00A864B0 /* PBXTargetDependency */,
 			);
 			name = "SwiftMongoDB-OSX";
 			productName = SwiftMongoDB;
@@ -501,6 +582,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				37BA98D41C27449E00E3E27F /* PBXTargetDependency */,
 				378D7A9B1C01092E00A864B0 /* PBXTargetDependency */,
 				37BC6C3B1BF05AC30082AE18 /* PBXTargetDependency */,
 			);
@@ -542,6 +624,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 3774E31C1C2C9BEE00D8C280 /* Products */;
+					ProjectRef = 3774E31B1C2C9BEE00D8C280 /* BinaryJSON.xcodeproj */;
+				},
+				{
 					ProductGroup = 37BC6BF91BF059CE0082AE18 /* Products */;
 					ProjectRef = 37BC6BF81BF059CE0082AE18 /* bson.xcodeproj */;
 				},
@@ -557,6 +643,10 @@
 					ProductGroup = 37BC6C1D1BF05A630082AE18 /* Products */;
 					ProjectRef = 37BC6C1C1BF05A630082AE18 /* Quick.xcodeproj */;
 				},
+				{
+					ProductGroup = 37BA98C01C27448D00E3E27F /* Products */;
+					ProjectRef = 37BA98BF1C27448D00E3E27F /* SwiftFoundation.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -568,6 +658,55 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		3774E3211C2C9BEE00D8C280 /* BinaryJSON.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = BinaryJSON.framework;
+			remoteRef = 3774E3201C2C9BEE00D8C280 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3774E3231C2C9BEE00D8C280 /* BinaryJSONTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = BinaryJSONTests.xctest;
+			remoteRef = 3774E3221C2C9BEE00D8C280 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		37BA98C81C27448D00E3E27F /* SwiftFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftFoundation.framework;
+			remoteRef = 37BA98C71C27448D00E3E27F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		37BA98CA1C27448D00E3E27F /* SwiftFoundationTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftFoundationTests.xctest;
+			remoteRef = 37BA98C91C27448D00E3E27F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		37BA98CC1C27448D00E3E27F /* SwiftFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftFoundation.framework;
+			remoteRef = 37BA98CB1C27448D00E3E27F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		37BA98CE1C27448D00E3E27F /* SwiftFoundationTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftFoundationTests.xctest;
+			remoteRef = 37BA98CD1C27448D00E3E27F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		37BA98D01C27448D00E3E27F /* SwiftFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftFoundation.framework;
+			remoteRef = 37BA98CF1C27448D00E3E27F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		37BC6BEC1BF059040082AE18 /* mongoc.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -733,9 +872,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37AD2A0E1C1EA6F200A4D3C3 /* MongoCollection.swift in Sources */,
-				37FD75211C2009220084516F /* JSON.swift in Sources */,
 				37AD2A1A1C1EA6F200A4D3C3 /* MongoWriteConcern.swift in Sources */,
-				37AD2A0A1C1EA6F200A4D3C3 /* MongoBSON.swift in Sources */,
 				37AD2A0C1C1EA6F200A4D3C3 /* MongoClient.swift in Sources */,
 				37AD2A161C1EA6F200A4D3C3 /* MongoError.swift in Sources */,
 				37AD2A121C1EA6F200A4D3C3 /* MongoDatabase.swift in Sources */,
@@ -761,9 +898,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37AD2A0F1C1EA6F200A4D3C3 /* MongoCollection.swift in Sources */,
-				37FD75221C2009220084516F /* JSON.swift in Sources */,
 				37AD2A1B1C1EA6F200A4D3C3 /* MongoWriteConcern.swift in Sources */,
-				37AD2A0B1C1EA6F200A4D3C3 /* MongoBSON.swift in Sources */,
 				37AD2A0D1C1EA6F200A4D3C3 /* MongoClient.swift in Sources */,
 				37AD2A171C1EA6F200A4D3C3 /* MongoError.swift in Sources */,
 				37AD2A131C1EA6F200A4D3C3 /* MongoDatabase.swift in Sources */,
@@ -784,10 +919,10 @@
 			target = 375F5F0A1B7E65DF007EA172 /* SwiftMongoDB-OSX */;
 			targetProxy = 375F5F171B7E65E0007EA172 /* PBXContainerItemProxy */;
 		};
-		378D7A891C01091A00A864B0 /* PBXTargetDependency */ = {
+		3774E3691C2C9DA000D8C280 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "bson-osx";
-			targetProxy = 378D7A881C01091A00A864B0 /* PBXContainerItemProxy */;
+			name = "BinaryJSON OS X";
+			targetProxy = 3774E3681C2C9DA000D8C280 /* PBXContainerItemProxy */;
 		};
 		378D7A9B1C01092E00A864B0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -798,6 +933,16 @@
 			isa = PBXTargetDependency;
 			name = "mongoc-osx";
 			targetProxy = 37AD2A1E1C1EA77200A4D3C3 /* PBXContainerItemProxy */;
+		};
+		37BA98D21C27449900E3E27F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SwiftFoundation OS X";
+			targetProxy = 37BA98D11C27449900E3E27F /* PBXContainerItemProxy */;
+		};
+		37BA98D41C27449E00E3E27F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SwiftFoundation iOS";
+			targetProxy = 37BA98D31C27449E00E3E27F /* PBXContainerItemProxy */;
 		};
 		37BC6C3B1BF05AC30082AE18 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -884,7 +1029,10 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/BinaryJSON/Xcode",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDB;
@@ -904,6 +1052,10 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SwiftMongoDBTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/BinaryJSON/Xcode",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDBTests;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)Tests";
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -977,7 +1129,10 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/BinaryJSON/Xcode",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDB;
@@ -997,6 +1152,10 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SwiftMongoDBTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/BinaryJSON/Xcode",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDBTests;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)Tests";
 				PRODUCT_NAME = "${TARGET_NAME}";

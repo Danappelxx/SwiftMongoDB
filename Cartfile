@@ -1,3 +1,2 @@
 github "Danappelxx/libmongoc-xcode"
-github "Danappelxx/libbson-xcode"
-github "PureSwift/SwiftFoundation"
+github "PureSwift/BinaryJSON" "master"

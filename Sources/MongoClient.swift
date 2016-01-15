@@ -11,6 +11,7 @@ import CMongoC
 #else
 import mongoc
 #endif
+import BinaryJSON
 
 public class MongoClient {
 
@@ -69,7 +70,7 @@ public class MongoClient {
      - throws: Any errors it encounters while connecting to the database.
      */
     public func checkConnection() throws {
-        try performBasicClientCommand(["ping":1], databaseName: "local")
+        try performBasicClientCommand(["ping":.Number(.Integer32(1))], databaseName: "local")
     }
 
     deinit {
@@ -93,30 +94,41 @@ public class MongoClient {
     }
 
     public func performBasicClientCommand(command: DocumentData, databaseName: String) throws -> DocumentData {
-
-        var command = try MongoBSON(data: command).bson
-
+        
+        guard let commandBSON = BSON.unsafePointerFromDocument(command) else {
+            throw MongoError.InvalidData
+        }
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_client_command_simple(self.clientRaw, databaseName, &command, nil, &reply, &error)
+        mongoc_client_command_simple(self.clientRaw, databaseName, commandBSON, nil, &reply, &error)
 
         try error.throwIfError()
 
-        return try MongoBSON(bson: reply).data
-    }
-
-    public func performClientCommand(query: DocumentData, database: MongoDatabase, fields: [String], flags: QueryFlags, options: QueryOptions) throws -> MongoCursor {
-
-        let fieldsJSON = JSON.from(fields.map { JSON.from($0) } ).description
+        guard let res = BSON.documentFromUnsafePointer(&reply) else {
+            throw MongoError.CorruptDocument
+        }
         
-        var query = try MongoBSON(data: query).bson
-        var fields = try MongoBSON(json: fieldsJSON ).bson
-
-        let cursor = mongoc_client_command(clientRaw, database.name, flags.rawFlag, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, &query, &fields, nil)
-
-        return MongoCursor(cursor: cursor)
+        return res
     }
+
+    // Waiting on BinaryJSON to support [String] bson
+//    public func performClientCommand(query: DocumentData, database: MongoDatabase, fields: [String], flags: QueryFlags, options: QueryOptions) throws -> MongoCursor {
+//
+//        let fields = BSON.Value.Array(fields.map { BSON.Value.String($0) })
+//
+//        // this isnt possible yet
+//        guard let fieldsBSON = BSON.unsafePointerFromDocument(fields) else {
+//            throw MongoError.InvalidData
+//        }
+//        
+//        var query = try MongoBSON(data: query).bson
+//        var fields = try MongoBSON(json: fieldsJSON ).bson
+//
+//        let cursor = mongoc_client_command(clientRaw, database.name, flags.rawFlag, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, &query, &fields, nil)
+//
+//        return MongoCursor(cursor: cursor)
+//    }
 
     public func getDatabasesCursor() throws -> MongoCursor {
 
@@ -138,7 +150,11 @@ public class MongoClient {
 
         try error.throwIfError()
 
-        return try MongoBSON(bson: reply).data
+        guard let status = BSON.documentFromUnsafePointer(&reply) else {
+            throw MongoError.CorruptDocument
+        }
+
+        return status
     }
 
     //    public func getReadPrefs() throws /* -> _mongoc_read_prefs */ {

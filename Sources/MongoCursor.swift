@@ -11,6 +11,8 @@ import CMongoC
 #else
 import mongoc
 #endif
+import SwiftFoundation
+import BinaryJSON
 
 public class MongoCursor {
 
@@ -55,12 +57,15 @@ public class MongoCursor {
         return try? MongoDocument(data: data)
     }
 
-    var nextJson: String? {
-        return try? MongoBSON.bsonToJson(nextBson)
-    }
+//    var nextJSON: String? {
+//        return try? MongoBSON.bsonToJson(nextBson)
+//    }
 
     var nextData: DocumentData? {
-        return try? MongoBSON(bson: nextBson).data
+        guard let doc = BSON.documentFromUnsafePointer(&nextBson) else {
+            return nil
+        }
+        return doc
     }
 
     /// Advances the cursor to the next document and returns whether it was successful.
@@ -83,48 +88,39 @@ public class MongoCursor {
         return error.error
     }
 
-    func getDocumentsJson() throws -> [String] {
-
-        var documents = [String]()
-        while nextIsOK {
-
-            guard let nextJson = nextJson else {
-                throw MongoError.CorruptDocument
-            }
-
-            documents.append(nextJson)
-        }
-
-        return documents
-    }
+//    func getDocumentsJSON() throws -> [String] {
+//
+//        var documents = [String]()
+//        while nextIsOK {
+//
+//            guard let nextJSON = nextJSON else {
+//                throw MongoError.CorruptDocument
+//            }
+//
+//            documents.append(nextJSON)
+//        }
+//
+//        return documents
+//    }
 
     func getDocumentsData() throws -> [DocumentData] {
 
+        var documents = [DocumentData]()
+        while nextIsOK {
 
-        let documents = try getDocumentsJson()
-            .map {
-                try JSONParser.parse($0)
+            guard let nextData = nextData else {
+                throw MongoError.CorruptDocument
             }
-            .map {
-                $0.dictionaryValue
-            }
-            .map { doc -> DocumentData in
-                guard let doc = doc else {
-                    throw MongoError.CorruptDocument
-                }
-                return jsonDictToDocumentData(doc)
-            }
+
+            documents.append(nextData)
+        }
 
         return documents
     }
 
     func getDocuments() throws -> [MongoDocument] {
 
-        let documents = try getDocumentsData()
-        
-        let documents1 = try documents
+        return try getDocumentsData()
             .map { try MongoDocument(data: $0) }
-
-        return documents1
     }
 }

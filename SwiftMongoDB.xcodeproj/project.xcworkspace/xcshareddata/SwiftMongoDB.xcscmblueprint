@@ -4,20 +4,22 @@
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "95438028B10BBB846574013D29F154A00556A9D1" : 0,
-    "FDEE8B45B447CE506CE8417A7AD78C4F5BE5B525" : 0,
-    "BE402B1476B14068CAB42F72F85BBA8FA743D115" : 0,
+    "74CCE3AAE8FE68D18AC15A55347E11C8E408C767" : 0,
     "5E417CDFFC24AD958435880AC1BFFEC6EE6EC603" : 0,
     "D0725CAC6FF2D66F2C83C2C48DC12106D42DAA64" : 0,
+    "BE402B1476B14068CAB42F72F85BBA8FA743D115" : 0,
+    "95438028B10BBB846574013D29F154A00556A9D1" : 0,
+    "FDEE8B45B447CE506CE8417A7AD78C4F5BE5B525" : 0,
     "4202455695F7B021363B482C067D3C0730DD1B34" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "CE61C0A3-C286-47BC-BF7E-213C4491B55E",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "95438028B10BBB846574013D29F154A00556A9D1" : "SwiftMongoDB\/Carthage\/Checkouts\/Nimble\/",
-    "FDEE8B45B447CE506CE8417A7AD78C4F5BE5B525" : "SwiftMongoDB\/",
-    "BE402B1476B14068CAB42F72F85BBA8FA743D115" : "SwiftMongoDB\/Carthage\/Checkouts\/libmongoc-xcode\/",
+    "74CCE3AAE8FE68D18AC15A55347E11C8E408C767" : "SwiftMongoDB\/Carthage\/Checkouts\/BinaryJSON\/",
     "5E417CDFFC24AD958435880AC1BFFEC6EE6EC603" : "SwiftMongoDB\/Carthage\/Checkouts\/libbson-xcode\/",
     "D0725CAC6FF2D66F2C83C2C48DC12106D42DAA64" : "SwiftMongoDB\/Carthage\/Checkouts\/Quick\/",
+    "BE402B1476B14068CAB42F72F85BBA8FA743D115" : "SwiftMongoDB\/Carthage\/Checkouts\/libmongoc-xcode\/",
+    "95438028B10BBB846574013D29F154A00556A9D1" : "SwiftMongoDB\/Carthage\/Checkouts\/Nimble\/",
+    "FDEE8B45B447CE506CE8417A7AD78C4F5BE5B525" : "SwiftMongoDB\/",
     "4202455695F7B021363B482C067D3C0730DD1B34" : "SwiftMongoDB\/Carthage\/Checkouts\/SwiftFoundation\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "SwiftMongoDB",
@@ -33,6 +35,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Danappelxx\/libbson-xcode.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5E417CDFFC24AD958435880AC1BFFEC6EE6EC603"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/PureSwift\/BinaryJSON.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "74CCE3AAE8FE68D18AC15A55347E11C8E408C767"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Quick\/Nimble.git",
