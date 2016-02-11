@@ -66,7 +66,7 @@ public class MongoCollection {
             batchSize: batchSize
         )
         
-        var cursor: MongoCursor
+        let cursor: MongoCursor
         let documents: [MongoDocument]
         if fields == nil {
             cursor = MongoCursor(

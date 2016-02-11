@@ -82,19 +82,32 @@ class SwiftMongoDBSpec: QuickSpec {
             describe("find method") {
                 // needs to query for specific id, then insert document with said id, then query again
                 it("queries for documents successfully") {
-
+                    
                     let objId = ["$oid":"55ef8ab5bb6a9b5717de15e9"]
-
+                    
                     let resultBefore = try! collection.find(["_id":objId]).count
-
+                    
                     var doc2 = document.data
                     doc2["_id"] = objId
-
+                    
                     try! collection.insert(doc2)
-
+                    
                     let resultAfter = try! collection.find(["_id":objId]).count
-
+                    
                     expect(resultAfter - resultBefore).to(equal(1))
+                }
+                
+                it("limits fields of documents successfully") {
+                    
+                    let objId = ["$oid":"55ef8ab5bb6a9b5717de15e9"]
+                    
+                    let resultAllFields = try! collection.findOne(["_id":objId])
+                    
+                    expect(resultAllFields?.data.count == document.data.count)
+                    
+                    let resultOneField = try! collection.findOne(["_id":objId], fields: ["string": true, "_id": false])
+                    
+                    expect(resultOneField?.data.count == 1)
                 }
                 
                 it("properly applies the limit flag") {
@@ -106,7 +119,6 @@ class SwiftMongoDBSpec: QuickSpec {
                     for _ in 0..<10 {
                         try! collection.insert(data)
                     }
-
                     let count = try! collection.find(limit: 3).count
 
                     expect(count).to(equal(3))
