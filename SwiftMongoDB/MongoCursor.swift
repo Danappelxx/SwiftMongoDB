@@ -23,7 +23,7 @@ public class MongoCursor {
     }
     
     // this is way too ugly
-    init(collection: MongoCollection, operation: MongoCursorOperation, query: _bson_ptr_mutable, options: MongoCursorOptions) {
+    init(collection: MongoCollection, operation: MongoCursorOperation, query: _bson_ptr_mutable, fields: _bson_ptr_mutable, options: MongoCursorOptions) {
         
         switch operation {
 
@@ -34,7 +34,9 @@ public class MongoCursor {
                 options.skip.UInt32Value,
                 options.limit.UInt32Value,
                 options.batchSize.UInt32Value,
-                query, nil, nil
+                query,
+                fields,
+                nil
             )
         }
     }

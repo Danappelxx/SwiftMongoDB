@@ -55,24 +55,39 @@ public class MongoCollection {
         try error.throwIfError()
     }
     
-    public func find(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
+    public func find(query: DocumentData = DocumentData(), fields: DocumentData? = nil, flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
 
         var query = try MongoBSON(data: query).bson
-
         // standard options - should be customizable later on
-        let cursor = MongoCursor(
-            collection: self,
-            operation: .Find,
-            query: &query,
-            options: (
-                queryFlags: flags.rawFlag,
-                skip: skip,
-                limit: limit,
-                batchSize: batchSize
-            )
+        let options = (
+            queryFlags: flags.rawFlag,
+            skip: skip,
+            limit: limit,
+            batchSize: batchSize
         )
-
-        let documents = try cursor.getDocuments()
+        
+        let cursor: MongoCursor
+        let documents: [MongoDocument]
+        if fields == nil {
+            cursor = MongoCursor(
+                collection: self,
+                operation: .Find,
+                query: &query,
+                fields: nil,
+                options: options
+            )
+            documents = try cursor.getDocuments()
+        } else {
+            var fields = try MongoBSON(data: fields!).bson
+            cursor = MongoCursor(
+                collection: self,
+                operation: .Find,
+                query: &query,
+                fields: &fields,
+                options: options
+            )
+            documents = try cursor.getDocuments()
+        }
 
         if cursor.lastError.isError {
             throw cursor.lastError
@@ -81,9 +96,9 @@ public class MongoCollection {
         return documents
     }
     
-    public func findOne(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, batchSize: Int = 0) throws -> MongoDocument? {
+    public func findOne(query: DocumentData = DocumentData(), fields: DocumentData? = nil, flags: QueryFlags = QueryFlags.None, skip: Int = 0, batchSize: Int = 0) throws -> MongoDocument? {
 
-        let doc = try find(query, flags: flags, skip: skip, limit: 1, batchSize: batchSize)
+        let doc = try find(query, fields: fields, flags: flags, skip: skip, limit: 1, batchSize: batchSize)
 
         if doc.count == 0 {
             return nil
