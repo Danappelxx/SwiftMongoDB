@@ -280,7 +280,7 @@ Implement BSON -> Swift, bugfixes.
 Make SwiftMongoDB multiplatform.
 
 ### 0.0.4 - 0.0.2
-Getting Cocoapods to work, bugfixes.
+Getting CocoaPods to work, bugfixes.
 
 ### 0.0.1
 Core operations implemented (insert, find, remove).
