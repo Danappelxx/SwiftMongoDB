@@ -40,10 +40,10 @@ public class MongoCollection {
 
     public func insert(document: MongoDocument, flags: InsertFlags = InsertFlags.None) throws {
 
-        var document = document.bson
+        let document = document.bson
         var error = bson_error_t()
 
-        mongoc_collection_insert(self.collectionRaw, flags.rawFlag, &document, nil, &error)
+        mongoc_collection_insert(self.collectionRaw, flags.rawFlag, document, nil, &error)
 
         try error.throwIfError()
     }
@@ -62,13 +62,13 @@ public class MongoCollection {
 
     public func find(query: DocumentData = DocumentData(), flags: QueryFlags = QueryFlags.None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> [MongoDocument] {
 
-        var query = try MongoDocument(data: query).bson
+        let query = try MongoDocument(data: query).bson
 
         // standard options - should be customizable later on
         let cursor = MongoCursor(
             collection: self,
             operation: .Find,
-            query: &query,
+            query: query,
             options: (
                 queryFlags: flags.rawFlag,
                 skip: skip,
@@ -99,12 +99,12 @@ public class MongoCollection {
 
     public func update(query: DocumentData = DocumentData(), newValue: DocumentData, flags: UpdateFlags = UpdateFlags.None) throws -> Bool {
 
-        var query = try MongoDocument(data: query).bson
+        let query = try MongoDocument(data: query).bson
 
-        var document = try MongoDocument(data: newValue).bson
+        let document = try MongoDocument(data: newValue).bson
 
         var error = bson_error_t()
-        let success = mongoc_collection_update(self.collectionRaw, flags.rawFlag, &query, &document, nil, &error)
+        let success = mongoc_collection_update(self.collectionRaw, flags.rawFlag, query, document, nil, &error)
 
         try error.throwIfError()
 
@@ -114,10 +114,10 @@ public class MongoCollection {
 
     public func remove(query: DocumentData = DocumentData(), flags: RemoveFlags = RemoveFlags.None) throws -> Bool {
 
-        var query = try MongoDocument(data: query).bson
+        let query = try MongoDocument(data: query).bson
 
         var error = bson_error_t()
-        let success = mongoc_collection_remove(self.collectionRaw, flags.rawFlag, &query, nil, &error)
+        let success = mongoc_collection_remove(self.collectionRaw, flags.rawFlag, query, nil, &error)
 
         try error.throwIfError()
 
@@ -126,10 +126,10 @@ public class MongoCollection {
 
     public func save(document: DocumentData) throws -> Bool {
 
-        var document = try MongoDocument(data: document).bson
+        let document = try MongoDocument(data: document).bson
         var error = bson_error_t()
 
-        let success = mongoc_collection_save(collectionRaw, &document, nil, &error)
+        let success = mongoc_collection_save(collectionRaw, document, nil, &error)
 
         try error.throwIfError()
 
@@ -138,12 +138,12 @@ public class MongoCollection {
 
     public func performBasicCollectionCommand(command: DocumentData) throws -> DocumentData {
 
-        var command = try MongoDocument(data: command).bson
+        let command = try MongoDocument(data: command).bson
 
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_collection_command_simple(self.collectionRaw, &command, nil, &reply, &error)
+        mongoc_collection_command_simple(self.collectionRaw, command, nil, &reply, &error)
 
         try error.throwIfError()
 
@@ -171,11 +171,11 @@ public class MongoCollection {
 
     public func count(query: DocumentData, flags: QueryFlags, skip: Int, limit: Int) throws -> Int {
 
-        var query = try MongoDocument(data: query).bson
+        let query = try MongoDocument(data: query).bson
 
         var error = bson_error_t()
 
-        let count = mongoc_collection_count(collectionRaw, flags.rawFlag, &query, Int64(skip), Int64(limit), nil, &error)
+        let count = mongoc_collection_count(collectionRaw, flags.rawFlag, query, Int64(skip), Int64(limit), nil, &error)
 
         try error.throwIfError()
 
@@ -204,12 +204,12 @@ public class MongoCollection {
 
     public func stats(options: DocumentData) throws -> DocumentData {
 
-        var options = try MongoDocument(data: options).bson
+        let options = try MongoDocument(data: options).bson
 
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_collection_stats(collectionRaw, &options, &reply, &error)
+        mongoc_collection_stats(collectionRaw, options, &reply, &error)
 
         try error.throwIfError()
 
@@ -220,12 +220,12 @@ public class MongoCollection {
     }
 
     public func validate(options: DocumentData) throws -> DocumentData {
-        var options = try MongoDocument(data: options).bson
+        let options = try MongoDocument(data: options).bson
 
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_collection_validate(collectionRaw, &options, &reply, &error)
+        mongoc_collection_validate(collectionRaw, options, &reply, &error)
 
         try error.throwIfError()
 

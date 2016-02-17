@@ -105,9 +105,9 @@ public class MongoDatabase {
 
         var error = bson_error_t()
 
-        var optionsRaw = try MongoDocument(data: options).bson
+        let optionsRaw = try MongoDocument(data: options).bson
 
-        let collectionRaw = mongoc_database_create_collection(databaseRaw, name, &optionsRaw, &error)
+        let collectionRaw = mongoc_database_create_collection(databaseRaw, name, optionsRaw, &error)
 
         try error.throwIfError()
 
@@ -135,9 +135,9 @@ public class MongoDatabase {
     public func findCollections(filter filter: DocumentData) throws -> MongoCursor {
 
         var error = bson_error_t()
-        var filterRaw = try MongoDocument(data: filter).bson
+        let filterRaw = try MongoDocument(data: filter).bson
 
-        let cursorRaw = mongoc_database_find_collections(databaseRaw, &filterRaw, &error)
+        let cursorRaw = mongoc_database_find_collections(databaseRaw, filterRaw, &error)
 
         try error.throwIfError()
 
@@ -173,12 +173,12 @@ public class MongoDatabase {
 
     public func performBasicDatabaseCommand(command: DocumentData) throws -> DocumentData {
 
-        var command = try MongoDocument(data: command).bson
+        let command = try MongoDocument(data: command).bson
 
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_database_command_simple(self.databaseRaw, &command, nil, &reply, &error)
+        mongoc_database_command_simple(self.databaseRaw, command, nil, &reply, &error)
 
         try error.throwIfError()
 

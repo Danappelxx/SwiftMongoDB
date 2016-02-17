@@ -16,7 +16,7 @@ import BinaryJSON
 
 public class MongoDocument {
 
-    let bson: bson_t
+    let bson: _bson_ptr_mutable
 
     // public var JSONString: String? {
     //     return JSON.Value(rawValue: data)?.toString()
@@ -40,11 +40,9 @@ public class MongoDocument {
         self.data = data
 
         guard let bson = BSON.unsafePointerFromDocument(data) else {
-            self.bson = bson_t()
             throw MongoError.InvalidData
         }
-        bson_destroy(bson)
-        self.bson = bson.memory
+        self.bson = bson
     }
 
 //    convenience public init(JSONString: String) throws {
