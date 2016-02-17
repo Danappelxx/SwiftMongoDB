@@ -6,11 +6,11 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-#if os(Linux)
+// #if os(Linux)
 import CMongoC
-#else
-import mongoc
-#endif
+// #else
+// import mongoc
+// #endif
 import BinaryJSON
 
 public class MongoDatabase {

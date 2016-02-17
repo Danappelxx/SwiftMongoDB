@@ -6,21 +6,21 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-#if os(Linux)
+// #if os(Linux)
 import CMongoC
-#else
-import mongoc
-#endif
-import SwiftFoundation
+// #else
+// import mongoc
+// #endif
+// import SwiftFoundation
 import BinaryJSON
 
 public class MongoDocument {
 
     let bson: bson_t
 
-    public var JSONString: String? {
-        return JSON.Value(rawValue: data)?.toString()
-    }
+    // public var JSONString: String? {
+    //     return JSON.Value(rawValue: data)?.toString()
+    // }
 
     public var dataWithoutObjectId: DocumentData {
         var copy = self.data

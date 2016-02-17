@@ -1,6 +1,0 @@
-github "Quick/Nimble" "v3.0.0"
-github "Quick/Quick" "v0.8.0"
-github "PureSwift/SwiftFoundation" "1bd7e82c365c38ed0bf94917f57713da72543005"
-github "Danappelxx/libbson-xcode" "1.2.1"
-github "PureSwift/BinaryJSON" "e92341d68d9727736ed3877e77b51caf768211d1"
-github "Danappelxx/libmongoc-xcode" "1.2.1"

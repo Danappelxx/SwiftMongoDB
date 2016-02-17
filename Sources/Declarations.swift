@@ -6,12 +6,12 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-#if os(Linux)
+// #if os(Linux)
 import CMongoC
-#else
-import mongoc
-#endif
-import SwiftFoundation
+// #else
+// import mongoc
+// #endif
+// import SwiftFoundation
 import BinaryJSON
 
 public typealias DocumentData = BSON.Document
@@ -46,7 +46,7 @@ extension Int {
 //}
 
 //func JSONObjectToDocumentData(object: JSON.Object) -> DocumentData {
-//    
+//
 //    return object
 //        .reduce(DocumentData()) { dict, pair in
 //            var dict = dict
@@ -55,7 +55,7 @@ extension Int {
 //        }
 //}
 //
-//extension String {    
+//extension String {
 //    func parseDocumentData() throws -> DocumentData {
 //        guard let obj = self.toJSON()?.objectValue else { throw MongoError.InvalidJSON }
 //        return JSONObjectToDocumentData(obj)

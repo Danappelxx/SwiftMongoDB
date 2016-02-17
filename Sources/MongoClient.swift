@@ -6,11 +6,11 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-#if os(Linux)
+// #if os(Linux)
 import CMongoC
-#else
-import mongoc
-#endif
+// #else
+// import mongoc
+// #endif
 import BinaryJSON
 
 public class MongoClient {
@@ -94,7 +94,7 @@ public class MongoClient {
     }
 
     public func performBasicClientCommand(command: DocumentData, databaseName: String) throws -> DocumentData {
-        
+
         guard let commandBSON = BSON.unsafePointerFromDocument(command) else {
             throw MongoError.InvalidData
         }
@@ -108,7 +108,7 @@ public class MongoClient {
         guard let res = BSON.documentFromUnsafePointer(&reply) else {
             throw MongoError.CorruptDocument
         }
-        
+
         return res
     }
 
@@ -121,7 +121,7 @@ public class MongoClient {
 //        guard let fieldsBSON = BSON.unsafePointerFromDocument(fields) else {
 //            throw MongoError.InvalidData
 //        }
-//        
+//
 //        var query = try MongoBSON(data: query).bson
 //        var fields = try MongoBSON(json: fieldsJSON ).bson
 //

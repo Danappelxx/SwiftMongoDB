@@ -6,12 +6,12 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-#if os(Linux)
+// #if os(Linux)
 import CMongoC
-#else
-import mongoc
-#endif
-import SwiftFoundation
+// #else
+// import mongoc
+// #endif
+// import SwiftFoundation
 import BinaryJSON
 
 public class MongoCollection {
@@ -160,7 +160,7 @@ public class MongoCollection {
 //    public func performCommand(command: DocumentData, flags: QueryFlags, options: QueryOptions, fields: [String]) throws -> MongoCursor {
 //
 //        guard let fieldsJSON = fields.toJSON()?.toString() else { throw MongoError.InvalidData }
-//        
+//
 //        var command = try MongoBSON(data: command).bson
 //        var fields = try MongoBSON(json: fieldsJSON).bson
 //

@@ -6,11 +6,11 @@
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-#if os(Linux)
+// #if os(Linux)
 import CMongoC
-#else
-import mongoc
-#endif
+// #else
+// import mongoc
+// #endif
 
 
 public struct MongoError: ErrorType, CustomStringConvertible {
@@ -63,7 +63,7 @@ public struct MongoError: ErrorType, CustomStringConvertible {
 
     // BSON
     public static let CorruptDocument = MongoError(description: "The given document is corrupt.", code: 1101)
-    
+
 
 }
 
