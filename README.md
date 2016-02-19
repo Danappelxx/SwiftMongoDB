@@ -243,6 +243,10 @@ Any and all help is very welcome! Feel free to fork and submit a pull request - 
 You should start by taking a look at the current issues and see if there's anything you want to implement/fix there.
 
 # Changelog
+## 0.3
+### 0.3.0 
+SPM and Linux support
+
 ## 0.2
 ### 0.2.3
 Update dependencies, fix a few bugs.
