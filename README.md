@@ -2,9 +2,19 @@
 A Swifter way to work with MongoDB in Swift. Wraps around the [MongoDB C Driver 1.2.0](http://api.mongodb.org/c/1.2.0/) (supports MongoDB version 2.4 and later).
 
 # Setup
-The simplest way to use SwiftMongoDB is through Carthage.
+The simplest and linux-compatible way to use SwiftMongoDB is through the official Swift package manager. Simply add it to your `Package.swift` like so:
 
-All you have to do is add the following to your Cartfile:
+```swift
+import PackageDescription
+let package = Package(
+  name: "foo",
+  dependencies: [
+    .Package(url: "https://github.com/Danappelxx/SwiftMongoDB", majorVersion: 0, minor: 3)
+  ]
+)
+```
+
+If you want to use Carthage, all you have to do is add the following to your Cartfile:
 
 ```
 github "Danappelxx/SwiftMongoDB"
@@ -16,10 +26,7 @@ and then run:
 $ carthage bootstrap
 ```
 
-This gives you a built `SwiftMongoDB.framework` in `Carthage/Build/Mac`. For instructions on how to use it, refer to the [Carthage README](https://github.com/Carthage/Carthage) You can now proceed to read through the tutorial.
-
-# Example
-There is an example application [here](https://github.com/Danappelxx/MongoDBExplorer). It's probably better to read the rest of the README first, though.
+This gives you a built `SwiftMongoDB.framework` in `Carthage/Build/Mac`. For instructions on how to use it, refer to the [Carthage README](https://github.com/Carthage/Carthage).
 
 # Tutorial
 This example assumes that you have setup the project and have MongoDB running.
@@ -30,17 +37,15 @@ First, you need to establish a connection to the MongoDB server.
 let client = try MongoClient(host: "localhost", port: 27017, database: "test")
 ```
 
-If you have a keen eye you may have noticed the `try` keyword. This is due to SwiftMongoDB using the Swift 2 error handling model. What this means is that most methods need to be wrapped in a `do {}` block, with an optional `catch {}` block afterwards (this won't be shown, but will be assumed). Hopefully this will make working with SwiftMongoDB cleaner and more predictable.
-
 You can connect to a MongoDB instance (local or not) this way.
 
-Then you need to pick a collection. The collection doesn't have to exist (it will be created automatically if it isn't).
+Then you need to create a collection. The collection doesn't have to exist (it will be created automatically if it isn't).
 
 ```swift
 let subjects = MongoCollection(collectionName: "subjects", client: client)
 ```
 
-An important aspect of SwiftMongoDB is how it handles inserting documents. Most of the work will be done with a medium called MongoDocument, where you insert either a `[String : AnyObject]` type dictionary, a JSON string, or from a mongoose-like schema. It then gets converted to a lower level type called BSON behind the scenes (you, fortunately, don't have to worry about this).
+An important aspect of SwiftMongoDB is how it handles inserting documents. Most of the work will be done with a medium called MongoDocument, where you insert either a `[String:BSON]` type dictionary or a JSON string. It then gets converted to a lower level type called BSON behind the scenes (you, fortunately, don't have to worry about this).
 
 For example, say you wanted to create a human named Dan. This is how it would look in JSON:
 
@@ -70,27 +75,6 @@ let data = [
 ]
 
 let subject = MongoDocument(data)
-```
-
-And the (much cleaner) schema option which SwiftMongoDB provides you with looks like this. All you have to do is create a struct, class, or protocol that conforms to the type `MongoObject`. For more information about schemas, visit the schema section of this README.
-
-```swift
-struct TestSubject: MongoObject {
-  let name = "Dan"
-  let age = 15
-  let lovesProgramming = true
-  let friends = [
-    "Billy",
-    "Bob",
-    "Joe"
-  ]
-  let location = [
-    "state" : "California"
-  ]
-  let favoriteNumbers = [1,2,3,4,5]
-}
-
-let subject = TestSubject().Document()
 ```
 
 You can then insert the newly created document(s) into the collection.
@@ -125,115 +109,6 @@ try subjects.remove(["name" : "Dan"])
 
 Those are the basics - it's really a very small simple library. You can take a look at the test suite which should show you some of the methods not shown here. Otherwise, feel free to jump right into the deep end and start using SwiftMongoDB!
 
-# Schemas
-Schemas are a very powerful part of SwiftMongoDB. If you've ever used Mongoose, this might look a little familiar.
-
-The most basic example uses a generic object with properties, which can then be inserted into a collection.
-
-```swift
-struct MyBasicObject: MongoObject {
-
-    var _privateData: String {
-        return "some computed data which will be ignored."
-    }
-
-    var prop1 = "123"
-    var prop2 = 10
-    var prop3 = true
-
-    func doStuff() {
-        // do stuff
-    }
-}
-
-var myBasicObject = MyBasicObject()
-myBasicObject.prop3 = false
-// can now insert myBasicObject into a collection.
-```
-
-The next example uses protocols to define schemas to make it easier for you to create multiple objects under the same schema.
-
-```swift
-protocol MySchema: MongoObject {
-
-    var prop1: String {get}
-    var prop2: Int {get}
-    var prop3: Bool {get}
-}
-
-struct MySchemadObject1: MySchema {
-
-    var _privateData: String {
-        return "Some private, hidden data."
-    }
-
-    let prop1 = "123"
-    let prop2 = 10
-    let prop3 = true
-
-    func doStuff() {
-        // do stuff
-    }
-}
-
-struct MySchemadObject2: MySchema {
-
-    var _privateData: String {
-        return "Some private, hidden data."
-    }
-
-    var prop1 = "hello world!"
-    var prop2 = 1
-    var prop3 = false
-
-    func doOtherStuff() {
-        // do other stuff
-    }
-}
-
-var mySchemadObject1 = MySchemadObject1()
-//mySchemadObject1.prop2 = 5 cannot do
-var mySchemadObject2 = MySchemadObject2()
-//mySchemadObject2.prop2 = 5 can do
-
-// can now insert mySchemadObject1, mySchemadObject2 into a collection
-```
-
-This last example takes advantages of a new feature in Swift 2 called Protocol Extensions. Essentially, it allows you to insert implementations of the protocol in the protocol itself. In SwiftMongoDB, you can use protocol extensions to define default values in your schema.
-
-```swift
-protocol MySchemaWithDefaults: MongoObject {
-    var prop1: String {get}
-    var prop2: Int {get}
-    var prop3: Bool {get}
-}
-
-extension MySchemaWithDefaults {
-    var prop1: String {
-        return "hello world!"
-    }
-
-    var prop2: Int {
-        return 5
-    }
-}
-
-struct MyObjectWithDefaults: MySchemaWithDefaults {
-    var prop2 = 7
-    var prop3 = false
-}
-
-let myObjectWithDefaults = MyObjectWithDefaults()
-
-myObjectWithDefaults.prop1 // results in default value: hello world
-myObjectWithDefaults.prop2 // results in non-default value: 7
-myObjectWithDefaults.prop3 // results in schema'd but not defaulted value: false
-
-// can now insert myObjectWithDefaults into a collection.
-```
-
-Hopefully schemas will allow your code to be much more clean and strict by taking advantage of default values through protocol extensions and property-name autocomplete.
-
 # Roadmap
 Ideally I would like to mirror all of the features that the Mongo Shell/drivers offer, and eventually add my own touch to it.
 
@@ -244,7 +119,7 @@ You should start by taking a look at the current issues and see if there's anyth
 
 # Changelog
 ## 0.3
-### 0.3.0 
+### 0.3.0
 SPM and Linux support
 
 ## 0.2
