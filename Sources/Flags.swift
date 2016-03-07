@@ -1,21 +1,16 @@
 //
-//  MongoCollectionFlags.swift
+//  CollectionFlags.swift
 //  SwiftMongoDB
 //
 //  Created by Dan Appel on 11/21/15.
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-// #if os(Linux)
 import CMongoC
-// #else
-// import mongoc
-// #endif
-
 
 public typealias QueryOptions = (skip: Int, limit: Int, batchSize: Int)
 
-public enum QueryFlags {
+public enum QueryFlag {
     case None
     case TailableCursor
     case SlaveOK
@@ -42,7 +37,7 @@ public enum QueryFlags {
 }
 
 
-public enum InsertFlags {
+public enum InsertFlag {
     case None
     case ContinueOnError
 
@@ -54,7 +49,7 @@ public enum InsertFlags {
     }
 }
 
-public enum UpdateFlags {
+public enum UpdateFlag {
     case None
     case Upsert
     case MultiUpdate
@@ -68,7 +63,7 @@ public enum UpdateFlags {
     }
 }
 
-public enum RemoveFlags {
+public enum RemoveFlag {
     case None
     case SingleRemove
 
