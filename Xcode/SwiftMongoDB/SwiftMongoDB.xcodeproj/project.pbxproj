@@ -15,7 +15,7 @@
 		37E300211C8108D0006A0B0D /* Cursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E300161C8108D0006A0B0D /* Cursor.swift */; };
 		37E300221C8108D0006A0B0D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E300171C8108D0006A0B0D /* Database.swift */; };
 		37E300241C8108D0006A0B0D /* MongoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E300191C8108D0006A0B0D /* MongoError.swift */; };
-		37F55EE31C8105BC0079D424 /* SwiftMongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F55ED81C8105BC0079D424 /* SwiftMongoDB.framework */; };
+		37F55EE31C8105BC0079D424 /* MongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F55ED81C8105BC0079D424 /* MongoDB.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,7 +74,7 @@
 		37E300161C8108D0006A0B0D /* Cursor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cursor.swift; sourceTree = "<group>"; };
 		37E300171C8108D0006A0B0D /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		37E300191C8108D0006A0B0D /* MongoError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MongoError.swift; sourceTree = "<group>"; };
-		37F55ED81C8105BC0079D424 /* SwiftMongoDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftMongoDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		37F55ED81C8105BC0079D424 /* MongoDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MongoDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37F55EE21C8105BC0079D424 /* SwiftMongoDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftMongoDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -90,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37F55EE31C8105BC0079D424 /* SwiftMongoDB.framework in Frameworks */,
+				37F55EE31C8105BC0079D424 /* MongoDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,7 +151,7 @@
 		37F55ED91C8105BC0079D424 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				37F55ED81C8105BC0079D424 /* SwiftMongoDB.framework */,
+				37F55ED81C8105BC0079D424 /* MongoDB.framework */,
 				37F55EE21C8105BC0079D424 /* SwiftMongoDBTests.xctest */,
 			);
 			name = Products;
@@ -196,7 +196,7 @@
 			);
 			name = SwiftMongoDB;
 			productName = SwiftMongoDB;
-			productReference = 37F55ED81C8105BC0079D424 /* SwiftMongoDB.framework */;
+			productReference = 37F55ED81C8105BC0079D424 /* MongoDB.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		37F55EE11C8105BC0079D424 /* SwiftMongoDBTests */ = {
@@ -450,7 +450,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDB;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MongoDB;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -472,7 +472,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvappel.SwiftMongoDB;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MongoDB;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

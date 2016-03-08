@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import SwiftMongoDB
+import MongoDB
 
 class ClientTests: XCTestCase {
 
