@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37920A671C8E87F800C53DBE /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37920A661C8E87F800C53DBE /* DatabaseTests.swift */; };
+		37920A6A1C8E908000C53DBE /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37920A691C8E908000C53DBE /* CollectionTests.swift */; };
 		37AA365C1C8E0C640021DA26 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA365B1C8E0C640021DA26 /* ClientTests.swift */; };
 		37E3001D1C8108D0006A0B0D /* Declarations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E300121C8108D0006A0B0D /* Declarations.swift */; };
 		37E3001E1C8108D0006A0B0D /* Flags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E300131C8108D0006A0B0D /* Flags.swift */; };
@@ -19,23 +21,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		37AA36541C8D6EDA0021DA26 /* PBXContainerItemProxy */ = {
+		370CCEA01C8EAF3200549BDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 37AA364F1C8D6EDA0021DA26 /* BinaryJSON.xcodeproj */;
+			containerPortal = 370CCE9B1C8EAF3200549BDB /* BinaryJSON.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 6ED88B4E1C1E226A00DF07E3;
 			remoteInfo = "BinaryJSON OS X";
 		};
-		37AA36561C8D6EDA0021DA26 /* PBXContainerItemProxy */ = {
+		370CCEA21C8EAF3200549BDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 37AA364F1C8D6EDA0021DA26 /* BinaryJSON.xcodeproj */;
+			containerPortal = 370CCE9B1C8EAF3200549BDB /* BinaryJSON.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 6ED88B581C1E226A00DF07E3;
 			remoteInfo = BinaryJSONTests;
 		};
-		37AA36581C8D6EDF0021DA26 /* PBXContainerItemProxy */ = {
+		370CCEA41C8EAF3800549BDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 37AA364F1C8D6EDA0021DA26 /* BinaryJSON.xcodeproj */;
+			containerPortal = 370CCE9B1C8EAF3200549BDB /* BinaryJSON.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 6ED88B4D1C1E226A00DF07E3;
 			remoteInfo = "BinaryJSON OS X";
@@ -64,7 +66,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		37AA364F1C8D6EDA0021DA26 /* BinaryJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BinaryJSON.xcodeproj; path = "../../Packages/BinaryJSON-1.1.3/Xcode/BinaryJSON.xcodeproj"; sourceTree = "<group>"; };
+		370CCE9B1C8EAF3200549BDB /* BinaryJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BinaryJSON.xcodeproj; path = "../../Packages/BinaryJSON-1.1.4/Xcode/BinaryJSON.xcodeproj"; sourceTree = "<group>"; };
+		37920A661C8E87F800C53DBE /* DatabaseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
+		37920A691C8E908000C53DBE /* CollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTests.swift; sourceTree = "<group>"; };
 		37AA365B1C8E0C640021DA26 /* ClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientTests.swift; sourceTree = "<group>"; };
 		37E300081C8108AB006A0B0D /* CMongoC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CMongoC.xcodeproj; path = ../CMongoC/CMongoC.xcodeproj; sourceTree = "<group>"; };
 		37E300121C8108D0006A0B0D /* Declarations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Declarations.swift; sourceTree = "<group>"; };
@@ -97,11 +101,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		37AA36501C8D6EDA0021DA26 /* Products */ = {
+		370CCE9C1C8EAF3200549BDB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				37AA36551C8D6EDA0021DA26 /* BinaryJSON.framework */,
-				37AA36571C8D6EDA0021DA26 /* BinaryJSONTests.xctest */,
+				370CCEA11C8EAF3200549BDB /* BinaryJSON.framework */,
+				370CCEA31C8EAF3200549BDB /* BinaryJSONTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,6 +114,8 @@
 			isa = PBXGroup;
 			children = (
 				37AA365B1C8E0C640021DA26 /* ClientTests.swift */,
+				37920A661C8E87F800C53DBE /* DatabaseTests.swift */,
+				37920A691C8E908000C53DBE /* CollectionTests.swift */,
 			);
 			name = Tests;
 			path = ../../Tests;
@@ -160,7 +166,7 @@
 		37F55F081C8106110079D424 /* Subprojects */ = {
 			isa = PBXGroup;
 			children = (
-				37AA364F1C8D6EDA0021DA26 /* BinaryJSON.xcodeproj */,
+				370CCE9B1C8EAF3200549BDB /* BinaryJSON.xcodeproj */,
 				37E300081C8108AB006A0B0D /* CMongoC.xcodeproj */,
 			);
 			name = Subprojects;
@@ -191,7 +197,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				37AA36591C8D6EDF0021DA26 /* PBXTargetDependency */,
+				370CCEA51C8EAF3800549BDB /* PBXTargetDependency */,
 				37E300101C8108BA006A0B0D /* PBXTargetDependency */,
 			);
 			name = SwiftMongoDB;
@@ -247,8 +253,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 37AA36501C8D6EDA0021DA26 /* Products */;
-					ProjectRef = 37AA364F1C8D6EDA0021DA26 /* BinaryJSON.xcodeproj */;
+					ProductGroup = 370CCE9C1C8EAF3200549BDB /* Products */;
+					ProjectRef = 370CCE9B1C8EAF3200549BDB /* BinaryJSON.xcodeproj */;
 				},
 				{
 					ProductGroup = 37E300091C8108AB006A0B0D /* Products */;
@@ -264,18 +270,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		37AA36551C8D6EDA0021DA26 /* BinaryJSON.framework */ = {
+		370CCEA11C8EAF3200549BDB /* BinaryJSON.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = BinaryJSON.framework;
-			remoteRef = 37AA36541C8D6EDA0021DA26 /* PBXContainerItemProxy */;
+			remoteRef = 370CCEA01C8EAF3200549BDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		37AA36571C8D6EDA0021DA26 /* BinaryJSONTests.xctest */ = {
+		370CCEA31C8EAF3200549BDB /* BinaryJSONTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = BinaryJSONTests.xctest;
-			remoteRef = 37AA36561C8D6EDA0021DA26 /* PBXContainerItemProxy */;
+			remoteRef = 370CCEA21C8EAF3200549BDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		37E3000D1C8108AB006A0B0D /* CMongoC.framework */ = {
@@ -323,6 +329,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37920A671C8E87F800C53DBE /* DatabaseTests.swift in Sources */,
+				37920A6A1C8E908000C53DBE /* CollectionTests.swift in Sources */,
 				37AA365C1C8E0C640021DA26 /* ClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -330,10 +338,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		37AA36591C8D6EDF0021DA26 /* PBXTargetDependency */ = {
+		370CCEA51C8EAF3800549BDB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "BinaryJSON OS X";
-			targetProxy = 37AA36581C8D6EDF0021DA26 /* PBXContainerItemProxy */;
+			targetProxy = 370CCEA41C8EAF3800549BDB /* PBXContainerItemProxy */;
 		};
 		37E300101C8108BA006A0B0D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

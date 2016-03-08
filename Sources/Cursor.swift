@@ -82,6 +82,14 @@ public struct Cursor: GeneratorType, SequenceType {
 
         return documents
     }
+
+    public func first() throws -> BSON.Document? {
+        return try self.nextDocument()
+    }
+
+    public func destroy() {
+        mongoc_cursor_destroy(self.cursor.pointer)
+    }
 }
 
 private final class UnsafeCursor:  GeneratorType {

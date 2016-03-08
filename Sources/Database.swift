@@ -13,13 +13,9 @@ public final class Database {
 
     let pointer: _mongoc_database
 
+    /// Databases are automatically created on the MongoDB server upon insertion of the first document into a collection. There is no need to create a database manually.
     public init(client: Client, name: String) {
         self.pointer = mongoc_client_get_database(client.pointer, name)
-    }
-
-    /// Creates the database using the default database for the client
-    public init(client: Client) {
-        self.pointer = mongoc_client_get_default_database(client.pointer)
     }
 
     deinit {
@@ -29,6 +25,28 @@ public final class Database {
     public var name: String {
         let nameRaw = mongoc_database_get_name(pointer)
         return String.fromCString(nameRaw)!
+    }
+
+    public var collectionNames: [String]? {
+        var error = bson_error_t()
+
+        var buffer = mongoc_database_get_collection_names(self.pointer, &error)
+
+        if error.error.isError {
+            return nil
+        }
+
+        var names = [String]()
+
+        while buffer.memory != nil {
+
+            let name = String.fromCString(buffer.memory)!
+            names.append(name)
+
+            buffer = buffer.successor()
+        }
+
+        return names
     }
 
     public func removeUser(username: String) throws -> Bool {
@@ -109,30 +127,14 @@ public final class Database {
             throw MongoError.CorruptDocument
         }
 
-        let databasePointer = mongoc_database_create_collection(pointer, name, options, &error)
+        mongoc_database_create_collection(pointer, name, options, &error)
 
         try error.throwIfError()
 
-        let collection = Collection(name: name, databaseName: self.name, pointer: databasePointer)
+        let collection = Collection(database: self, name: name)
 
         return collection
     }
-
-//    public func getReadPrefs() throws /* -> _mongoc_read_prefs */ {
-////        _mongoc_read_prefs
-//    }
-//
-//    public func setReadPrefs(/*readPrefs: _mongoc_read_prefs*/) throws {
-//
-//    }
-//
-//    public func getWriteConcern() throws /* _mongoc_write_concern */ {
-//
-//    }
-//
-//    public func setWriteConcern(/*writeConcern: _mongoc_write_concern*/) throws {
-//
-//    }
 
     public func findCollections(filter filter: BSON.Document) throws -> Cursor {
 
@@ -149,37 +151,6 @@ public final class Database {
         let cursor = Cursor(pointer: cursorPointer)
 
         return cursor
-    }
-
-    public func getCollection(name: String) -> Collection {
-
-
-        let collectionPointer = mongoc_database_get_collection(pointer, name)
-
-        let collection = Collection(name: name, databaseName: self.name, pointer: collectionPointer)
-
-        return collection
-    }
-
-    public func getCollectionNames() throws -> [String] {
-
-        var error = bson_error_t()
-
-        var buffer = mongoc_database_get_collection_names(self.pointer, &error)
-
-        try error.throwIfError()
-
-        var names = [String]()
-
-        while buffer != nil {
-
-            let name = String.fromCString(buffer.memory)!
-            names.append(name)
-
-            buffer = buffer.successor()
-        }
-
-        return names
     }
 
     public func basicCommand(command command: BSON.Document) throws -> BSON.Document {

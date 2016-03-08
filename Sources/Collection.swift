@@ -16,17 +16,12 @@ public final class Collection {
 
     let pointer: _mongoc_collection
 
-    convenience public init(database: Database, name: String) {
+    public init(database: Database, name: String) {
         let pointer = mongoc_database_get_collection(database.pointer, name)
-        self.init(name: name, databaseName: database.name, pointer: pointer)
-    }
-
-    init(name: String, databaseName: String, pointer: _mongoc_collection) {
         self.name = name
-        self.databaseName = databaseName
+        self.databaseName = database.name
         self.pointer = pointer
     }
-
 
     deinit {
         mongoc_collection_destroy(self.pointer)
@@ -70,7 +65,7 @@ public final class Collection {
         return cursor
     }
 
-    public func update(query: BSON.Document = BSON.Document(), newValue: BSON.Document, flag: UpdateFlag = .None) throws -> Bool {
+    public func update(query query: BSON.Document, newValue: BSON.Document, flag: UpdateFlag = .None) throws -> Bool {
 
         guard let
             query = BSON.unsafePointerFromDocument(query),
@@ -117,7 +112,7 @@ public final class Collection {
         return success
     }
 
-    public func performBasicCollectionCommand(command command: BSON.Document) throws -> BSON.Document {
+    public func basicCommand(command command: BSON.Document) throws -> BSON.Document {
 
         guard let command = BSON.unsafePointerFromDocument(command) else {
             throw MongoError.CorruptDocument
@@ -152,7 +147,7 @@ public final class Collection {
 //        return Cursor(cursor: cursor)
 //    }
 
-    public func count(query query: BSON.Document, flag: QueryFlag = .None, skip: Int, limit: Int) throws -> Int {
+    public func count(query query: BSON.Document = BSON.Document(), flag: QueryFlag = .None, skip: Int = 0, limit: Int = 0) throws -> Int {
 
         guard let query = BSON.unsafePointerFromDocument(query) else {
             throw MongoError.CorruptDocument
