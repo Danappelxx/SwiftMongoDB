@@ -44,11 +44,13 @@ public final class Client {
     }
 
 
-    public func getDatabaseNames() throws -> [String] {
+    public var databaseNames: [String]? {
         var error = bson_error_t()
         var buffer = mongoc_client_get_database_names(self.pointer, &error)
 
-        try error.throwIfError()
+        if error.error.isError {
+            return nil
+        }
 
         var names = [String]()
 
