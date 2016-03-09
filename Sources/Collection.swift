@@ -47,20 +47,24 @@ public final class Collection {
         try error.throwIfError()
     }
 
-    public func find(query query: BSON.Document = BSON.Document(), flag: QueryFlag = .None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> Cursor {
+    public func find(query query: BSON.Document = BSON.Document(), fields: BSON.Array? = nil, flags: QueryFlags = .None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> Cursor {
 
-        // standard options - should be customizable later on
-        let cursor = try Cursor(
-            collection: self,
-            operation: .Find,
-            query: query,
-            options: (
-                queryFlag: flag,
-                skip: skip,
-                limit: limit,
-                batchSize: batchSize
-            )
+        guard let query = BSON.unsafePointerFromDocument(query) else {
+            throw MongoError.CorruptDocument
+        }
+
+        let cursorPointer = mongoc_collection_find(
+            self.pointer,
+            flags.rawFlag,
+            skip.UInt32Value,
+            limit.UInt32Value,
+            batchSize.UInt32Value,
+            query,
+            nil, // fields
+            nil // read prefs
         )
+
+        let cursor = Cursor(pointer: cursorPointer)
 
         return cursor
     }
@@ -147,7 +151,7 @@ public final class Collection {
 //        return Cursor(cursor: cursor)
 //    }
 
-    public func count(query query: BSON.Document = BSON.Document(), flag: QueryFlag = .None, skip: Int = 0, limit: Int = 0) throws -> Int {
+    public func count(query query: BSON.Document = BSON.Document(), flags: QueryFlags = .None, skip: Int = 0, limit: Int = 0) throws -> Int {
 
         guard let query = BSON.unsafePointerFromDocument(query) else {
             throw MongoError.CorruptDocument
@@ -155,7 +159,7 @@ public final class Collection {
 
         var error = bson_error_t()
 
-        let count = mongoc_collection_count(pointer, flag.rawFlag, query, Int64(skip), Int64(limit), nil, &error)
+        let count = mongoc_collection_count(pointer, flags.rawFlag, query, Int64(skip), Int64(limit), nil, &error)
 
         try error.throwIfError()
 

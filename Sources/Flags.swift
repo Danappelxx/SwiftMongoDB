@@ -10,7 +10,7 @@ import CMongoC
 
 public typealias QueryOptions = (skip: Int, limit: Int, batchSize: Int)
 
-public enum QueryFlag {
+public enum QueryFlags {
     case None
     case TailableCursor
     case SlaveOK

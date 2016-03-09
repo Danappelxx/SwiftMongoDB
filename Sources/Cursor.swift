@@ -11,39 +11,10 @@ import BinaryJSON
 
 public struct Cursor: GeneratorType, SequenceType {
 
-    public typealias Options = (queryFlag: QueryFlag, skip: Int, limit: Int, batchSize: Int)
-
-    public enum Operation {
-        case Find
-    }
-
     private let cursor: UnsafeCursor
 
     init(pointer: _mongoc_cursor) {
         self.cursor = UnsafeCursor(cursor: pointer)
-    }
-
-    public init(collection: Collection, operation: Operation, query: BSON.Document, options: Options) throws {
-
-        guard let query = BSON.unsafePointerFromDocument(query) else {
-            throw MongoError.CorruptDocument
-        }
-
-        let pointer: _mongoc_cursor
-
-        switch operation {
-        case .Find:
-            pointer = mongoc_collection_find(
-                collection.pointer,
-                options.queryFlag.rawFlag,
-                options.skip.UInt32Value,
-                options.limit.UInt32Value,
-                options.batchSize.UInt32Value,
-                query, nil, nil
-            )
-        }
-
-        self.init(pointer: pointer)
     }
 
     var lastError: MongoError {
@@ -81,10 +52,6 @@ public struct Cursor: GeneratorType, SequenceType {
         }
 
         return documents
-    }
-
-    public func first() throws -> BSON.Document? {
-        return try self.nextDocument()
     }
 
     public func destroy() {

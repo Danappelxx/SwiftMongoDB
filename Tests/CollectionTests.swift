@@ -34,7 +34,7 @@ class CollectionTests: XCTestCase {
 
         try collection.insert(document: testDocument)
 
-        let found = try collection.find(query: testDocument).first()!
+        let found = try collection.find(query: testDocument).nextDocument()!
 
         XCTAssert(found == testDocument)
     }
@@ -57,11 +57,11 @@ class CollectionTests: XCTestCase {
             "_id": .ObjectID(testDocument["_id"]!.objectIDValue!)
         ]
 
-        let original = try collection.find(query: query).first()!
+        let original = try collection.find(query: query).nextDocument()!
 
         try collection.update(query: testDocument, newValue: testDocument2)
 
-        let updated = try collection.find(query: query).first()!
+        let updated = try collection.find(query: query).nextDocument()!
 
         XCTAssertNotEqual(original["string"], updated["string"])
     }
