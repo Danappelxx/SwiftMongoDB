@@ -27,15 +27,12 @@ public final class Collection {
         mongoc_collection_destroy(self.pointer)
     }
 
-    public func insert(document document: BSON.Document, flag: InsertFlag = .None) throws {
+    public func insert(document document: BSON.Document, flags: InsertFlags = .None) throws {
 
-        guard let document = BSON.unsafePointerFromDocument(document) else {
-            throw MongoError.CorruptDocument
-        }
-
+        let document = try BSON.AutoReleasingCarrier(document: document)
         var error = bson_error_t()
 
-        mongoc_collection_insert(self.pointer, flag.rawFlag, document, nil, &error)
+        mongoc_collection_insert(self.pointer, flags.rawFlag, document.pointer, nil, &error)
 
         try error.throwIfError()
     }
@@ -49,9 +46,7 @@ public final class Collection {
 
     public func find(query query: BSON.Document = BSON.Document(), fields: BSON.Array? = nil, flags: QueryFlags = .None, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) throws -> Cursor {
 
-        guard let query = BSON.unsafePointerFromDocument(query) else {
-            throw MongoError.CorruptDocument
-        }
+        let query = try BSON.AutoReleasingCarrier(document: query)
 
         let cursorPointer = mongoc_collection_find(
             self.pointer,
@@ -59,7 +54,7 @@ public final class Collection {
             skip.UInt32Value,
             limit.UInt32Value,
             batchSize.UInt32Value,
-            query,
+            query.pointer,
             nil, // fields
             nil // read prefs
         )
@@ -69,17 +64,21 @@ public final class Collection {
         return cursor
     }
 
-    public func update(query query: BSON.Document, newValue: BSON.Document, flag: UpdateFlag = .None) throws -> Bool {
+    public func update(query query: BSON.Document, newValue: BSON.Document, flags: UpdateFlags = .None) throws -> Bool {
 
-        guard let
-            query = BSON.unsafePointerFromDocument(query),
-            document = BSON.unsafePointerFromDocument(newValue)
-            else {
-            throw MongoError.CorruptDocument
-        }
+        let query = try BSON.AutoReleasingCarrier(document: query)
+        let document = try BSON.AutoReleasingCarrier(document: newValue)
 
         var error = bson_error_t()
-        let success = mongoc_collection_update(self.pointer, flag.rawFlag, query, document, nil, &error)
+
+        let success = mongoc_collection_update(
+            self.pointer,
+            flags.rawFlag,
+            query.pointer,
+            document.pointer,
+            nil,
+            &error
+        )
 
         try error.throwIfError()
 
@@ -87,14 +86,19 @@ public final class Collection {
     }
 
 
-    public func remove(query query: BSON.Document = BSON.Document(), flag: RemoveFlag = .None) throws -> Bool {
+    public func remove(query query: BSON.Document = BSON.Document(), flags: RemoveFlags = .None) throws -> Bool {
 
-        guard let query = BSON.unsafePointerFromDocument(query) else {
-            throw MongoError.CorruptDocument
-        }
+        let query = try BSON.AutoReleasingCarrier(document: query)
 
         var error = bson_error_t()
-        let success = mongoc_collection_remove(self.pointer, flag.rawFlag, query, nil, &error)
+
+        let success = mongoc_collection_remove(
+            self.pointer,
+            flags.rawFlag,
+            query.pointer,
+            nil,
+            &error
+        )
 
         try error.throwIfError()
 
@@ -103,13 +107,11 @@ public final class Collection {
 
     public func save(document document: BSON.Document) throws -> Bool {
 
-        guard let document = BSON.unsafePointerFromDocument(document) else {
-            throw MongoError.CorruptDocument
-        }
+        let document = try BSON.AutoReleasingCarrier(document: document)
 
         var error = bson_error_t()
 
-        let success = mongoc_collection_save(pointer, document, nil, &error)
+        let success = mongoc_collection_save(pointer, document.pointer, nil, &error)
 
         try error.throwIfError()
 
@@ -118,14 +120,12 @@ public final class Collection {
 
     public func basicCommand(command command: BSON.Document) throws -> BSON.Document {
 
-        guard let command = BSON.unsafePointerFromDocument(command) else {
-            throw MongoError.CorruptDocument
-        }
+        let command = try BSON.AutoReleasingCarrier(document: command)
 
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_collection_command_simple(self.pointer, command, nil, &reply, &error)
+        mongoc_collection_command_simple(self.pointer, command.pointer, nil, &reply, &error)
 
         try error.throwIfError()
 
@@ -153,13 +153,19 @@ public final class Collection {
 
     public func count(query query: BSON.Document = BSON.Document(), flags: QueryFlags = .None, skip: Int = 0, limit: Int = 0) throws -> Int {
 
-        guard let query = BSON.unsafePointerFromDocument(query) else {
-            throw MongoError.CorruptDocument
-        }
+        let query = try BSON.AutoReleasingCarrier(document: query)
 
         var error = bson_error_t()
 
-        let count = mongoc_collection_count(pointer, flags.rawFlag, query, Int64(skip), Int64(limit), nil, &error)
+        let count = mongoc_collection_count(
+            self.pointer,
+            flags.rawFlag,
+            query.pointer,
+            Int64(skip),
+            Int64(limit),
+            nil,
+            &error
+        )
 
         try error.throwIfError()
 
@@ -188,14 +194,12 @@ public final class Collection {
 
     public func stats(options options: BSON.Document) throws -> BSON.Document {
 
-        guard let options = BSON.unsafePointerFromDocument(options) else {
-            throw MongoError.CorruptDocument
-        }
+        let options = try BSON.AutoReleasingCarrier(document: options)
 
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_collection_stats(pointer, options, &reply, &error)
+        mongoc_collection_stats(self.pointer, options.pointer, &reply, &error)
 
         try error.throwIfError()
 
@@ -207,14 +211,12 @@ public final class Collection {
 
     public func validate(options options: BSON.Document) throws -> BSON.Document {
 
-        guard let options = BSON.unsafePointerFromDocument(options) else {
-            throw MongoError.CorruptDocument
-        }
+        let options = try BSON.AutoReleasingCarrier(document: options)
 
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_collection_validate(pointer, options, &reply, &error)
+        mongoc_collection_validate(self.pointer, options.pointer, &reply, &error)
 
         try error.throwIfError()
 

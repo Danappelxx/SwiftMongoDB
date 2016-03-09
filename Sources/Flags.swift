@@ -37,7 +37,7 @@ public enum QueryFlags {
 }
 
 
-public enum InsertFlag {
+public enum InsertFlags {
     case None
     case ContinueOnError
 
@@ -49,7 +49,7 @@ public enum InsertFlag {
     }
 }
 
-public enum UpdateFlag {
+public enum UpdateFlags {
     case None
     case Upsert
     case MultiUpdate
@@ -63,7 +63,7 @@ public enum UpdateFlag {
     }
 }
 
-public enum RemoveFlag {
+public enum RemoveFlags {
     case None
     case SingleRemove
 

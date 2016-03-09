@@ -67,40 +67,42 @@ public final class Client {
 
     public func basicCommand(command: BSON.Document, databaseName: String) throws -> BSON.Document {
 
-        guard let commandBSON = BSON.unsafePointerFromDocument(command) else {
-            throw MongoError.InvalidData
-        }
-        var reply = bson_t()
+        let command = try BSON.AutoReleasingCarrier(document: command)
+
+        let reply = BSON.AutoReleasingCarrier(bson: bson_new())
         var error = bson_error_t()
 
-        mongoc_client_command_simple(self.pointer, databaseName, commandBSON, nil, &reply, &error)
+        mongoc_client_command_simple(self.pointer, databaseName, command.pointer, nil, reply.pointer, &error)
 
         try error.throwIfError()
 
-        guard let res = BSON.documentFromUnsafePointer(&reply) else {
+        guard let res = BSON.documentFromUnsafePointer(reply.pointer) else {
             throw MongoError.CorruptDocument
         }
 
         return res
     }
 
-    // Waiting on BinaryJSON to support [String] bson
-//    public func performClientCommand(query: BSON.Document, database: Database, fields: [String], flags: QueryFlags, options: QueryOptions) throws -> Cursor {
-//
-//        let fields = BSON.Value.Array(fields.map { BSON.Value.String($0) })
-//
-//        // this isnt possible yet
-//        guard let fieldsBSON = BSON.unsafePointerFromDocument(fields) else {
-//            throw MongoError.InvalidData
-//        }
-//
-//        var query = try MongoBSON(data: query).bson
-//        var fields = try MongoBSON(json: fieldsJSON ).bson
-//
-//        let cursor = mongoc_client_command(pointer, database.name, flags.rawFlag, options.skip.UInt32Value, options.limit.UInt32Value, options.batchSize.UInt32Value, &query, &fields, nil)
-//
-//        return Cursor(cursor: cursor)
-//    }
+    public func command(command: BSON.Document, fields: BSON.Document? = nil, databaseName: String, flags: QueryFlags, options: QueryOptions) throws -> Cursor {
+
+        let command = try BSON.AutoReleasingCarrier(document: command)
+
+        let fields = try fields.map(BSON.AutoReleasingCarrier.init)
+
+        let cursor = mongoc_client_command(
+            pointer,
+            databaseName,
+            flags.rawFlag,
+            options.skip.UInt32Value,
+            options.limit.UInt32Value,
+            options.batchSize.UInt32Value,
+            command.pointer,
+            fields?.pointer ?? nil,
+            nil
+        )
+
+        return Cursor(pointer: cursor)
+    }
 
     public func getDatabasesCursor() throws -> Cursor {
 
@@ -115,14 +117,14 @@ public final class Client {
 
     public func getServerStatus() throws -> BSON.Document {
 
-        var reply = bson_t()
+        let reply = BSON.AutoReleasingCarrier(bson: bson_new())
         var error = bson_error_t()
 
-        mongoc_client_get_server_status(pointer, nil, &reply, &error)
+        mongoc_client_get_server_status(pointer, nil, reply.pointer, &error)
 
         try error.throwIfError()
 
-        guard let status = BSON.documentFromUnsafePointer(&reply) else {
+        guard let status = BSON.documentFromUnsafePointer(reply.pointer) else {
             throw MongoError.CorruptDocument
         }
 

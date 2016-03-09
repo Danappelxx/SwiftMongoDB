@@ -121,13 +121,10 @@ public final class Database {
 
     public func createCollection(name name: String, options: BSON.Document) throws -> Collection {
 
+        let options = try BSON.AutoReleasingCarrier(document: options)
         var error = bson_error_t()
 
-        guard let options = BSON.unsafePointerFromDocument(options) else {
-            throw MongoError.CorruptDocument
-        }
-
-        mongoc_database_create_collection(pointer, name, options, &error)
+        mongoc_database_create_collection(pointer, name, options.pointer, &error)
 
         try error.throwIfError()
 
@@ -138,13 +135,10 @@ public final class Database {
 
     public func findCollections(filter filter: BSON.Document) throws -> Cursor {
 
+        let filter = try BSON.AutoReleasingCarrier(document: filter)
         var error = bson_error_t()
 
-        guard let filter = BSON.unsafePointerFromDocument(filter) else {
-            throw MongoError.CorruptDocument
-        }
-
-        let cursorPointer = mongoc_database_find_collections(pointer, filter, &error)
+        let cursorPointer = mongoc_database_find_collections(pointer, filter.pointer, &error)
 
         try error.throwIfError()
 
@@ -155,20 +149,19 @@ public final class Database {
 
     public func basicCommand(command command: BSON.Document) throws -> BSON.Document {
 
-        guard let command = BSON.unsafePointerFromDocument(command) else {
-            throw MongoError.CorruptDocument
-        }
+        let command = try BSON.AutoReleasingCarrier(document: command)
 
         var reply = bson_t()
         var error = bson_error_t()
 
-        mongoc_database_command_simple(self.pointer, command, nil, &reply, &error)
+        mongoc_database_command_simple(self.pointer, command.pointer, nil, &reply, &error)
 
         try error.throwIfError()
 
         guard let res = BSON.documentFromUnsafePointer(&reply) else {
             throw MongoError.CorruptDocument
         }
+
         return res
     }
 }
