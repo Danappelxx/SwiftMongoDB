@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		37920A671C8E87F800C53DBE /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37920A661C8E87F800C53DBE /* DatabaseTests.swift */; };
-		37920A6A1C8E908000C53DBE /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37920A691C8E908000C53DBE /* CollectionTests.swift */; };
-		37AA365C1C8E0C640021DA26 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA365B1C8E0C640021DA26 /* ClientTests.swift */; };
+		37C985151C9143E100D17D5C /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C985121C9143E100D17D5C /* ClientTests.swift */; };
+		37C985161C9143E100D17D5C /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C985131C9143E100D17D5C /* CollectionTests.swift */; };
+		37C985171C9143E100D17D5C /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C985141C9143E100D17D5C /* DatabaseTests.swift */; };
 		37E3001D1C8108D0006A0B0D /* Declarations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E300121C8108D0006A0B0D /* Declarations.swift */; };
 		37E3001E1C8108D0006A0B0D /* Flags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E300131C8108D0006A0B0D /* Flags.swift */; };
 		37E3001F1C8108D0006A0B0D /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E300141C8108D0006A0B0D /* Client.swift */; };
@@ -67,9 +67,9 @@
 
 /* Begin PBXFileReference section */
 		370CCE9B1C8EAF3200549BDB /* BinaryJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BinaryJSON.xcodeproj; path = "../../Packages/BinaryJSON-1.1.4/Xcode/BinaryJSON.xcodeproj"; sourceTree = "<group>"; };
-		37920A661C8E87F800C53DBE /* DatabaseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
-		37920A691C8E908000C53DBE /* CollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTests.swift; sourceTree = "<group>"; };
-		37AA365B1C8E0C640021DA26 /* ClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientTests.swift; sourceTree = "<group>"; };
+		37C985121C9143E100D17D5C /* ClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClientTests.swift; path = MongoDB/ClientTests.swift; sourceTree = "<group>"; };
+		37C985131C9143E100D17D5C /* CollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionTests.swift; path = MongoDB/CollectionTests.swift; sourceTree = "<group>"; };
+		37C985141C9143E100D17D5C /* DatabaseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatabaseTests.swift; path = MongoDB/DatabaseTests.swift; sourceTree = "<group>"; };
 		37E300081C8108AB006A0B0D /* CMongoC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CMongoC.xcodeproj; path = ../CMongoC/CMongoC.xcodeproj; sourceTree = "<group>"; };
 		37E300121C8108D0006A0B0D /* Declarations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Declarations.swift; sourceTree = "<group>"; };
 		37E300131C8108D0006A0B0D /* Flags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flags.swift; sourceTree = "<group>"; };
@@ -113,9 +113,9 @@
 		37AA365A1C8E0C520021DA26 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				37AA365B1C8E0C640021DA26 /* ClientTests.swift */,
-				37920A661C8E87F800C53DBE /* DatabaseTests.swift */,
-				37920A691C8E908000C53DBE /* CollectionTests.swift */,
+				37C985121C9143E100D17D5C /* ClientTests.swift */,
+				37C985131C9143E100D17D5C /* CollectionTests.swift */,
+				37C985141C9143E100D17D5C /* DatabaseTests.swift */,
 			);
 			name = Tests;
 			path = ../../Tests;
@@ -329,9 +329,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37920A671C8E87F800C53DBE /* DatabaseTests.swift in Sources */,
-				37920A6A1C8E908000C53DBE /* CollectionTests.swift in Sources */,
-				37AA365C1C8E0C640021DA26 /* ClientTests.swift in Sources */,
+				37C985171C9143E100D17D5C /* DatabaseTests.swift in Sources */,
+				37C985151C9143E100D17D5C /* ClientTests.swift in Sources */,
+				37C985161C9143E100D17D5C /* CollectionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -40,3 +40,16 @@ class ClientTests: XCTestCase {
         XCTAssertNotNil(status["ok"])
     }
 }
+
+#if os(Linux)
+extension ClientTests: XCTestCaseProvider {
+    var allTests : [(String, () throws -> Void)] {
+        return [
+            ("testClientGetsDatabaseNames", testClientGetsDatabaseNames),
+            ("testClientPerformsBasicCommands", testClientPerformsBasicCommands),
+            ("testClientGetsDatabaseCursor", testClientGetsDatabaseCursor),
+            ("testClientGetsServerStatus", testClientGetsServerStatus)
+        ]
+    }
+}
+#endif

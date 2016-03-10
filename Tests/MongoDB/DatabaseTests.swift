@@ -27,3 +27,14 @@ class DatabaseTests: XCTestCase {
         XCTAssertNotNil(response["ok"])
     }
 }
+
+#if os(Linux)
+extension DatabaseTests: XCTestCaseProvider {
+    var allTests : [(String, () throws -> Void)] {
+        return [
+            ("testDatabaseGetsCollectionNames", testDatabaseGetsCollectionNames),
+            ("testDatabasePerformsCommands", testDatabasePerformsCommands)
+        ]
+    }
+}
+#endif
