@@ -1,17 +1,12 @@
 //
-//  MongoCollectionFlags.swift
+//  CollectionFlags.swift
 //  SwiftMongoDB
 //
 //  Created by Dan Appel on 11/21/15.
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-// #if os(Linux)
 import CMongoC
-// #else
-// import mongoc
-// #endif
-
 
 public typealias QueryOptions = (skip: Int, limit: Int, batchSize: Int)
 

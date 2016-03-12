@@ -1,17 +1,12 @@
 //
 //  MongoError.swift
-//  swiftMongoDB
+//  SwiftMongoDB
 //
 //  Created by Dan Appel on 8/20/15.
 //  Copyright © 2015 Dan Appel. All rights reserved.
 //
 
-// #if os(Linux)
 import CMongoC
-// #else
-// import mongoc
-// #endif
-
 
 public struct MongoError: ErrorType, CustomStringConvertible {
 
