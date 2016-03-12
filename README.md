@@ -145,6 +145,9 @@ MIT - more information is in the LICENSE file.
 
 # Changelog
 ## 0.4
+### 0.4.1
+Minor api fixes
+
 ### 0.4.0
 A large refactor with a cleaner API and better internal code.
 
