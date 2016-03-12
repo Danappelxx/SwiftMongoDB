@@ -38,6 +38,7 @@ WORKDIR /
 
 # Download source, build
 RUN git clone https://github.com/apple/swift-package-manager
+RUN cd swift-package-manager && git checkout 5040f9ebe6686e7f07be6fbae50dcf942584902c
 RUN swift-package-manager/Utilities/bootstrap
 
 ### Swift MongoDB
@@ -47,7 +48,6 @@ WORKDIR /SwiftMongoDB/
 ADD ./Package.swift /SwiftMongoDB/
 ADD ./Sources /SwiftMongoDB/Sources
 ADD ./Tests /SwiftMongoDB/Tests
-ADD ./Packages /SwiftMongoDB/Packages
 
 # Build it (extra flags because SPM breaks more and more)
 RUN swift build -Xcc -I/usr/local/include/libbson-1.0/ -Xcc -fmodule-map-file=Packages/CBSON-1.1.1/module.modulemap -Xcc -fmodule-map-file=Packages/CMongoC-0.1.0/module.modulemap
