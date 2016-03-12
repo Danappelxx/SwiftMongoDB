@@ -35,7 +35,7 @@ You can connect to a MongoDB instance (local or not) this way.
 Then you need to create a database.
 
 ```swift
-let testDatabase = try Database(client: client, name: "test")
+let testDatabase = Database(client: client, name: "test")
 ```
 
 Then you need to create a collection. The collection doesn't have to exist (it will be created automatically if it isn't).
@@ -78,7 +78,7 @@ let subject: BSON.Document = [
 You can then insert the newly created document(s) into the collection.
 
 ```swift
-subjects.insert(subject)
+try subjects.insert(subject)
 ```
 
 If you want to create a `BSON.Document` from JSON, it's just as simple:
@@ -95,14 +95,14 @@ Now, lets do some querying!
 Here's the most basic query you can possibly perform:
 
 ```swift
-let cursor = subjects.find()
+let cursor = try subjects.find()
 let testSubjects = try cursor.all()
 ```
 
 The first line, as you can see, returns a cursor. The `Cursor` type gives you more control over how you process the results of the query. For most use cases, the methods `Cursor.nextDocument` and `Cursor.all` will be enough. However, `Cursor` also conforms to `GeneratorType` and `SequenceType`, meaning that you can take advantage of a lot of neat Swift features. For example, you can iterate directly over it using a for loop:
 
 ```swift
-let results = subjects.find()
+let results = try subjects.find()
 for subject in results {
     print(subject)
 }
