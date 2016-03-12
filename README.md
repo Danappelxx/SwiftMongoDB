@@ -9,43 +9,43 @@ import PackageDescription
 let package = Package(
   name: "foo",
   dependencies: [
-    .Package(url: "https://github.com/Danappelxx/SwiftMongoDB", majorVersion: 0, minor: 3)
+    .Package(url: "https://github.com/Danappelxx/SwiftMongoDB", majorVersion: 0, minor: 4)
   ]
 )
 ```
 
-If you want to use Carthage, all you have to do is add the following to your Cartfile:
-
-```
-github "Danappelxx/SwiftMongoDB"
-```
-
-and then run:
-
-```
-$ carthage bootstrap
-```
-
-This gives you a built `SwiftMongoDB.framework` in `Carthage/Build/Mac`. For instructions on how to use it, refer to the [Carthage README](https://github.com/Carthage/Carthage).
-
 # Tutorial
 This example assumes that you have setup the project and have MongoDB running.
+
+## Setup
+At the top of any file where you use SwiftMongoDB, you need to import it:
+
+```swift
+import MongoDB
+```
 
 First, you need to establish a connection to the MongoDB server.
 
 ```swift
-let client = try MongoClient(host: "localhost", port: 27017, database: "test")
+let client = try Client(host: "localhost", port: 27017)
 ```
 
 You can connect to a MongoDB instance (local or not) this way.
 
+Then you need to create a database.
+
+```swift
+let testDatabase = try Database(client: client, name: "test")
+```
+
 Then you need to create a collection. The collection doesn't have to exist (it will be created automatically if it isn't).
 
 ```swift
-let subjects = MongoCollection(collectionName: "subjects", client: client)
+let subjects = Collection(database: testDatabase, name: "subjects")
 ```
 
-An important aspect of SwiftMongoDB is how it handles inserting documents. Most of the work will be done with a medium called MongoDocument, where you insert either a `[String:BSON]` type dictionary or a JSON string. It then gets converted to a lower level type called BSON behind the scenes (you, fortunately, don't have to worry about this).
+## Insertion and BSON
+An important aspect of SwiftMongoDB is how it handles inserting documents. Most of the work will be done through a medium defined in [BinaryJSON](https://github.com/danappelxx/BinaryJSON) called `BSON.Document`. Creating it is very simple and type-safe, and the translation to MongoDB's lower-level type known as BSON is (fortunately) done behind the scenes for you.
 
 For example, say you wanted to create a human named Dan. This is how it would look in JSON:
 
@@ -53,7 +53,7 @@ For example, say you wanted to create a human named Dan. This is how it would lo
 {
   "name" : "Dan",
   "age" : 15,
-  "lovesProgramming" : true,
+  "lovesSwift" : true,
   "location" : {
     "state" : "California"
   },
@@ -64,17 +64,15 @@ For example, say you wanted to create a human named Dan. This is how it would lo
 It looks pretty similar in Swift:
 
 ```swift
-let data = [
+let subject: BSON.Document = [
     "name": "Dan",
     "age": 15,
-    "lovesProgramming" : true,
+    "lovesSwift" : true,
     "location": [
         "state": "California"
-    ]
+    ],
     "favoriteNumbers" : [1,2,3,4,5]
 ]
-
-let subject = MongoDocument(data)
 ```
 
 You can then insert the newly created document(s) into the collection.
@@ -83,41 +81,73 @@ You can then insert the newly created document(s) into the collection.
 subjects.insert(subject)
 ```
 
+If you want to create a `BSON.Document` from JSON, it's just as simple:
+
+```swift
+let document = try BSON.fromJSONString(jsonString)
+```
+
 That's it for inserting documents - pretty neat, right?
 
+## Querying
 Now, lets do some querying!
 
 Here's the most basic query you can possibly perform:
 
 ```swift
-let result = subjects.find()
+let cursor = subjects.find()
+let testSubjects = try cursor.all()
+```
+
+The first line, as you can see, returns a cursor. The `Cursor` type gives you more control over how you process the results of the query. For most use cases, the methods `Cursor.nextDocument` and `Cursor.all` will be enough. However, `Cursor` also conforms to `GeneratorType` and `SequenceType`, meaning that you can take advantage of a lot of neat Swift features. For example, you can iterate directly over it using a for loop:
+
+```swift
+let results = subjects.find()
+for subject in results {
+    print(subject)
+}
 ```
 
 Now, say we inserted a few more test subjects and wanted to query for all of them whose age is exactly 15. This is pretty simple:
 
 ```swift
-let result = try subjects.find(["age" : 15])
+let result = try subjects.find(query: ["age" : 15])
 ```
 
 The query parameter operates just as it would in most other MongoDB implementations. For instance, in the MongoDB shell, this would be the equivalent of `db.subjects.find( {"age" : 15} )`.
 
+## Updating
+If you wanted to change all test subjects who loved Swift to Chris Lattner, you could simply do:
+
+```swift
+let newDocument: BSON.Document = [
+    "name": "Chris Lattner" // we can ignore the other keys for this example
+]
+try subjects.update(query: ["lovesSwift": true], newValue: newDocument)
+```
+
+## Removing
 Removing documents works the same way - if you want to remove all of the test subjects named Dan, you simply do:
 
 ```swift
-try subjects.remove(["name" : "Dan"])
+try subjects.remove(query: ["name" : "Dan"])
 ```
 
-Those are the basics - it's really a very small simple library. You can take a look at the test suite which should show you some of the methods not shown here. Otherwise, feel free to jump right into the deep end and start using SwiftMongoDB!
-
-# Roadmap
-Ideally I would like to mirror all of the features that the Mongo Shell/drivers offer, and eventually add my own touch to it.
+Those are the basics - it's really a very small simple library. You can take a look at the test suite and/or source which should show you some of the methods not shown here. Otherwise, feel free to jump right into the deep end and start using SwiftMongoDB!
 
 # Contributing
 Any and all help is very welcome! Feel free to fork and submit a pull request - I will almost certainly merge it.
 
 You should start by taking a look at the current issues and see if there's anything you want to implement/fix there.
 
+# License
+MIT - more information is in the LICENSE file.
+
 # Changelog
+## 0.4
+### 0.4.0
+A large refactor with a cleaner API and better internal code.
+
 ## 0.3
 ### 0.3.0
 SPM and Linux support
