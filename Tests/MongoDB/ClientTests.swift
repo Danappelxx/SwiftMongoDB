@@ -15,9 +15,7 @@ let client = try! Client(host: "localhost", port: 27017)
 // Doesn't seem like there's a lot to test...
 class ClientTests: XCTestCase {
     func testClientGetsDatabaseNames() throws {
-        let names = client.databaseNames
-
-        XCTAssert(names?.count > 0)
+        XCTAssertNotNil(client.databaseNames)
     }
 
     func testClientPerformsBasicCommands() throws {
