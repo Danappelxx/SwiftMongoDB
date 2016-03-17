@@ -39,7 +39,7 @@ class CollectionTests: XCTestCase {
 
     func testCollectionFindsDocuments() throws {
 
-        try collection.insert(document: testDocument)
+        try collection.insert(testDocument)
 
         let found = try collection.find(query: testDocument).nextDocument()!
 
@@ -49,7 +49,7 @@ class CollectionTests: XCTestCase {
     func testCollectionInsertsDocuments() throws {
         let initial = try collection.count()
 
-        try collection.insert(document: testDocument)
+        try collection.insert(testDocument)
 
         let after = try collection.count()
 
@@ -58,7 +58,7 @@ class CollectionTests: XCTestCase {
 
     func testCollectionUpdatesDocuments() throws {
 
-        try collection.insert(document: testDocument)
+        try collection.insert(testDocument)
 
         let query: BSON.Document = [
             "_id": .ObjectID(testDocument["_id"]!.objectIDValue!)
@@ -75,7 +75,7 @@ class CollectionTests: XCTestCase {
 
     func testCollectionRemovesDocuments() throws {
 
-        try collection.insert(document: testDocument)
+        try collection.insert(testDocument)
 
         let initial = try collection.count()
 
