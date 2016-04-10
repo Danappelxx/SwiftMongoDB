@@ -14,16 +14,9 @@ let collection = Collection(database: database, name: "test")
 
 class CollectionTests: XCTestCase {
 
-    #if os(Linux)
-    func setUp() {
-        try! collection.remove()
-    }
-    #else
     override func setUp() {
         try! collection.remove()
     }
-    #endif
-
 
     let testDocument: BSON.Document = [
         "_id": .ObjectID(BSON.ObjectID()), // random oid
