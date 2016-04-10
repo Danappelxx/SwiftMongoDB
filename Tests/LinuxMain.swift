@@ -1,9 +1,9 @@
 import XCTest
 
-@testable import MongoDBtest
+@testable import MongoDBTestSuite
 
 XCTMain([
-   ClientTests(),
-   CollectionTests(),
-   DatabaseTests()
+    testCase(ClientTests.allTests),
+    testCase(CollectionTests.allTests),
+    testCase(DatabaseTests.allTests),
 ])

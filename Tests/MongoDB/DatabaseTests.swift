@@ -28,13 +28,11 @@ class DatabaseTests: XCTestCase {
     }
 }
 
-#if os(Linux)
-extension DatabaseTests: XCTestCaseProvider {
-    var allTests : [(String, () throws -> Void)] {
+extension DatabaseTests {
+    static var allTests: [(String, DatabaseTests -> () throws -> Void)] {
         return [
             ("testDatabaseGetsCollectionNames", testDatabaseGetsCollectionNames),
             ("testDatabasePerformsCommands", testDatabasePerformsCommands)
         ]
     }
 }
-#endif

@@ -94,9 +94,8 @@ class CollectionTests: XCTestCase {
     }
 }
 
-#if os(Linux)
-extension CollectionTests: XCTestCaseProvider {
-    var allTests : [(String, () throws -> Void)] {
+extension CollectionTests {
+    static var allTests: [(String, CollectionTests -> () throws -> Void)] {
         return [
             ("testCollectionFindsDocuments", testCollectionFindsDocuments),
             ("testCollectionInsertsDocuments", testCollectionInsertsDocuments),
@@ -106,4 +105,3 @@ extension CollectionTests: XCTestCaseProvider {
         ]
     }
 }
-#endif

@@ -39,9 +39,8 @@ class ClientTests: XCTestCase {
     }
 }
 
-#if os(Linux)
-extension ClientTests: XCTestCaseProvider {
-    var allTests : [(String, () throws -> Void)] {
+extension ClientTests {
+    static var allTests: [(String, ClientTests -> () throws -> Void)] {
         return [
             ("testClientGetsDatabaseNames", testClientGetsDatabaseNames),
             ("testClientPerformsBasicCommands", testClientPerformsBasicCommands),
@@ -50,4 +49,3 @@ extension ClientTests: XCTestCaseProvider {
         ]
     }
 }
-#endif
