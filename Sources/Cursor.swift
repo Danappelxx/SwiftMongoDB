@@ -9,7 +9,7 @@
 import CMongoC
 import BinaryJSON
 
-public struct Cursor: GeneratorType, SequenceType {
+public struct Cursor: IteratorProtocol, Sequence {
 
     private let cursor: UnsafeCursor
 
@@ -59,7 +59,7 @@ public struct Cursor: GeneratorType, SequenceType {
     }
 }
 
-private final class UnsafeCursor:  GeneratorType {
+private final class UnsafeCursor:  IteratorProtocol {
     let pointer: _mongoc_cursor
 
     init(cursor: _mongoc_cursor) {
@@ -71,7 +71,7 @@ private final class UnsafeCursor:  GeneratorType {
     }
 
     func next() -> UnsafePointer<bson_t>? {
-        var buffer = UnsafePointer<bson_t>()
+        var buffer = UnsafePointer<bson_t>(nil)
 
         let isOk = mongoc_cursor_next(self.pointer, &buffer)
 
