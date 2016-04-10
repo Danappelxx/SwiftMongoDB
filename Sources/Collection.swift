@@ -27,7 +27,7 @@ public final class Collection {
         mongoc_collection_destroy(self.pointer)
     }
 
-    public func insert(document document: BSON.Document, flags: InsertFlags = .None) throws {
+    public func insert(document: BSON.Document, flags: InsertFlags = .None) throws {
 
         let document = try BSON.AutoReleasingCarrier(document: document)
         var error = bson_error_t()

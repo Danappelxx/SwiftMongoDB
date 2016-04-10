@@ -56,7 +56,7 @@ public final class Client {
 
         while buffer.pointee != nil {
 
-			let name = String(cString:buffer.pointee)
+            let name = String(cString:buffer.pointee)
             names.append(name)
 
             buffer = buffer.successor()
