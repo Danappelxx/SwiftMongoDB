@@ -1,6 +1,8 @@
 # SwiftMongoDB [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![Join the chat at https://gitter.im/Danappelxx/SwiftMongoDB](https://img.shields.io/badge/gitter-join%20chat-blue.svg)](https://gitter.im/Danappelxx/SwiftMongoDB?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Travis CI](https://api.travis-ci.org/Danappelxx/SwiftMongoDB.svg)](https://travis-ci.org/Danappelxx/SwiftMongoDB) [![codecov.io](https://codecov.io/github/Danappelxx/SwiftMongoDB/coverage.svg?branch=master)](https://codecov.io/github/Danappelxx/SwiftMongoDB?branch=master)
 A Swifter way to work with MongoDB in Swift. Wraps around the [MongoDB C Driver 1.2.0](http://api.mongodb.org/c/1.2.0/) (supports MongoDB version 2.4 and later).
 
+Supports the 03-24 snapshot with 0.5, and 02-28 with 0.4. Earlier versions should not be used.
+
 # Setup
 The simplest and linux-compatible way to use SwiftMongoDB is through the official Swift package manager. Simply add it to your `Package.swift` like so:
 
@@ -9,7 +11,7 @@ import PackageDescription
 let package = Package(
   name: "foo",
   dependencies: [
-    .Package(url: "https://github.com/Danappelxx/SwiftMongoDB", majorVersion: 0, minor: 4)
+    .Package(url: "https://github.com/Danappelxx/SwiftMongoDB", majorVersion: 0, minor: 5)
   ]
 )
 ```
