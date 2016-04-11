@@ -24,7 +24,7 @@ public final class Database {
 
     public var name: String {
         let nameRaw = mongoc_database_get_name(pointer)
-        return String.fromCString(nameRaw)!
+        return String(cString:nameRaw)
     }
 
     public var collectionNames: [String]? {
@@ -38,9 +38,9 @@ public final class Database {
 
         var names = [String]()
 
-        while buffer.memory != nil {
+        while buffer.pointee != nil {
 
-            let name = String.fromCString(buffer.memory)!
+            let name = String(cString:buffer.pointee)
             names.append(name)
 
             buffer = buffer.successor()

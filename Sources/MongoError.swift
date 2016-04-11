@@ -8,7 +8,7 @@
 
 import CMongoC
 
-public struct MongoError: ErrorType, CustomStringConvertible {
+public struct MongoError: ErrorProtocol, CustomStringConvertible {
 
     public let description: String
     public let code: Int
@@ -74,9 +74,9 @@ public extension bson_error_t {
     }
 }
 
-func mongocErrorMessageToString(inout error: _mongoc_error_message) -> String {
+func mongocErrorMessageToString(error: inout _mongoc_error_message) -> String {
     return withUnsafePointer(&error) {
-        String.fromCString(UnsafePointer($0))!
+        String(cString:UnsafePointer($0))
     }
 }
 
