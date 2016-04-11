@@ -144,6 +144,10 @@ You should start by taking a look at the current issues and see if there's anyth
 MIT - more information is in the LICENSE file.
 
 # Changelog
+## 0.5
+### 0.5.0
+Swift 3 support
+
 ## 0.4
 ### 0.4.1
 Minor api fixes
