@@ -15,6 +15,17 @@ let package = Package(
   ]
 )
 ```
+As a second step you need to ensure that the mongo-c driver is installed on your system.
+## OSX (via brew)
+```
+brew install mongo-c
+```
+If you also need to install MongoDB run the following
+```
+brew install mongodb
+```
+## The rest of the universe
+[How to install MongoDB C driver.](http://api.mongodb.org/c/current/)
 
 # Tutorial
 This example assumes that you have setup the project and have MongoDB running.
